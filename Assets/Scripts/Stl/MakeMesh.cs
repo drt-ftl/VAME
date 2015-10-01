@@ -1,0 +1,149 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class MakeMesh : MonoBehaviour
+{
+    private Mesh mesh;
+    private List<int> tris = new List<int>();
+    private List<Vector3> verts = new List<Vector3>();
+    private List<Vector3> normals = new List<Vector3>();
+    private List<Color> colors = new List<Color>();
+    private List<Vector2> uvs = new List<Vector2>();
+
+    private Mesh mesh_b;
+    private List<int> tris_b = new List<int>();
+    private List<Vector3> verts_b = new List<Vector3>();
+    private List<Vector3> normals_b = new List<Vector3>();
+    private GameObject back;
+    int d = 0;
+
+    private Color Hidden = new Color(0f, 0f, 0f, 0f);
+
+    public void Begin()
+    {
+        gameObject.AddComponent<MeshFilter>();
+        gameObject.AddComponent<MeshRenderer>();
+
+        mesh = GetComponent<MeshFilter>().mesh;
+        mesh.Clear();
+
+        var rnd = GetComponent<MeshRenderer>();
+        rnd.material = material;
+        rnd.receiveShadows = true;
+        rnd.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+
+        back = GameObject.Find("BACK");
+        back.AddComponent<MeshFilter>();
+        back.AddComponent<MeshRenderer>();
+
+        mesh_b = back.GetComponent<MeshFilter>().mesh;
+        mesh_b.Clear();
+
+        var rnd_b = back.GetComponent<MeshRenderer>();
+        rnd_b.material = material;
+        rnd_b.receiveShadows = true;
+        rnd_b.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+    }
+
+    public Material material { get; set;}
+    public Color color { get; set; }
+
+    public Vector3 Normal (Vector3 p1, Vector3 p2, Vector3 p3)
+    {
+        var dir = Vector3.Cross(p2 - p1, p3 - p1);
+        var norm = Vector3.Normalize(dir);
+        return norm;
+    }
+
+    public Vector3 NormalBack (Vector3 p1, Vector3 p2, Vector3 p3)
+    {
+        var dir = Vector3.Cross(p3 - p1, p3 - p2);
+        var norm = Vector3.Normalize(dir);
+        return norm;
+    }
+
+    public void AddTriangle (Vector3 p1, Vector3 p2, Vector3 p3, Vector3 norm)
+    {
+        var count = tris.Count;
+
+        tris.Add(count);
+        tris.Add(count + 1);
+        tris.Add(count + 2);
+        verts.Add(p1);
+        verts.Add(p2);
+        verts.Add(p3);
+        uvs.Add(p1);
+        uvs.Add(p2);
+        uvs.Add(p3);
+        for (int i = 0; i < 3; i++)
+            normals.Add(norm);
+        for (int i = 0; i < 3; i++)
+            colors.Add(InspectorL.stlColor);
+
+        tris_b.Add(count);
+        tris_b.Add(count + 1);
+        tris_b.Add(count + 2);
+        verts_b.Add(p1);
+        verts_b.Add(p2);
+        verts_b.Add(p3);
+        for (int i = 0; i < 3; i++)
+            normals_b.Add(-norm);
+    }
+
+    public void MergeMesh()
+    {
+        mesh.vertices = verts.ToArray();
+        mesh.triangles = tris.ToArray();
+        mesh.normals = normals.ToArray();
+        mesh.uv = uvs.ToArray();
+        mesh.colors = colors.ToArray();
+
+        mesh.RecalculateNormals();
+        mesh.Optimize();
+
+
+        mesh_b.vertices = verts_b.ToArray();
+        mesh_b.triangles = tris_b.ToArray();
+        mesh_b.normals = normals_b.ToArray();
+        mesh_b.uv = uvs.ToArray();
+        mesh_b.colors = colors.ToArray();
+
+        mesh_b.RecalculateNormals();
+        mesh_b.Optimize();
+    }
+
+    public Vector3[] GetTriangleVertices(int id)
+    {
+        var pts = new Vector3[3];
+        var index = id * 3;
+        pts[0] = mesh.vertices[index];
+        pts[1] = mesh.vertices[index + 1];
+        pts[2] = mesh.vertices[index + 2];
+        return pts;
+    }
+
+    public Mesh GetMesh()
+    {
+        return mesh;
+    }
+
+    void Update()
+    {
+        int low = (int)InspectorL.stlTimeSliderMin;
+        int high = (int)InspectorL.stlTimeSlider;
+        var count = colors.Count;
+        for (int i = 0; i < count - 1; i++)
+        {
+            if ((i / 3) >= low && (i / 3) < high)
+            {
+                colors[i] = InspectorL.stlColor;
+                Camera.main.GetComponent<LoadFile>().stlMat.SetColor("_SpecColor", colors[i]);
+            }
+            else colors[i] = Hidden;
+            Camera.main.GetComponent<LoadFile>().stlMat.SetColor("_SpecColor", Hidden);
+        }
+        mesh.colors = mesh_b.colors = colors.ToArray();
+    }
+
+}
