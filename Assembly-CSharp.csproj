@@ -49,14 +49,14 @@
      <Compile Include="Assets\Scripts\CameraControl.cs" />
      <Compile Include="Assets\Scripts\DxfLineConverter.cs" />
      <Compile Include="Assets\Scripts\DxfSurfaceConverter.cs" />
-     <Compile Include="Assets\Scripts\Inspectors\Inspector.cs" />
      <Compile Include="Assets\Scripts\Inspectors\InspectorL.cs" />
      <Compile Include="Assets\Scripts\Inspectors\InspectorManager.cs" />
      <Compile Include="Assets\Scripts\Inspectors\InspectorR.cs" />
      <Compile Include="Assets\Scripts\Inspectors\Time.cs" />
      <Compile Include="Assets\Scripts\LoadFile.cs" />
      <Compile Include="Assets\Scripts\Paths\DmcInterpreter.cs" />
-     <Compile Include="Assets\Scripts\Paths\GCodeInterpreter.cs" />
+     <Compile Include="Assets\Scripts\Paths\GcdInterpreter.cs" />
+     <Compile Include="Assets\Scripts\Paths\JobInterpreter.cs" />
      <Compile Include="Assets\Scripts\Paths\LineSegment.cs" />
      <Compile Include="Assets\Scripts\Stl\LoadSTL.cs" />
      <Compile Include="Assets\Scripts\Stl\MakeMesh.cs" />

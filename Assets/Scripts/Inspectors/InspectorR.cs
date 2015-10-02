@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class InspectorR : InspectorManager
@@ -16,6 +15,7 @@ public class InspectorR : InspectorManager
 
     public static float voxelVis;
     public static float resolution = 20;
+    private float negHighlight = 0;
     public static float highlight = 0;
 
 

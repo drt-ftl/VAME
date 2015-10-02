@@ -59,9 +59,9 @@ public class VoxelizeSTL2 : MonoBehaviour
         pos.z = Mathf.Round(hitSpot.z * divisions) / divisions;
         var scale = f / (float)divisions;
         finalDim = scale;
-        pos.x = c.x + (c.x - pos.x) * f + scale / 2;
-        pos.y = c.y + (c.y - pos.y) * f + scale / 2;
-        pos.z = c.z + (c.z - pos.z) * f + scale / 2;
+        pos.x = c.x - (c.x - pos.x) * f;// + scale / 2;
+        pos.y = c.y - (c.y - pos.y) * f;// + scale / 2;
+        pos.z = c.z - (c.z - pos.z) * f;// + scale / 2;
         if (pos.x % 1 < offset)
             offset = pos.x % 1;
         if (!voxels.ContainsKey(pos))
@@ -90,11 +90,11 @@ public class VoxelizeSTL2 : MonoBehaviour
         {
             mesh.vertices[t] = mesh.vertices[t] * 2f;
         }
-        for (float y = MaxGrid.y + dim; y >= MinGrid.y - dim; y -= dim)
+        for (float y = MinGrid.y - dim; y <= MaxGrid.y + dim; y += dim)
         {
-            for (float z = MaxGrid.z + dim; z >= MinGrid.z - dim; z -= dim)
+            for (float z = MinGrid.z - dim; z <= MaxGrid.z + dim; z += dim)
             {
-                for (float x = MaxGrid.x + dim; x >= MinGrid.x - dim; x -= dim)
+                for (float x = MinGrid.x - dim; x <= MaxGrid.x + dim; x += dim)
                 {
                     if (IsPointInside(mesh, new Vector3(x, y, z)))
                     {

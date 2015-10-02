@@ -12,6 +12,7 @@ public class InspectorL : InspectorManager
     public static float stlVisSlider = 1;
     public static float dmcVisSlider = 1;
     public static float jobVisSlider = 1;
+    public static float gcdVisSlider = 1;
     public static float stlTimeSlider = 1;
     public static float stlTimeSliderPrev = 1;
     public static float stlTimeSliderMin = 1;
@@ -20,11 +21,17 @@ public class InspectorL : InspectorManager
     public static float dmcTimeSliderMin = 1;
     public static float dmcCodeSlider = 1;
     public static float jobTimeSlider = 1;
+    public static float jobTimeSliderMin = 1;
+    public static float jobTimeSliderPrev = 1;
+    public static float gcdTimeSlider = 1;
+    public static float gcdTimeSliderMin = 1;
+    public static float gcdTimeSliderPrev = 1;
     private int typeInt = 0;
     private string[] toolbarStrings = { "STL", "DMC", "JOB" };
     public static Color stlColor = new Color(1.0f, 0.5f, 0.5f, 1f);
-    public static Color dmcLineColor = new Color(0f, 0.7f, 0f, 1f);
-    public static Color jobLineColor = new Color(1f, 0f, 0f, 1f);
+    public Color dmcLineColor = new Color(0f, 0.7f, 0f, 1f);
+    public Color jobLineColor = new Color(1f, 0f, 0f, 1f);
+    public Color gcdLineColor = new Color(1f, 0f, 0f, 1f);
     private Vector3 _p1;
     private Vector3 _p2;
     private Vector3 _p3;
@@ -38,11 +45,9 @@ public class InspectorL : InspectorManager
     private float _p3y;
     private float _p3z;
     private List<string> prevTypeList = new List<string>();
-    public enum LastLoaded { STL,DMC,JOB,None};
+    public enum LastLoaded { STL,DMC,JOB,GCD,None};
     public static LastLoaded lastLoaded;
     private float voxelVis;
-    private int dmcCodeOffset = 0;
-    private int stlCodeOffset = 0;
     int max = 50;
     #endregion
     public Rect MainRect
@@ -63,7 +68,7 @@ public class InspectorL : InspectorManager
             GUILayout.Box(hr, "hr", GUILayout.Width(250), GUILayout.Height(10));
             GUILayout.Space(10);
             // Load
-            if (!LoadFile.loading && (!LoadFile.stlCodeLoaded || !LoadFile.dmcCodeLoaded))
+            if (!LoadFile.loading && (!LoadFile.stlCodeLoaded || !LoadFile.dmcCodeLoaded || !LoadFile.jobCodeLoaded || !LoadFile.gcdCodeLoaded))
             {
                 if (GUILayout.Button("Load"))
                 {
@@ -122,6 +127,30 @@ public class InspectorL : InspectorManager
                     }
                 }
                 break;
+            case "JOB":
+                jobVisSlider = GUILayout.HorizontalSlider(jobVisSlider, 0, 1, GUILayout.Width(220), GUILayout.Height(12));
+                GUILayout.Label("Visibility: " + (jobVisSlider * 100).ToString("f0"), KeyStyle, GUILayout.Width(250));
+                foreach (var line in LoadFile.jobLines)
+                {
+                    if (line.Line != null)
+                    {
+                        jobLineColor.a = jobVisSlider * jobVisSlider;
+                        line.LineColor = jobLineColor;
+                    }
+                }
+                break;
+            case "GCD":
+                gcdVisSlider = GUILayout.HorizontalSlider(gcdVisSlider, 0, 1, GUILayout.Width(220), GUILayout.Height(12));
+                GUILayout.Label("Visibility: " + (gcdVisSlider * 100).ToString("f0"), KeyStyle, GUILayout.Width(250));
+                foreach (var line in LoadFile.gcdLines)
+                {
+                    if (line.Line != null)
+                    {
+                        gcdLineColor.a = gcdVisSlider * gcdVisSlider;
+                        line.LineColor = gcdLineColor;
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -177,6 +206,78 @@ public class InspectorL : InspectorManager
                     indexDMC++;
                 }
                 break;
+            case "JOB":
+                jobTimeSlider = GUILayout.HorizontalSlider(jobTimeSlider, 1, LoadFile.jobLines.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
+                GUILayout.Label("Time Max: " + jobTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(250));
+                jobTimeSliderMin = GUILayout.HorizontalSlider(jobTimeSliderMin, 0, jobTimeSlider - 1, GUILayout.Width(220), GUILayout.Height(12));
+                GUILayout.Label("Time Min: " + jobTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(250));
+
+                GUILayout.Label(LoadFile.jobCode.Count.ToString(), KeyStyle, GUILayout.Width(250));
+                if (jobTimeSlider != jobTimeSliderPrev)
+                    scrollPosition.y = 0;
+                jobTimeSliderPrev = jobTimeSlider;
+
+                var indexJOB = 0;
+                foreach (var line in LoadFile.jobLines)
+                {
+                    if (line.Line != null)
+                    {
+                        if ((int)jobTimeSlider < indexJOB || (int)jobTimeSliderMin > indexJOB)
+                        {
+                            line.LineColor = new Color(jobLineColor.r, jobLineColor.g, jobLineColor.b, 0f);
+                        }
+                        else if ((int)jobTimeSlider == indexJOB)
+                        {
+                            line.LineWidth = 0.01f;
+                            line.LineColor = new Color(1f, 1f, 1f, jobLineColor.a);
+                            _p1 = line.p1;
+                            _p2 = line.p2;
+                        }
+                        else
+                        {
+                            line.LineWidth = 0.002f;
+                            line.LineColor = jobLineColor;
+                        }
+                    }
+                    indexJOB++;
+                }
+                break;
+            case "GCD":
+                gcdTimeSlider = GUILayout.HorizontalSlider(gcdTimeSlider, 1, LoadFile.gcdLines.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
+                GUILayout.Label("Time Max: " + gcdTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(250));
+                gcdTimeSliderMin = GUILayout.HorizontalSlider(gcdTimeSliderMin, 0, gcdTimeSlider - 1, GUILayout.Width(220), GUILayout.Height(12));
+                GUILayout.Label("Time Min: " + gcdTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(250));
+
+                GUILayout.Label(LoadFile.gcdCode.Count.ToString(), KeyStyle, GUILayout.Width(250));
+                if (gcdTimeSlider != gcdTimeSliderPrev)
+                    scrollPosition.y = 0;
+                gcdTimeSliderPrev = gcdTimeSlider;
+
+                var indexGCD = 0;
+                foreach (var line in LoadFile.gcdLines)
+                {
+                    if (line.Line != null)
+                    {
+                        if ((int)gcdTimeSlider < indexGCD || (int)gcdTimeSliderMin > indexGCD)
+                        {
+                            line.LineColor = new Color(gcdLineColor.r, gcdLineColor.g, gcdLineColor.b, 0f);
+                        }
+                        else if ((int)gcdTimeSlider == indexGCD)
+                        {
+                            line.LineWidth = 0.01f;
+                            line.LineColor = new Color(1f, 1f, 1f, gcdLineColor.a);
+                            _p1 = line.p1;
+                            _p2 = line.p2;
+                        }
+                        else
+                        {
+                            line.LineWidth = 0.002f;
+                            line.LineColor = gcdLineColor;
+                        }
+                    }
+                    indexGCD++;
+                }
+                break;
             default:
                 break;
         }
@@ -190,6 +291,8 @@ public class InspectorL : InspectorManager
             list.Add("DMC");
         if (LoadFile.jobCodeLoaded)
             list.Add("JOB");
+        if (LoadFile.gcdCodeLoaded)
+            list.Add("GCD");
         if (list.Contains(lastLoaded.ToString()))
         {
             typeInt = list.IndexOf(lastLoaded.ToString());
@@ -255,6 +358,60 @@ public class InspectorL : InspectorManager
                     {
                         if (LoadFile.dmcCode.Count > i)
                             bulk += LoadFile.dmcCode[i];
+                    }
+                }
+                break;
+            case "JOB":
+                max = 50;
+                if (max > LoadFile.jobCode.Count - 1)
+                    max = LoadFile.jobCode.Count - 1;
+                if (jobTimeSlider >= LoadFile.firstJobLineInCode)
+                {
+                    var ts = (int)jobTimeSlider;
+                    if (LoadFile.model_code_xrefJOB.Count - 1 < ts )
+                        ts = LoadFile.model_code_xrefJOB.Count - 1;
+                    var firstLineIndex = LoadFile.model_code_xrefJOB[ts];
+                    first = LoadFile.jobCode[firstLineIndex];
+
+                    for (int i = firstLineIndex + 1; i < firstLineIndex + max; i++)
+                    {
+                        if (LoadFile.jobCode.Count > i)
+                            bulk += LoadFile.jobCode[i];
+                    }
+                }
+                else
+                {
+                    for (int i = (int)jobTimeSlider; i < (int)jobTimeSlider + max; i++)
+                    {
+                        if (LoadFile.jobCode.Count > i)
+                            bulk += LoadFile.jobCode[i];
+                    }
+                }
+                break;
+            case "GCD":
+                max = 50;
+                if (max > LoadFile.gcdCode.Count - 1)
+                    max = LoadFile.gcdCode.Count - 1;
+                if (gcdTimeSlider >= LoadFile.firstGcdLineInCode)
+                {
+                    var ts = (int)gcdTimeSlider;
+                    if (LoadFile.model_code_xrefGCD.Count - 1 < ts)
+                        ts = LoadFile.model_code_xrefGCD.Count - 1;
+                    var firstLineIndex = LoadFile.model_code_xrefGCD[ts];
+                    first = LoadFile.gcdCode[firstLineIndex];
+
+                    for (int i = firstLineIndex + 1; i < firstLineIndex + max; i++)
+                    {
+                        if (LoadFile.gcdCode.Count > i)
+                            bulk += LoadFile.gcdCode[i];
+                    }
+                }
+                else
+                {
+                    for (int i = (int)gcdTimeSlider; i < (int)gcdTimeSlider + max; i++)
+                    {
+                        if (LoadFile.gcdCode.Count > i)
+                            bulk += LoadFile.gcdCode[i];
                     }
                 }
                 break;
@@ -331,6 +488,56 @@ public class InspectorL : InspectorManager
                 GUILayout.EndVertical();
                 
                 break;
+            case "JOB":
+                var _line = LoadFile.jobLines[(int)jobTimeSlider];
+                var _endpoint1 = _line.p1;
+                var _endpoint2 = _line.p2;
+                GUILayout.BeginVertical();
+                GUILayout.Label("<size=10><color=black> Entity </color></size>");
+                GUILayout.Label("<size=10><color=black> X </color></size>");
+                GUILayout.Label("<size=10><color=black> Y </color></size>");
+                GUILayout.Label("<size=10><color=black> Z </color></size>");
+                GUILayout.EndVertical();
+
+                GUILayout.BeginVertical();
+                GUILayout.Label("<size=10><color=black> Vertex 1</color></size>");
+                GUILayout.TextField(_endpoint1.x.ToString("f3"));
+                GUILayout.TextField(_endpoint1.y.ToString("f3"));
+                GUILayout.TextField(_endpoint1.z.ToString("f3"));
+                GUILayout.EndVertical();
+
+                GUILayout.BeginVertical();
+                GUILayout.Label("<size=10><color=black> Vertex 2</color></size>");
+                GUILayout.TextField(_endpoint2.x.ToString("f3"));
+                GUILayout.TextField(_endpoint2.y.ToString("f3"));
+                GUILayout.TextField(_endpoint2.z.ToString("f3"));
+                GUILayout.EndVertical();
+                break;
+            case "GCD":
+                var __line = LoadFile.gcdLines[(int)gcdTimeSlider];
+                var __endpoint1 = __line.p1;
+                var __endpoint2 = __line.p2;
+                GUILayout.BeginVertical();
+                GUILayout.Label("<size=10><color=black> Entity </color></size>");
+                GUILayout.Label("<size=10><color=black> X </color></size>");
+                GUILayout.Label("<size=10><color=black> Y </color></size>");
+                GUILayout.Label("<size=10><color=black> Z </color></size>");
+                GUILayout.EndVertical();
+
+                GUILayout.BeginVertical();
+                GUILayout.Label("<size=10><color=black> Vertex 1</color></size>");
+                GUILayout.TextField(__endpoint1.x.ToString("f3"));
+                GUILayout.TextField(__endpoint1.y.ToString("f3"));
+                GUILayout.TextField(__endpoint1.z.ToString("f3"));
+                GUILayout.EndVertical();
+
+                GUILayout.BeginVertical();
+                GUILayout.Label("<size=10><color=black> Vertex 2</color></size>");
+                GUILayout.TextField(__endpoint2.x.ToString("f3"));
+                GUILayout.TextField(__endpoint2.y.ToString("f3"));
+                GUILayout.TextField(__endpoint2.z.ToString("f3"));
+                GUILayout.EndVertical();
+                break;
             default:
                 break;
         }
@@ -338,7 +545,7 @@ public class InspectorL : InspectorManager
     }
     void Update()
     {
-        if (!LoadFile.dmcCodeLoaded && !LoadFile.stlCodeLoaded) return;
+        if (!LoadFile.dmcCodeLoaded && !LoadFile.stlCodeLoaded && !LoadFile.jobCodeLoaded) return;
         switch (GetAvailableToggles()[typeInt])
         {
             case "STL":
@@ -352,6 +559,18 @@ public class InspectorL : InspectorManager
                     dmcTimeSlider++;
                 if (Input.GetKeyDown(KeyCode.DownArrow) && dmcTimeSlider > 1)
                     dmcTimeSlider--;
+                break;
+            case "JOB":
+                if (Input.GetKeyDown(KeyCode.UpArrow) && jobTimeSlider < LoadFile.jobLines.Count - 1)
+                    jobTimeSlider++;
+                if (Input.GetKeyDown(KeyCode.DownArrow) && jobTimeSlider > 1)
+                    jobTimeSlider--;
+                break;
+            case "GCD":
+                if (Input.GetKeyDown(KeyCode.UpArrow) && gcdTimeSlider < LoadFile.gcdLines.Count - 1)
+                    gcdTimeSlider++;
+                if (Input.GetKeyDown(KeyCode.DownArrow) && gcdTimeSlider > 1)
+                    gcdTimeSlider--;
                 break;
             default:
                 break;
