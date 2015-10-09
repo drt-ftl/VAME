@@ -12,9 +12,9 @@ public class LoadFile : MonoBehaviour
 {
     #region declarations
     JobInterpreter jobInterpreter = new JobInterpreter();
-	GcdInterpreter gcdInterpreter = new GcdInterpreter();
+	public static GcdInterpreter gcdInterpreter = new GcdInterpreter();
 	DmcInterpreter dmcInterpreter = new DmcInterpreter();
-	StlInterpreter stlInterpreter = new StlInterpreter();
+	public static StlInterpreter stlInterpreter = new StlInterpreter();
 	public Material mat;
 	public Material stlMat;
 	public LineRenderer lineRenderer;
@@ -53,12 +53,7 @@ public class LoadFile : MonoBehaviour
 	public static float stlScale = 1f;
 	private float dmcScale = 25/2540000f;
 	private float jobScale = 1f;
-	public static float xMin = 0;
-	public static float xMax = 0;
-	public static float yMin = 0;
-	public static float yMax = 0;
-	public static float zMin = 0;
-	public static float zMax = 0;
+
 	private GUIStyle windowStyle = new GUIStyle ();
 	[DllImport("user32.dll")]
 	private static extern void OpenFileDialog();
@@ -67,21 +62,22 @@ public class LoadFile : MonoBehaviour
 	public GUISkin inspectorSkin;
 	public GUIStyle myStyle;
     public Transform target;
-    public static string dmcCodeLong = "";
-    public static string stlCodeLong = "";
-    public static string jobCodeLong = "";
-    public static string gcdCodeLong = "";
     MakeMesh MM;
+    public GUISkin restoreSkin;
+    public Color LineHighlight;
     #endregion
 
-    void Start()
+    public void Start()
 	{
-		dmcHolder = GameObject.Find ("dmcHolder").transform;
+        dmcHolder = GameObject.Find ("dmcHolder").transform;
 		stlHolder = GameObject.Find ("stlHolder").transform;
 		jobHolder = GameObject.Find ("jobHolder").transform;
         gcdHolder = GameObject.Find("gcdHolder").transform;
-        GetComponent<InspectorR>().MainRect = new Rect(Screen.width - 255, 5, 250, 570);
-        GetComponent<InspectorL>().MainRect = new Rect(5, 5, 250, 570);
+        var tbSpace = 40;
+        var tbWidth = InspectorT.TopToolbarStrings.Length * 100;
+        GetComponent<InspectorT>().MainRect = new Rect(0, 0, tbWidth, tbSpace);
+        GetComponent<InspectorR>().MainRect = new Rect(Screen.width - 255, tbSpace, 250, 570);
+        GetComponent<InspectorL>().MainRect = new Rect(5, tbSpace, 250, 570);
         windowStyle.fontSize = 50;
         MM = GameObject.Find("MESH").GetComponent<MakeMesh>();
         MM.material = stlMat;
@@ -91,6 +87,7 @@ public class LoadFile : MonoBehaviour
 	public void loadFile()
 	{
 		loading = true;
+        vertices.Clear();
 		System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog ();
 			openFileDialog.InitialDirectory = Application.dataPath + "/Samples";
         var sel = "";
@@ -103,7 +100,6 @@ public class LoadFile : MonoBehaviour
         if (!gcdCodeLoaded)
             sel += "GCD Files (*.gcd)|*.gcd|";
         sel = sel.TrimEnd('|');
-        print(sel);
         openFileDialog.Filter = sel;
         openFileDialog.FilterIndex = 2;
 			openFileDialog.RestoreDirectory = false;
@@ -179,28 +175,35 @@ public class LoadFile : MonoBehaviour
                             InspectorL.stlTimeSliderMin = 0;
                             InspectorL.stlVisSlider = 1;
                             stlCodeLoaded = true;
-						    break;
+                            InspectorManager.VoxelManager = true;
+                            break;
 					    default:
 						    break;
 					}
-					Camera.main.GetComponent<CameraControl>().target.position = new Vector3 ((xMax + xMin) / 2, (yMax + yMin) / 2, (yMax + yMin) / 2);
+					Camera.main.GetComponent<CameraControl>().target.position = Vector3.zero;
 					transform.LookAt(Camera.main.GetComponent<CameraControl>().target);
 					loading = false;
 					drawn = false;
 				}
 			}
 			catch {}
-            print("DONE LOADING");
 		}
 	}
 
 	void OnGUI()
 	{
-		GUI.skin = inspectorSkin;
+        GUI.skin = inspectorSkin;
+        GUI.skin.scrollView.normal.background = restoreSkin.scrollView.normal.background;
+        
         var groupRectL = GetComponent<InspectorL>().MainRect;
         GUI.Window(0, groupRectL, GetComponent<InspectorL>().InspectorWindowL, "Inspector");
-        var groupRectR = GetComponent<InspectorR>().MainRect;
-        GUI.Window(1, groupRectR, GetComponent<InspectorR>().InspectorWindowR, "Voxel Manager");
+        if (InspectorManager.VoxelManager)
+        {
+            var groupRectR = GetComponent<InspectorR>().MainRect;
+            GUI.Window(1, groupRectR, GetComponent<InspectorR>().InspectorWindowR, "Voxel Manager");
+        }
+        var groupRectT = GetComponent<InspectorT>().MainRect;
+        GUI.Window(2, groupRectT, GetComponent<InspectorT>().InspectorWindowT, "", "Toolbar");
     }
 
 	private void Draw(Type _type)
@@ -228,8 +231,8 @@ public class LoadFile : MonoBehaviour
 			{
 				line.SetColors (GetComponent<InspectorL>().jobLineColor, GetComponent<InspectorL>().jobLineColor);
 				newSegment.Line = line;
-				newSegment.p1 = Vertex0;
-				newSegment.p2 = Vertex1;
+				newSegment.p1 = Vertex0 - jobInterpreter.centroid;
+				newSegment.p2 = Vertex1 - jobInterpreter.centroid;
                 newSegment.step = jobLines.Count;
                 jobLines.Add (newSegment);
 			}
@@ -237,8 +240,8 @@ public class LoadFile : MonoBehaviour
             {
                 line.SetColors(GetComponent<InspectorL>().gcdLineColor, GetComponent<InspectorL>().gcdLineColor);
                 newSegment.Line = line;
-                newSegment.p1 = Vertex0;
-                newSegment.p2 = Vertex1;
+                newSegment.p1 = Vertex0 - gcdInterpreter.centroid;
+                newSegment.p2 = Vertex1 - gcdInterpreter.centroid;
                 newSegment.step = gcdLines.Count;
                 gcdLines.Add(newSegment);
             }
@@ -246,8 +249,8 @@ public class LoadFile : MonoBehaviour
 			{
 				line.SetColors (GetComponent<InspectorL>().dmcLineColor, GetComponent<InspectorL>().dmcLineColor);
 				newSegment.Line = line;
-				newSegment.p1 = Vertex0;
-				newSegment.p2 = Vertex1;
+				newSegment.p1 = Vertex0 - dmcInterpreter.centroid;
+				newSegment.p2 = Vertex1 - dmcInterpreter.centroid;
 				newSegment.step = dmcLines.Count;
 				dmcLines.Add (newSegment);
 			}
@@ -290,9 +293,6 @@ public class LoadFile : MonoBehaviour
                     gcdInterpreter.StartsWithG(_line);
                 }
                 break;
-            //case '*':
-            //    gcdInterpreter.StartsWithStar(_line);
-            //    break;
             default:
                 break;
         }
@@ -324,7 +324,6 @@ public class LoadFile : MonoBehaviour
 	{
 		_line = _line.Trim();
 		stlCode.Add (_line.ToString () + "\r\n");
-        stlCodeLong += _line.ToString() + "      " + "\r\n";
         var chunks = _line.Split(' ');
 		if (_line.Contains ("outer")) 
 		{

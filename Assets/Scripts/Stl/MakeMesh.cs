@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class MakeMesh : MonoBehaviour
 {
     private Mesh mesh;
-    private List<int> tris = new List<int>();
-    private List<Vector3> verts = new List<Vector3>();
-    private List<Vector3> normals = new List<Vector3>();
+    public static List<int> tris = new List<int>();
+    public static List<Vector3> verts = new List<Vector3>();
+    public static List<Vector3> normals = new List<Vector3>();
     private List<Color> colors = new List<Color>();
     private List<Vector2> uvs = new List<Vector2>();
 
@@ -18,14 +18,39 @@ public class MakeMesh : MonoBehaviour
     private GameObject back;
     int d = 0;
 
+    public Vector3 Min   { get; set; }
+    public Vector3 Max { get; set; }
+
     private Color Hidden = new Color(0f, 0f, 0f, 0f);
 
+    public void ClearAll()
+    {
+        mesh.Clear();
+        mesh_b.Clear();
+
+        tris.Clear();
+        verts.Clear();
+        normals.Clear();
+        colors.Clear();
+        uvs.Clear();
+
+        tris_b.Clear();
+        verts_b.Clear();
+        normals_b.Clear();
+        Min = new Vector3(1000, 1000, 1000);
+        Max = new Vector3(-1000, -1000, -1000);
+    }
     public void Begin()
     {
-        gameObject.AddComponent<MeshFilter>();
-        gameObject.AddComponent<MeshRenderer>();
+        gameObject.transform.position = Vector3.zero;
+        Min = new Vector3(1000, 1000, 1000);
+        Max = new Vector3(-1000, -1000, -1000);
+        if (gameObject.GetComponent<MeshFilter>() == null)
+            gameObject.AddComponent<MeshFilter>();
+        if (gameObject.GetComponent<MeshRenderer>() == null)
+            gameObject.AddComponent<MeshRenderer>();
 
-        mesh = GetComponent<MeshFilter>().mesh;
+            mesh = GetComponent<MeshFilter>().mesh;
         mesh.Clear();
 
         var rnd = GetComponent<MeshRenderer>();
@@ -91,8 +116,31 @@ public class MakeMesh : MonoBehaviour
             normals_b.Add(-norm);
     }
 
+    public Vector3 centroid
+    {
+        get
+        {
+            var c = (Min + Max) / 2.0f;
+            return c;
+        }
+    }
+
     public void MergeMesh()
     {
+        foreach (var vert in verts)
+        {
+            var max = Max;
+            var min = Min;
+            if (vert.x > Max.x) max.x = vert.x;
+            if (vert.x < Min.x) min.x = vert.x;
+            if (vert.y > Max.y) max.y = vert.y;
+            if (vert.y < Min.y) min.y = vert.y;
+            if (vert.z > Max.z) max.z = vert.z;
+            if (vert.z < Min.z) min.z = vert.z;
+            Max = max;
+            Min = min;
+        }
+        gameObject.transform.position -= centroid;
         mesh.vertices = verts.ToArray();
         mesh.triangles = tris.ToArray();
         mesh.normals = normals.ToArray();

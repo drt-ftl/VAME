@@ -50,6 +50,7 @@ public class InspectorL : InspectorManager
     private float voxelVis;
     int max = 50;
     #endregion
+
     public Rect MainRect
     {
         get { return mainRect; }
@@ -68,18 +69,13 @@ public class InspectorL : InspectorManager
             GUILayout.Box(hr, "hr", GUILayout.Width(250), GUILayout.Height(10));
             GUILayout.Space(10);
             // Load
-            if (!LoadFile.loading && (!LoadFile.stlCodeLoaded || !LoadFile.dmcCodeLoaded || !LoadFile.jobCodeLoaded || !LoadFile.gcdCodeLoaded))
+            if ((!LoadFile.stlCodeLoaded || !LoadFile.dmcCodeLoaded || !LoadFile.jobCodeLoaded || !LoadFile.gcdCodeLoaded))
             {
                 if (GUILayout.Button("Load"))
                 {
                     LoadFile.loading = true;
                     GetComponent<LoadFile>().loadFile();
                 }
-            }
-            // Quit
-            if (GUILayout.Button("Quit"))
-            {
-                Application.Quit();
             }
 
             if (availableToggles.Length > 0)
@@ -92,21 +88,36 @@ public class InspectorL : InspectorManager
                 GUILayout.Space(18);
 
                 //Code Panel
-                GUILayout.Box("<color=lime>" + GetCode()[0] + "</color>" + GetCode()[1], GUILayout.Width(225), GUILayout.Height(220));
-                GUILayout.Space(10);
+                if (GetCode() != null)
+                {
+                    GUILayout.Box("<color=lime>" + GetCode()[0] + "</color>" + GetCode()[1], GUILayout.Width(225), GUILayout.Height(180));
+                    GUILayout.Space(10);
+                }
 
                 // Time Sliders
                 TimeSliders();
 
                 //Coordinates
                 CoordinateBoxes();
-            }
 
+                // Clear
+                GUILayout.Space(8);
+                if (GUILayout.Button("Clear"))
+                {
+                    Restart();
+                }
+            }
+            // Quit
+            if (GUILayout.Button("Quit"))
+            {
+                Application.Quit();
+            }
         }
         GUILayout.EndArea();
     }
     public void VisibiltySlider()
     {
+        if (GetAvailableToggles().Length == 0) return;
         switch (GetAvailableToggles()[typeInt])
         {
             case "STL":
@@ -157,6 +168,7 @@ public class InspectorL : InspectorManager
     }
     public void TimeSliders()
     {
+        if (GetAvailableToggles().Length == 0) return;
         switch (GetAvailableToggles()[typeInt])
         {
             case "STL":
@@ -193,7 +205,7 @@ public class InspectorL : InspectorManager
                         else if ((int)dmcTimeSlider == indexDMC)
                         {
                             line.LineWidth = 0.01f;
-                            line.LineColor = new Color(1f, 1f, 1f, dmcLineColor.a);
+                            line.LineColor = Camera.main.GetComponent<LoadFile>().LineHighlight;
                             _p1 = line.p1;
                             _p2 = line.p2;
                         }
@@ -229,7 +241,7 @@ public class InspectorL : InspectorManager
                         else if ((int)jobTimeSlider == indexJOB)
                         {
                             line.LineWidth = 0.01f;
-                            line.LineColor = new Color(1f, 1f, 1f, jobLineColor.a);
+                            line.LineColor = Camera.main.GetComponent<LoadFile>().LineHighlight;
                             _p1 = line.p1;
                             _p2 = line.p2;
                         }
@@ -265,7 +277,7 @@ public class InspectorL : InspectorManager
                         else if ((int)gcdTimeSlider == indexGCD)
                         {
                             line.LineWidth = 0.01f;
-                            line.LineColor = new Color(1f, 1f, 1f, gcdLineColor.a);
+                            line.LineColor = Camera.main.GetComponent<LoadFile>().LineHighlight;
                             _p1 = line.p1;
                             _p2 = line.p2;
                         }
@@ -305,6 +317,7 @@ public class InspectorL : InspectorManager
         var code = new string[2];
         var first = "";
         var bulk = "";
+        if (GetAvailableToggles().Length == 0) return null;
         switch (GetAvailableToggles()[typeInt])
         {
             case "STL":
@@ -425,11 +438,12 @@ public class InspectorL : InspectorManager
     private void CoordinateBoxes()
     {
         GUILayout.BeginHorizontal();
+        if (GetAvailableToggles().Length == 0) return;
         switch (GetAvailableToggles()[typeInt])
         {
             #region STL
             case "STL":
-                var p = GameObject.Find("MESH").GetComponent<MakeMesh>().GetTriangleVertices((int)stlTimeSlider - 1);
+                var p = GameObject.Find("MESH").GetComponent<MakeMesh>().GetTriangleVertices((int)stlTimeSlider);
                 var p1 = p[0];
                 var p2 = p[1];
                 var p3 = p[2];
@@ -545,7 +559,7 @@ public class InspectorL : InspectorManager
     }
     void Update()
     {
-        if (!LoadFile.dmcCodeLoaded && !LoadFile.stlCodeLoaded && !LoadFile.jobCodeLoaded) return;
+        if (!LoadFile.dmcCodeLoaded && !LoadFile.stlCodeLoaded && !LoadFile.jobCodeLoaded && !LoadFile.gcdCodeLoaded) return;
         switch (GetAvailableToggles()[typeInt])
         {
             case "STL":

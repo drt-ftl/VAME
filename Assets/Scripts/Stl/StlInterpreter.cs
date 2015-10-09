@@ -4,6 +4,23 @@ using System.Collections;
 public class StlInterpreter
 {
     private Vector3 Normal;
+    private Vector3 Min { get; set; }
+    private Vector3 Max { get; set; }
+    public Vector3 offsetGCD { get; set; }
+    public Vector3 centroid
+    {
+        get
+        {
+            var c = (Min + Max) / 2.0f;
+            return c;
+        }
+    }
+
+    public StlInterpreter()
+    {
+        Min = new Vector3(1000, 1000, 1000);
+        Max = new Vector3(-1000, -1000, -1000);
+    }
 
     public void normal (string _line)
     {
@@ -96,15 +113,19 @@ public class StlInterpreter
 					z *= (Mathf.Pow (10f, zE));
 			}
 			var newVertex = new Vector3 (x,y,z) * LoadFile.stlScale;
-			if (x > LoadFile.xMax) LoadFile.xMax = x;
-			if (x < LoadFile.xMin) LoadFile.xMin = x;
-			if (y > LoadFile.yMax) LoadFile.yMax = y;
-			if (y < LoadFile.yMin) LoadFile.yMin = y;
-			if (z > LoadFile.zMax) LoadFile.zMax = z;
-			if (z < LoadFile.zMin) LoadFile.zMin = z;
-			
-			
-			LoadFile.currentVertices.Add (newVertex);
+            var max = Max;
+            var min = Min;
+            if (x > Max.x) max.x = x;
+            if (x < Min.x) min.x = x;
+            if (y > Max.y) max.y = y;
+            if (y < Min.y) min.y = y;
+            if (z > Max.z) max.z = z;
+            if (z < Min.z) min.z = z;
+            Max = max;
+            Min = min;
+
+
+            LoadFile.currentVertices.Add (newVertex);
 		}
 	}
 }

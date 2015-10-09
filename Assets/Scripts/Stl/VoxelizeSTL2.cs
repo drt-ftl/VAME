@@ -19,17 +19,15 @@ public class VoxelizeSTL2 : MonoBehaviour
     float f;
     float dim;
     public Transform centroidTransform;
+    StlInterpreter stlI;
 
-    void Start()
-    {
-        
-    }
+
 
     public void voxelize()
     {
         dim = 1 / (float)divisions;
-        var Min = new Vector3(LoadFile.xMin, LoadFile.yMin, LoadFile.zMin);
-        var Max = new Vector3(LoadFile.xMax, LoadFile.yMax, LoadFile.zMax);
+        var Min = GameObject.Find("MESH").GetComponent<MeshRenderer>().bounds.min;
+        var Max = GameObject.Find("MESH").GetComponent<MeshRenderer>().bounds.max;
         c = (Min + Max) / 2;
 
         MinGrid = Min;
@@ -86,10 +84,6 @@ public class VoxelizeSTL2 : MonoBehaviour
     {
         var meshObject = GameObject.Find("MESH");
         var mesh = meshObject.GetComponent<MeshFilter>().mesh;
-        foreach (var t in mesh.triangles)
-        {
-            mesh.vertices[t] = mesh.vertices[t] * 2f;
-        }
         for (float y = MinGrid.y - dim; y <= MaxGrid.y + dim; y += dim)
         {
             for (float z = MinGrid.z - dim; z <= MaxGrid.z + dim; z += dim)

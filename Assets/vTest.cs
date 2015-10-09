@@ -8,13 +8,11 @@ public class vTest : MonoBehaviour
     private Color thisColor;
     private Color specColor;
     private Color emissColor;
-    private VoxelizeSTL2 vs2;
     private int id;
 
     void Start()
     {
         thisColor = GetComponent<MeshRenderer>().material.color;
-        vs2 = Camera.main.GetComponent<VoxelizeSTL2>();
         specColor = GetComponent<MeshRenderer>().material.GetColor("_SpecColor");
         emissColor = GetComponent<MeshRenderer>().material.GetColor("_EmissionColor");
     }
