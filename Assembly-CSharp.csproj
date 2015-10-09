@@ -57,11 +57,6 @@
      <Compile Include="Assets\Scripts\Inspectors\SliInterpreter.cs" />
      <Compile Include="Assets\Scripts\Inspectors\Slicer.cs" />
      <Compile Include="Assets\Scripts\Inspectors\Time.cs" />
-     <Compile Include="Assets\Scripts\Inspectors\uGUI_ComboBox\Scripts\StyledComboBox.cs" />
-     <Compile Include="Assets\Scripts\Inspectors\uGUI_ComboBox\Scripts\StyledComboBoxPrefab.cs" />
-     <Compile Include="Assets\Scripts\Inspectors\uGUI_ComboBox\Scripts\StyledItem.cs" />
-     <Compile Include="Assets\Scripts\Inspectors\uGUI_ComboBox\Scripts\StyledItemButtonImageText.cs" />
-     <Compile Include="Assets\Scripts\Inspectors\uGUI_ComboBox\Scripts\TestStyledComboBox.cs" />
      <Compile Include="Assets\Scripts\LoadFile.cs" />
      <Compile Include="Assets\Scripts\Paths\DmcInterpreter.cs" />
      <Compile Include="Assets\Scripts\Paths\GcdInterpreter.cs" />

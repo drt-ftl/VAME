@@ -73,9 +73,9 @@ public class LoadFile : MonoBehaviour
 		stlHolder = GameObject.Find ("stlHolder").transform;
 		jobHolder = GameObject.Find ("jobHolder").transform;
         gcdHolder = GameObject.Find("gcdHolder").transform;
-        var tbSpace = 40;
+        var tbSpace = 20;
         var tbWidth = InspectorT.TopToolbarStrings.Length * 100;
-        GetComponent<InspectorT>().MainRect = new Rect(0, 0, tbWidth, tbSpace);
+        GetComponent<InspectorT>().MainRect = new Rect(2, 0, tbWidth, 80);
         GetComponent<InspectorR>().MainRect = new Rect(Screen.width - 255, tbSpace, 250, 570);
         GetComponent<InspectorL>().MainRect = new Rect(5, tbSpace, 250, 570);
         windowStyle.fontSize = 50;
@@ -204,6 +204,7 @@ public class LoadFile : MonoBehaviour
         }
         var groupRectT = GetComponent<InspectorT>().MainRect;
         GUI.Window(2, groupRectT, GetComponent<InspectorT>().InspectorWindowT, "", "Toolbar");
+        GUI.BringWindowToFront(2);
     }
 
 	private void Draw(Type _type)
