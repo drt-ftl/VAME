@@ -81,6 +81,8 @@ public class GcdInterpreter
         if (z < Min.z) min.z = z;
         Max = max;
         Min = min;
+        if (min.z <= LoadFile.Min.z)
+            LoadFile.Min.z = min.z;
 
         Camera.main.GetComponent<LoadFile>().vertices.Add(newVertex);
         if (LoadFile.model_code_xrefGCD.Count == 0)

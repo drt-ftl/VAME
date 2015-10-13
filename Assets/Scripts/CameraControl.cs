@@ -26,17 +26,38 @@ public class CameraControl : MonoBehaviour {
 		}
 		if (Input.GetMouseButton(2))
 		{
-			transform.position -= delta.x * transform.right * 0.05f;
-			transform.position -= delta.y * transform.up * 0.05f;
+            var factor = 0.05f;
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            {
+                factor = 0.0005f;
+            }
+            transform.position -= delta.x * transform.right * factor;
+			transform.position -= delta.y * transform.up * factor;
 			var _distance = Vector3.Distance(target.transform.position, transform.position);
 			var ratio = distance/_distance;
 			transform.position *= ratio;
 			transform.LookAt (target);
 		}
-
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		var scroll = Input.mouseScrollDelta.y;
-		transform.position += (ray.direction * scroll);
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            var factor = 0.005f;
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            {
+                var scroll = Input.mouseScrollDelta.y * factor;
+                Camera.main.nearClipPlane = Mathf.Clamp(Camera.main.nearClipPlane + scroll, 0f, 1f);
+            }
+        }
+        else
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var factor = 0.3f;
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            {
+                factor = 0.01f;
+            }
+            var scroll = Input.mouseScrollDelta.y * factor;
+            transform.position += (ray.direction * scroll);
+        }
 		lastMousePosition = currentMousePosition;
 	}
 }

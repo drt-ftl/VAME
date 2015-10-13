@@ -69,7 +69,7 @@ public class SingleCube : MonoBehaviour
                     {
                         color = Color.white;
                         spec = color;
-                        emiss = Color.magenta * Mathf.LinearToGammaSpace(1);
+                        emiss = Color.magenta * Mathf.LinearToGammaSpace(0.2f);
                         halo = true;
                     }
                     else
@@ -81,11 +81,17 @@ public class SingleCube : MonoBehaviour
                     }
                     break;
                 case InspectorR.HighlighType.PathNumbers:
-                    if (MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].IntersectedByLines.Contains(LoadFile.gcdLines[(int)InspectorL.gcdTimeSlider]))
+                    var standard = true;
+                    if ((MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MinLine >= InspectorL.gcdTimeSliderMin
+                        && MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MinLine <= InspectorL.gcdTimeSlider)
+                        || (MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MaxLine >= InspectorL.gcdTimeSliderMin
+                        && MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MaxLine <= InspectorL.gcdTimeSlider))
+                        standard = false;
+                    if (!standard)
                     {
                         color = Color.white;
                         spec = color;
-                        emiss = Color.magenta * Mathf.LinearToGammaSpace(1);
+                        emiss = Color.blue * Mathf.LinearToGammaSpace(0.2f);
                         halo = true;
                     }
                     else

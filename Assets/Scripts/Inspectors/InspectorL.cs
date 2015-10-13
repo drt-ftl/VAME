@@ -175,8 +175,10 @@ public class InspectorL : InspectorManager
                 var indexSTL = 0;
                 stlTimeSlider = GUILayout.HorizontalSlider(stlTimeSlider, 1, GameObject.Find("MESH").GetComponent<MakeMesh>().GetMesh().vertices.Length / 3 - 1, GUILayout.Width(220), GUILayout.Height(12));
                 GUILayout.Label("Time Max: " + stlTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(220));
-                stlTimeSliderMin = GUILayout.HorizontalSlider(stlTimeSliderMin, 0, stlTimeSlider - 1, GUILayout.Width(220), GUILayout.Height(12));
+                stlTimeSliderMin = GUILayout.HorizontalSlider(stlTimeSliderMin, 0, stlTimeSlider, GUILayout.Width(220), GUILayout.Height(12));
                 GUILayout.Label("Time Min: " + stlTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(250));
+                if (stlTimeSliderMin >= stlTimeSlider && stlTimeSlider >= 0)
+                    stlTimeSliderMin = stlTimeSlider;
                 GUILayout.Label(scrollPosition.y.ToString(), KeyStyle, GUILayout.Width(250));
                 if (stlTimeSlider != stlTimeSliderPrev)
                     scrollPosition.y = 0;
@@ -185,7 +187,9 @@ public class InspectorL : InspectorManager
             case "DMC":
                 dmcTimeSlider = GUILayout.HorizontalSlider(dmcTimeSlider, 1, LoadFile.dmcLines.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
                 GUILayout.Label("Time Max: " + dmcTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(250));
-                dmcTimeSliderMin = GUILayout.HorizontalSlider(dmcTimeSliderMin, 0, dmcTimeSlider - 1, GUILayout.Width(220), GUILayout.Height(12));
+                if (dmcTimeSliderMin >= dmcTimeSlider && dmcTimeSlider >= 0)
+                    dmcTimeSliderMin = dmcTimeSlider;
+                dmcTimeSliderMin = GUILayout.HorizontalSlider(dmcTimeSliderMin, 0, dmcTimeSlider - 2, GUILayout.Width(220), GUILayout.Height(12));
                 GUILayout.Label("Time Min: " + dmcTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(250));
 
                 GUILayout.Label(scrollPosition.y.ToString(), KeyStyle, GUILayout.Width(250));
@@ -221,7 +225,9 @@ public class InspectorL : InspectorManager
             case "JOB":
                 jobTimeSlider = GUILayout.HorizontalSlider(jobTimeSlider, 1, LoadFile.jobLines.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
                 GUILayout.Label("Time Max: " + jobTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(250));
-                jobTimeSliderMin = GUILayout.HorizontalSlider(jobTimeSliderMin, 0, jobTimeSlider - 1, GUILayout.Width(220), GUILayout.Height(12));
+                if (jobTimeSliderMin >= jobTimeSlider && jobTimeSlider >= 0)
+                    jobTimeSliderMin = jobTimeSlider;
+                jobTimeSliderMin = GUILayout.HorizontalSlider(jobTimeSliderMin, 0, jobTimeSlider, GUILayout.Width(220), GUILayout.Height(12));
                 GUILayout.Label("Time Min: " + jobTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(250));
 
                 GUILayout.Label(LoadFile.jobCode.Count.ToString(), KeyStyle, GUILayout.Width(250));
@@ -257,7 +263,9 @@ public class InspectorL : InspectorManager
             case "GCD":
                 gcdTimeSlider = GUILayout.HorizontalSlider(gcdTimeSlider, 1, LoadFile.gcdLines.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
                 GUILayout.Label("Time Max: " + gcdTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(250));
-                gcdTimeSliderMin = GUILayout.HorizontalSlider(gcdTimeSliderMin, 0, gcdTimeSlider - 1, GUILayout.Width(220), GUILayout.Height(12));
+                if (gcdTimeSliderMin >= gcdTimeSlider && gcdTimeSlider >= 0)
+                    gcdTimeSliderMin = gcdTimeSlider;
+                gcdTimeSliderMin = GUILayout.HorizontalSlider(gcdTimeSliderMin, 0, gcdTimeSlider, GUILayout.Width(220), GUILayout.Height(12));
                 GUILayout.Label("Time Min: " + gcdTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(250));
 
                 GUILayout.Label(LoadFile.gcdCode.Count.ToString(), KeyStyle, GUILayout.Width(250));

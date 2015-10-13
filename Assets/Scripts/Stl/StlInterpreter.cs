@@ -123,7 +123,8 @@ public class StlInterpreter
             if (z < Min.z) min.z = z;
             Max = max;
             Min = min;
-
+            if (min.z <= LoadFile.Min.z)
+                LoadFile.Min.z = min.z;
 
             LoadFile.currentVertices.Add (newVertex);
 		}

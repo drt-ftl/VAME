@@ -30,6 +30,8 @@ public class InspectorManager : MonoBehaviour
         LoadFile.dmcCodeLoaded = false;
         LoadFile.jobCodeLoaded = false;
         LoadFile.gcdCodeLoaded = false;
+        LoadFile.Max = new Vector3(-1000, -1000, -1000);
+        LoadFile.Min = new Vector3(1000, 1000, 1000);
         GameObject.Find("MESH").GetComponent<MakeMesh>().ClearAll();
         foreach (var v in MeshVoxelizer.voxels)
         {

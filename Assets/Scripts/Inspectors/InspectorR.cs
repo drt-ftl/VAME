@@ -66,20 +66,7 @@ public class InspectorR : InspectorManager
             {
                 if (GUILayout.Button("Voxelize"))
                 {
-                    foreach (var v in MeshVoxelizer.voxels)
-                    {
-                        v.Value.IntersectedByLines.Clear();
-                    }
-                    voxelsFitted = false;
-                    highlight = 0;
-                    foreach (var v in MeshVoxelizer.voxels)
-                        Destroy(v.Value.Voxel);
-                    MeshVoxelizer.voxels.Clear();
-                    MeshVoxelizer.highlights.Clear();
-                    //GameObject.Find("VOXELIZER").GetComponent<SurfaceVoxelizer>().VoxelizeSurfaces((int)resolution);
-                    GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().VoxelizeSurfaces((int)resolution);
-                    voxelVis = 100;
-                    voxelsLoaded = true;
+                    OnVoxelize();
                 }
 
                 resolution = GUILayout.HorizontalSlider(resolution, 1, 25, GUILayout.Width(220), GUILayout.Height(12));
@@ -106,6 +93,23 @@ public class InspectorR : InspectorManager
         GUILayout.EndArea();
     }
 
+    public void OnVoxelize()
+    {
+        foreach (var v in MeshVoxelizer.voxels)
+        {
+            v.Value.IntersectedByLines.Clear();
+        }
+        voxelsFitted = false;
+        highlight = 0;
+        foreach (var v in MeshVoxelizer.voxels)
+            Destroy(v.Value.Voxel);
+        MeshVoxelizer.voxels.Clear();
+        MeshVoxelizer.highlights.Clear();
+        //GameObject.Find("VOXELIZER").GetComponent<SurfaceVoxelizer>().VoxelizeSurfaces((int)resolution);
+        GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().VoxelizeSurfaces((int)resolution);
+        voxelVis = 100;
+        voxelsLoaded = true;
+    }
     void WhenVoxelsAreUp()
     {
         voxelVis = GUILayout.HorizontalSlider(voxelVis, 0, 100, GUILayout.Width(220), GUILayout.Height(12));
@@ -139,6 +143,7 @@ public class InspectorR : InspectorManager
         switch(highlightTypeIndex)
         {
             case 0:
+                highlightType = HighlighType.None;
                 break;
             case 1:
                 highlightType = HighlighType.PathDensity;

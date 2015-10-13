@@ -244,7 +244,7 @@ public class InspectorT : InspectorManager
                 #region Voxels
                 if (MeshVoxelizer.voxels.Count > 0)
                 {
-                    tw.WriteLine("|||ftlVAME Voxels BEGIN");
+                    tw.WriteLine("|||ftlVAME Voxels BEGIN " + InspectorR.voxelVis.ToString("f2") + " " + InspectorR.resolution.ToString("f2"));
                     {
                         foreach (var voxel in MeshVoxelizer.voxels)
                         {

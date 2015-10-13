@@ -53,6 +53,10 @@ public class PathFitter : MonoBehaviour
             }
         }
         Camera.main.GetComponent<InspectorR>().SetVoxelsFitted();
+        foreach (var v in MeshVoxelizer.voxels)
+        {
+            v.Value.SetMaxAndMin();
+        }
     }
 
     public void ScanVoxels(LineSegment line, bool movesInX)

@@ -11,6 +11,8 @@ using System.Text;
 public class LoadFile : MonoBehaviour 
 {
     #region declarations
+    public static Vector3 Min = new Vector3(1000,1000,1000);
+    public static Vector3 Max = new Vector3(-1000, -1000, -1000);
     JobInterpreter jobInterpreter = new JobInterpreter();
 	public static GcdInterpreter gcdInterpreter = new GcdInterpreter();
 	DmcInterpreter dmcInterpreter = new DmcInterpreter();
@@ -186,6 +188,9 @@ public class LoadFile : MonoBehaviour
 					    default:
 						    break;
 					}
+                    var camPos = Camera.main.transform.position;
+                    camPos.z = Min.z * 3.0f;
+                    Camera.main.transform.position = camPos;
 					Camera.main.GetComponent<CameraControl>().target.position = Vector3.zero;
 					transform.LookAt(Camera.main.GetComponent<CameraControl>().target);
 					loading = false;
@@ -266,6 +271,7 @@ public class LoadFile : MonoBehaviour
 
 	void scanJOB(string _line)
 	{
+        if (_line == "\r\n") return;
 		_line = _line.Trim();
 		jobCode.Add (_line.ToString () + "\r\n");
         if (!_line.Contains(' ')) return;
@@ -288,6 +294,7 @@ public class LoadFile : MonoBehaviour
 
     void scanGCD(string _line)
     {
+        if (_line == "\r\n") return;
         _line = _line.Trim();
         gcdCode.Add(_line.ToString() + "\r\n");
         if (!_line.Contains(' ')) return;
@@ -306,8 +313,9 @@ public class LoadFile : MonoBehaviour
     }
 
     void scanDMC(string _line)
-	{
-		_line = _line.Trim();
+    {
+        if (_line == "\r\n") return;
+        _line = _line.Trim();
 		dmcCode.Add (_line.ToString () + "\r\n");
         //dmcCodeLong += _line.ToString() + "      " + "\r\n";
         var chunks = _line.Split(' ');
@@ -328,8 +336,9 @@ public class LoadFile : MonoBehaviour
 	}
 
 	void scanSTL(string _line)
-	{
-		_line = _line.Trim();
+    {
+        //if (_line == "\r\n") return;
+        _line = _line.Trim();
 		stlCode.Add (_line.ToString () + "\r\n");
         var chunks = _line.Split(' ');
 		if (_line.Contains ("outer")) 
@@ -359,10 +368,15 @@ public class LoadFile : MonoBehaviour
             if (_line.StartsWith("|||ftlVAME"))
             {
                 var chunks = _line.Split(' ');
+                #region STL
                 if (chunks[1] == "STL")
                 {
                     if (chunks[2] == "BEGIN")
+                    {
+                        vertices.Clear();
+                        stlInterpreter = new StlInterpreter();
                         type = Type.STL;
+                    }
                     else
                     {
                         InspectorL.lastLoaded = InspectorL.LastLoaded.STL;
@@ -375,10 +389,16 @@ public class LoadFile : MonoBehaviour
                         type = Type.AMF;
                     }
                 }
+                #endregion
+                #region GCD
                 if (chunks[1] == "GCD")
                 {
                     if (chunks[2] == "BEGIN")
+                    {
+                        gcdInterpreter = new GcdInterpreter();
+                        vertices.Clear();
                         type = Type.GCD;
+                    }
                     else
                     {
                         Draw(Type.GCD);
@@ -390,7 +410,85 @@ public class LoadFile : MonoBehaviour
                         type = Type.AMF;
                     }
                 }
-
+                #endregion
+                #region DMC
+                if (chunks[1] == "DMC")
+                {
+                    if (chunks[2] == "BEGIN")
+                    {
+                        dmcInterpreter = new DmcInterpreter();
+                        vertices.Clear();
+                        type = Type.DMC;
+                    }
+                    else
+                    {
+                        Draw(Type.DMC);
+                        InspectorL.dmcTimeSlider = dmcLines.Count - 1;
+                        InspectorL.dmcTimeSliderMin = 0;
+                        InspectorL.dmcVisSlider = 1;
+                        InspectorL.lastLoaded = InspectorL.LastLoaded.DMC;
+                        dmcCodeLoaded = true;
+                        type = Type.AMF;
+                    }
+                }
+                #endregion
+                #region JOB
+                if (chunks[1] == "JOB")
+                {
+                    if (chunks[2] == "BEGIN")
+                    {
+                        jobInterpreter = new JobInterpreter();
+                        vertices.Clear();
+                        type = Type.JOB;
+                    }
+                    else
+                    {
+                        Draw(Type.JOB);
+                        InspectorL.jobTimeSlider = jobLines.Count - 1;
+                        InspectorL.jobTimeSliderMin = 0;
+                        InspectorL.jobVisSlider = 1;
+                        InspectorL.lastLoaded = InspectorL.LastLoaded.JOB;
+                        jobCodeLoaded = true;
+                        type = Type.AMF;
+                    }
+                }
+                #endregion
+                #region voxels
+                if (chunks[1] == "Voxels")
+                {
+                    if (chunks[2] == "BEGIN")
+                    {
+                        vertices.Clear();
+                        float.TryParse(chunks[3], out InspectorR.voxelVis);
+                        float.TryParse(chunks[4], out InspectorR.resolution);
+                    }
+                    else
+                    {
+                        Camera.main.GetComponent<InspectorR>().OnVoxelize();
+                        type = Type.AMF;
+                    }
+                }
+                #endregion
+                #region Setup
+                if (chunks[1] == "AMF")
+                {
+                    if (chunks[2] == "BEGIN")
+                    {
+                        Camera.main.GetComponent<InspectorT>().Restart();
+                        //var savedType = "";
+                        //var sts
+                        //float.TryParse(chunks[3], out InspectorR.voxelVis);
+                        //float.TryParse(chunks[4], out InspectorR.resolution);
+                    }
+                    if (chunks[2] == "END")
+                    {
+                        //var savedType = "";
+                        //var sts
+                        //float.TryParse(chunks[3], out InspectorR.voxelVis);
+                        //float.TryParse(chunks[4], out InspectorR.resolution);
+                    }
+                }
+                #endregion
             }
         }
     }

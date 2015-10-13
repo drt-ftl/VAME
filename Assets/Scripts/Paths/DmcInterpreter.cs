@@ -49,7 +49,9 @@ public class DmcInterpreter
         if (newVertex.z < Min.z) min.z = newVertex.z;
         Max = max;
         Min = min;
-        Camera.main.GetComponent<LoadFile>().vertices.Add(newVertex);
+        if (min.z <= LoadFile.Min.z)
+            LoadFile.Min.z = min.z;
+            Camera.main.GetComponent<LoadFile>().vertices.Add(newVertex);
 		if (LoadFile.model_code_xrefDMC.Count == 0)
 			LoadFile.firstDmcLineInCode = LoadFile.dmcCode.Count - 1;
 		LoadFile.model_code_xrefDMC.Add (Camera.main.GetComponent<LoadFile> ().vertices.Count - 1, LoadFile.dmcCode.Count - 1);
