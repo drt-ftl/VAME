@@ -48,7 +48,7 @@ public class LoadFile : MonoBehaviour
 	private Transform dmcHolder;
 	private Transform jobHolder;
     private Transform gcdHolder;
-    private enum Type {STL,DMC,JOB,GCD}
+    private enum Type {STL,DMC,JOB,GCD,AMF}
 	private Type type;
 	public static float stlScale = 1f;
 	private float dmcScale = 25/2540000f;
@@ -59,7 +59,9 @@ public class LoadFile : MonoBehaviour
 	private static extern void OpenFileDialog();
 	[DllImport("user32.dll")]
 	private static extern void ShowDialog ();
-	public GUISkin inspectorSkin;
+    [DllImport("user32.dll")]
+    private static extern void SaveFileDialog();
+    public GUISkin inspectorSkin;
 	public GUIStyle myStyle;
     public Transform target;
     MakeMesh MM;
@@ -99,6 +101,7 @@ public class LoadFile : MonoBehaviour
             sel += "JOB Files (*.JOB)|*.JOB|";
         if (!gcdCodeLoaded)
             sel += "GCD Files (*.gcd)|*.gcd|";
+        sel += "AMF Files (*.amf)|*.amf";
         sel = sel.TrimEnd('|');
         openFileDialog.Filter = sel;
         openFileDialog.FilterIndex = 2;
@@ -109,6 +112,8 @@ public class LoadFile : MonoBehaviour
 			try
 			{
 				var fileName = openFileDialog.FileName;
+                if (fileName.EndsWith("amf"))
+                    type = Type.AMF;
 				if (fileName.EndsWith("JOB"))
 					type = Type.JOB;
 				else if (fileName.EndsWith("STL"))
@@ -123,6 +128,7 @@ public class LoadFile : MonoBehaviour
 					while (!reader.EndOfStream)
 					{
 						string line = reader.ReadLine();
+                        scanAMF(line);
 						switch (type)
 						{
                         case Type.GCD:
@@ -343,6 +349,49 @@ public class LoadFile : MonoBehaviour
         else if (_line.Contains("normal"))
         {
             stlInterpreter.normal(_line);
+        }
+    }
+
+    void scanAMF(string _line)
+    {
+        {
+            _line = _line.Trim();
+            if (_line.StartsWith("|||ftlVAME"))
+            {
+                var chunks = _line.Split(' ');
+                if (chunks[1] == "STL")
+                {
+                    if (chunks[2] == "BEGIN")
+                        type = Type.STL;
+                    else
+                    {
+                        InspectorL.lastLoaded = InspectorL.LastLoaded.STL;
+                        GameObject.Find("MESH").GetComponent<MakeMesh>().MergeMesh();
+                        InspectorL.stlTimeSlider = MM.GetMesh().vertices.Length / 3 - 1;
+                        InspectorL.stlTimeSliderMin = 0;
+                        InspectorL.stlVisSlider = 1;
+                        stlCodeLoaded = true;
+                        InspectorManager.VoxelManager = true;
+                        type = Type.AMF;
+                    }
+                }
+                if (chunks[1] == "GCD")
+                {
+                    if (chunks[2] == "BEGIN")
+                        type = Type.GCD;
+                    else
+                    {
+                        Draw(Type.GCD);
+                        InspectorL.gcdTimeSlider = gcdLines.Count - 1;
+                        InspectorL.gcdTimeSliderMin = 0;
+                        InspectorL.gcdVisSlider = 1;
+                        InspectorL.lastLoaded = InspectorL.LastLoaded.GCD;
+                        gcdCodeLoaded = true;
+                        type = Type.AMF;
+                    }
+                }
+
+            }
         }
     }
 }

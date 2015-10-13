@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Runtime.InteropServices;
+using System.IO;
+using System.Windows.Forms;
 
 public class InspectorT : InspectorManager
 {
@@ -20,13 +23,16 @@ public class InspectorT : InspectorManager
     int index = 100;
     Ray ray;
     bool buttonPressed = false;
-    
+    [DllImport("user32.dll")]
+    private static extern void SaveFileDialog();
+
+
 
     public void InspectorWindowT(int id)
     {
         GUI.skin = skin;
         var mp = Input.mousePosition;
-        mp.y = Screen.height - mp.y;
+        mp.y = UnityEngine.Screen.height - mp.y;
         GUILayout.BeginArea(mainRect);
         {
             GUILayout.BeginHorizontal(GUILayout.Width(width), GUILayout.Height(15));
@@ -111,7 +117,7 @@ public class InspectorT : InspectorManager
     public bool CheckForHover()
     {
         var mp = Input.mousePosition;
-        mp.y = Screen.height - mp.y;
+        mp.y = UnityEngine.Screen.height - mp.y;
         if (mp.x <= GUILayoutUtility.GetLastRect().xMax
             && mp.x >= GUILayoutUtility.GetLastRect().xMin
             && mp.y <= GUILayoutUtility.GetLastRect().yMax
@@ -129,6 +135,7 @@ public class InspectorT : InspectorManager
         {
             if (GUILayout.Button("Save"))
             {
+                saveFile();
                 index = 100;
                 dropdown = Dropdown.None;
                 return;
@@ -150,12 +157,12 @@ public class InspectorT : InspectorManager
 
             if (GUILayout.Button("Quit"))
             {
-                Application.Quit();
+                UnityEngine.Application.Quit();
             }
         }
         GUILayout.EndVertical();
         var mp = Input.mousePosition;
-        mp.y = Screen.height - mp.y;
+        mp.y = UnityEngine.Screen.height - mp.y;
         if (mp.x <= rect.xMax
             && mp.x >= rect.xMin
             && mp.y <= rect.yMax
@@ -170,6 +177,88 @@ public class InspectorT : InspectorManager
         }
     }
 
+    public void saveFile()
+    {
+        System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+        saveFileDialog.InitialDirectory = UnityEngine.Application.dataPath + "/Samples";
+        var sel = "AMF Files (*.amf)|*.amf";
+        saveFileDialog.Filter = sel;
+        saveFileDialog.RestoreDirectory = true;
+        if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        {
+            var tw = File.CreateText(saveFileDialog.FileName);
+            tw.WriteLine("|||ftlVAME AMF BEGIN");
+            {
+                #region STL
+                if (LoadFile.stlCodeLoaded)
+                {
+                    tw.WriteLine("|||ftlVAME STL BEGIN");
+                    {
+                        foreach (var line in LoadFile.stlCode)
+                        {
+                            tw.Write(line);
+                        }
+                    }
+                    tw.WriteLine("|||ftlVAME STL END");
+                }
+                #endregion
+                #region GCD
+                if (LoadFile.gcdCodeLoaded)
+                {
+                    tw.WriteLine("|||ftlVAME GCD BEGIN");
+                    {
+                        foreach (var line in LoadFile.gcdCode)
+                        {
+                            tw.Write(line);
+                        }
+                    }
+                    tw.WriteLine("|||ftlVAME GCD END");
+                }
+                #endregion
+                #region JOB
+                if (LoadFile.jobCodeLoaded)
+                {
+                    tw.WriteLine("|||ftlVAME JOB BEGIN");
+                    {
+                        foreach (var line in LoadFile.jobCode)
+                        {
+                            tw.Write(line);
+                        }
+                    }
+                    tw.WriteLine("|||ftlVAME JOB END");
+                }
+                #endregion
+                #region DMC
+                if (LoadFile.dmcCodeLoaded)
+                {
+                    tw.WriteLine("|||ftlVAME DMC BEGIN");
+                    {
+                        foreach (var line in LoadFile.dmcCode)
+                        {
+                            tw.Write(line);
+                        }
+                    }
+                    tw.WriteLine("|||ftlVAME DMC END");
+                }
+                #endregion
+                #region Voxels
+                if (MeshVoxelizer.voxels.Count > 0)
+                {
+                    tw.WriteLine("|||ftlVAME Voxels BEGIN");
+                    {
+                        foreach (var voxel in MeshVoxelizer.voxels)
+                        {
+                            tw.WriteLine(voxel.Key.ToString());
+                        }
+                    }
+                    tw.WriteLine("|||ftlVAME Voxels END");
+                }
+                #endregion
+            }
+            tw.WriteLine("|||ftlVAME AMF END");
+            tw.Close();
+        }
+    }
     public void _Window(Rect rect, int slots)
     {
         rect.height += slots * rect.height;
@@ -210,7 +299,7 @@ public class InspectorT : InspectorManager
         }
         GUILayout.EndHorizontal();
         var mp = Input.mousePosition;
-        mp.y = Screen.height - mp.y;
+        mp.y = UnityEngine.Screen.height - mp.y;
         if (mp.x <= rect.xMax
             && mp.x >= rect.xMin
             && mp.y <= rect.yMax
