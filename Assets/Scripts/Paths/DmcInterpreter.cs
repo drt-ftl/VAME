@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class DmcInterpreter
 {
-	float y = 0;
+	public static float y = 0;
     private Vector3 Min { get; set; }
     private Vector3 Max { get; set; }
     public Vector3 offsetGCD { get; set; }

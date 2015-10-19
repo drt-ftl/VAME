@@ -59,8 +59,10 @@ public class MakeMesh : MonoBehaviour
         rnd.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 
         back = GameObject.Find("BACK");
-        back.AddComponent<MeshFilter>();
-        back.AddComponent<MeshRenderer>();
+        if (back.GetComponent<MeshFilter>() == null)
+            back.AddComponent<MeshFilter>();
+        if (back.GetComponent<MeshRenderer>() == null)
+            back.AddComponent<MeshRenderer>();
 
         mesh_b = back.GetComponent<MeshFilter>().mesh;
         mesh_b.Clear();

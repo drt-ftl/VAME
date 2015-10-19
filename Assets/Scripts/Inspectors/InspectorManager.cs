@@ -5,6 +5,7 @@ public class InspectorManager : MonoBehaviour
 {
     public static int margin = 10;
     public static GUIStyle KeyStyle;
+    public static GUIStyle KeyStyleR;
     public static GUIStyle codeStyle;
     public static bool InspectorWindow = true;
     public static bool VoxelManager = false;
@@ -19,27 +20,39 @@ public class InspectorManager : MonoBehaviour
         codeStyle = new GUIStyle(KeyStyle);
         codeStyle.fontStyle = FontStyle.Normal;
         codeStyle.fontSize = 10;
+        KeyStyleR = new GUIStyle(KeyStyle);
+        KeyStyleR.alignment = TextAnchor.UpperRight;
     }
 
     public void Restart()
     {
-        InspectorR.voxelsLoaded = false;
-        InspectorR.voxelsFitted = false;
-        InspectorR.highlightType = InspectorR.HighlighType.None;
-        LoadFile.stlCodeLoaded = false;
-        LoadFile.dmcCodeLoaded = false;
-        LoadFile.jobCodeLoaded = false;
-        LoadFile.gcdCodeLoaded = false;
+        ClearVoxels();
         LoadFile.Max = new Vector3(-1000, -1000, -1000);
         LoadFile.Min = new Vector3(1000, 1000, 1000);
-        GameObject.Find("MESH").GetComponent<MakeMesh>().ClearAll();
-        foreach (var v in MeshVoxelizer.voxels)
+        ClearSTL(0);
+        ClearGCD();
+        ClearJOB();
+        ClearDMC();
+        ClearSTL(1);
+        PathFitter.maxPathsThrough = 0;
+    }
+
+    public void ClearSTL(int i)
+    {
+        if (i == 0)
         {
-            Destroy(v.Value.Voxel);
+            LoadFile.stlCodeLoaded = false;
+            GameObject.Find("MESH").GetComponent<MakeMesh>().ClearAll();
         }
-        MeshVoxelizer.voxels.Clear();
-        MeshVoxelizer.highlights.Clear();
-        MeshVoxelizer.ClearAll();
+        else
+            GameObject.Find("MESH").GetComponent<MakeMesh>().Begin();
+    }
+
+    public void ClearGCD()
+    {
+        LoadFile.gcdCodeLoaded = false;
+        InspectorR.voxelsFitted = false;
+        InspectorR.highlightType = InspectorR.HighlighType.None;
         foreach (var gl in LoadFile.gcdLines)
         {
             Destroy(gl.Line.gameObject);
@@ -48,27 +61,52 @@ public class InspectorManager : MonoBehaviour
         LoadFile.firstGcdLineInCode = 0;
         LoadFile.gcdCode.Clear();
         LoadFile.model_code_xrefGCD.Clear();
+        PathFitter.maxPathsThrough = 0;
+        GcdInterpreter.y = 0;
+    }
 
-        foreach (var dl in LoadFile.dmcLines)
-        {
-            Destroy(dl.Line.gameObject);
-        }
-        LoadFile.dmcLines.Clear();
-        LoadFile.firstGcdLineInCode = 0;
-        LoadFile.dmcCode.Clear();
-        LoadFile.model_code_xrefGCD.Clear();
-
+    public void ClearJOB()
+    {
+        LoadFile.jobCodeLoaded = false;
         foreach (var jl in LoadFile.jobLines)
         {
             Destroy(jl.Line.gameObject);
         }
         LoadFile.jobLines.Clear();
-        LoadFile.firstGcdLineInCode = 0;
+        LoadFile.firstJobLineInCode = 0;
         LoadFile.jobCode.Clear();
-        LoadFile.model_code_xrefGCD.Clear();
-        GameObject.Find("MESH").GetComponent<MakeMesh>().Begin();
+        LoadFile.model_code_xrefJOB.Clear();
+        JobInterpreter.y = 0;
+    }
+
+    public void ClearDMC()
+    {
+        LoadFile.dmcCodeLoaded = false;
+        foreach (var dl in LoadFile.dmcLines)
+        {
+            Destroy(dl.Line.gameObject);
+        }
+        LoadFile.dmcLines.Clear();
+        LoadFile.firstDmcLineInCode = 0;
+        LoadFile.dmcCode.Clear();
+        LoadFile.model_code_xrefDMC.Clear();
+        DmcInterpreter.y = 0;
+    }
+
+    public void ClearVoxels()
+    {
+        InspectorR.voxelsLoaded = false;
+        InspectorR.voxelsFitted = false;
+        InspectorR.highlightType = InspectorR.HighlighType.None;
+        foreach (var v in MeshVoxelizer.voxels)
+        {
+            Destroy(v.Value.Voxel);
+        }
+        MeshVoxelizer.voxels.Clear();
+        MeshVoxelizer.highlights.Clear();
+        MeshVoxelizer.ClearAll();
         PathFitter.maxPathsThrough = 0;
     }
-	
+
 
 }

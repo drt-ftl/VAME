@@ -6,6 +6,7 @@ public class PathFitter : MonoBehaviour
 {
     GcdInterpreter gcdI;
     public static int maxPathsThrough = 0;
+    public static float maxIntersectDistance = 0;
 
     void Start()
     {
@@ -56,6 +57,9 @@ public class PathFitter : MonoBehaviour
         foreach (var v in MeshVoxelizer.voxels)
         {
             v.Value.SetMaxAndMin();
+            if (v.Value.IntersectedByLines.Count > 1 
+                && v.Value.MaxDistance > maxIntersectDistance)
+                maxIntersectDistance = v.Value.MaxDistance;
         }
     }
 

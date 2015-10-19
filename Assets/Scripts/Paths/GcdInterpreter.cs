@@ -7,8 +7,7 @@ using UnityEngine;
 
 public class GcdInterpreter
 {
-    float y = 0;
-    bool on = true;
+    public static float y = 0;
     public Vector3 Min { get; set; }
     public Vector3 Max { get; set; }
     public Vector3 centroid
@@ -22,12 +21,13 @@ public class GcdInterpreter
 
     public GcdInterpreter()
     {
+        y = 0;
         Min = new Vector3(1000, 1000, 1000);
         Max = new Vector3(-1000, -1000, -1000);
     }
     public void StartsWithG(string _line)
     {
-        if (!on || !_line.Contains(' ')) return;
+        if (!_line.Contains(' ')) return;
         var _chunks = _line.Split(' ');
         var _chunk = _chunks[0]; // Initial Line, which starts with 'G'
         if (_chunks.Length < 2) return;

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System;
 
 public class InspectorL : InspectorManager
 {
@@ -49,6 +51,9 @@ public class InspectorL : InspectorManager
     public static LastLoaded lastLoaded;
     private float voxelVis;
     int max = 50;
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+    public static extern int MessageBox(IntPtr hWnd, String text, String caption, uint type);
+
     #endregion
 
     public Rect MainRect
@@ -73,15 +78,17 @@ public class InspectorL : InspectorManager
             {
                 if (GUILayout.Button("Load"))
                 {
+                    MessageBox(new IntPtr(0), "Hello World!", "Hello Dialog", 3);
+                    
                     LoadFile.loading = true;
                     GetComponent<LoadFile>().loadFile();
                 }
             }
 
-            if (availableToggles.Length > 0)
+            if (availableToggles != null)
             {
                 // Toggle File Type
-                typeInt = GUILayout.Toolbar(typeInt, availableToggles, GUILayout.Width(220));
+                typeInt = GUILayout.Toolbar(typeInt, availableToggles.ToArray(), GUILayout.Width(220));
 
                 // Visibility
                 VisibiltySlider();
@@ -102,9 +109,35 @@ public class InspectorL : InspectorManager
 
                 // Clear
                 GUILayout.Space(8);
-                if (GUILayout.Button("Clear"))
+                switch (GetAvailableToggles()[typeInt])
                 {
-                    Restart();
+                    case "STL":
+                        if (GUILayout.Button("Clear STL"))
+                        {
+                            ClearSTL(0);
+                            ClearSTL(1);
+                        }
+                        break;
+                    case "DMC":
+                        if (GUILayout.Button("Clear DMC"))
+                        {
+                            ClearDMC();
+                        }
+                        break;
+                    case "JOB":
+                        if (GUILayout.Button("Clear JOB"))
+                        {
+                            ClearJOB();
+                        }
+                        break;
+                    case "GCD":
+                        if (GUILayout.Button("Clear GCD"))
+                        {
+                            ClearGCD();
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
             // Quit
@@ -117,7 +150,7 @@ public class InspectorL : InspectorManager
     }
     public void VisibiltySlider()
     {
-        if (GetAvailableToggles().Length == 0) return;
+        if (GetAvailableToggles() == null) return;
         switch (GetAvailableToggles()[typeInt])
         {
             case "STL":
@@ -168,15 +201,26 @@ public class InspectorL : InspectorManager
     }
     public void TimeSliders()
     {
-        if (GetAvailableToggles().Length == 0) return;
+        if (GetAvailableToggles() == null) return;
         switch (GetAvailableToggles()[typeInt])
         {
             case "STL":
-                var indexSTL = 0;
                 stlTimeSlider = GUILayout.HorizontalSlider(stlTimeSlider, 1, GameObject.Find("MESH").GetComponent<MakeMesh>().GetMesh().vertices.Length / 3 - 1, GUILayout.Width(220), GUILayout.Height(12));
-                GUILayout.Label("Time Max: " + stlTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(220));
+                GUILayout.BeginHorizontal(GUILayout.Width(220));
+                {
+                    GUILayout.Label("Path # (Max): " + stlTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(110));
+                    var stlCodeNumber = LoadFile.model_code_xrefSTL[(int)stlTimeSlider];
+                    GUILayout.Label("Code Line #: " + stlCodeNumber.ToString(), KeyStyleR, GUILayout.Width(110));
+                }
+                GUILayout.EndHorizontal();
                 stlTimeSliderMin = GUILayout.HorizontalSlider(stlTimeSliderMin, 0, stlTimeSlider, GUILayout.Width(220), GUILayout.Height(12));
-                GUILayout.Label("Time Min: " + stlTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(250));
+                GUILayout.BeginHorizontal(GUILayout.Width(220));
+                {
+                    GUILayout.Label("Path # (Min): " + stlTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(110));
+                    var stlCodeNumber = LoadFile.model_code_xrefSTL[(int)stlTimeSliderMin];
+                    GUILayout.Label("Code Line #: " + stlCodeNumber.ToString(), KeyStyleR, GUILayout.Width(110));
+                }
+                GUILayout.EndHorizontal();
                 if (stlTimeSliderMin >= stlTimeSlider && stlTimeSlider >= 0)
                     stlTimeSliderMin = stlTimeSlider;
                 GUILayout.Label(scrollPosition.y.ToString(), KeyStyle, GUILayout.Width(250));
@@ -186,11 +230,23 @@ public class InspectorL : InspectorManager
                 break;
             case "DMC":
                 dmcTimeSlider = GUILayout.HorizontalSlider(dmcTimeSlider, 1, LoadFile.dmcLines.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
-                GUILayout.Label("Time Max: " + dmcTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(250));
+                GUILayout.BeginHorizontal(GUILayout.Width(220));
+                {
+                    GUILayout.Label("Path # (Max): " + dmcTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(110));
+                    var dmcCodeNumber = LoadFile.model_code_xrefDMC[(int)dmcTimeSlider];
+                    GUILayout.Label("Code Line #: " + dmcCodeNumber.ToString(), KeyStyleR, GUILayout.Width(110));
+                }
+                GUILayout.EndHorizontal();
                 if (dmcTimeSliderMin >= dmcTimeSlider && dmcTimeSlider >= 0)
                     dmcTimeSliderMin = dmcTimeSlider;
                 dmcTimeSliderMin = GUILayout.HorizontalSlider(dmcTimeSliderMin, 0, dmcTimeSlider - 2, GUILayout.Width(220), GUILayout.Height(12));
-                GUILayout.Label("Time Min: " + dmcTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(250));
+                GUILayout.BeginHorizontal(GUILayout.Width(220));
+                {
+                    GUILayout.Label("Path # (Min): " + dmcTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(110));
+                    var dmcCodeNumber = LoadFile.model_code_xrefDMC[(int)dmcTimeSliderMin];
+                    GUILayout.Label("Code Line #: " + dmcCodeNumber.ToString(), KeyStyleR, GUILayout.Width(110));
+                }
+                GUILayout.EndHorizontal();
 
                 GUILayout.Label(scrollPosition.y.ToString(), KeyStyle, GUILayout.Width(250));
                 if (dmcTimeSlider != dmcTimeSliderPrev)
@@ -224,11 +280,23 @@ public class InspectorL : InspectorManager
                 break;
             case "JOB":
                 jobTimeSlider = GUILayout.HorizontalSlider(jobTimeSlider, 1, LoadFile.jobLines.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
-                GUILayout.Label("Time Max: " + jobTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(250));
+                GUILayout.BeginHorizontal(GUILayout.Width(220));
+                {
+                    GUILayout.Label("Path # (Max): " + jobTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(110));
+                    var jobCodeNumber = LoadFile.model_code_xrefJOB[(int)jobTimeSlider];
+                    GUILayout.Label("Code Line #: " + jobCodeNumber.ToString(), KeyStyleR, GUILayout.Width(110));
+                }
+                GUILayout.EndHorizontal();
                 if (jobTimeSliderMin >= jobTimeSlider && jobTimeSlider >= 0)
                     jobTimeSliderMin = jobTimeSlider;
                 jobTimeSliderMin = GUILayout.HorizontalSlider(jobTimeSliderMin, 0, jobTimeSlider, GUILayout.Width(220), GUILayout.Height(12));
-                GUILayout.Label("Time Min: " + jobTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(250));
+                GUILayout.BeginHorizontal(GUILayout.Width(220));
+                {
+                    GUILayout.Label("Path # (Min): " + jobTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(110));
+                    var jobCodeNumber = LoadFile.model_code_xrefJOB[(int)jobTimeSliderMin];
+                    GUILayout.Label("Code Line #: " + jobCodeNumber.ToString(), KeyStyleR, GUILayout.Width(110));
+                }
+                GUILayout.EndHorizontal();
 
                 GUILayout.Label(LoadFile.jobCode.Count.ToString(), KeyStyle, GUILayout.Width(250));
                 if (jobTimeSlider != jobTimeSliderPrev)
@@ -262,11 +330,23 @@ public class InspectorL : InspectorManager
                 break;
             case "GCD":
                 gcdTimeSlider = GUILayout.HorizontalSlider(gcdTimeSlider, 1, LoadFile.gcdLines.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
-                GUILayout.Label("Time Max: " + gcdTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(250));
+                GUILayout.BeginHorizontal(GUILayout.Width(220));
+                {
+                    GUILayout.Label("Path # (Max): " + gcdTimeSlider.ToString("f0"), KeyStyle, GUILayout.Width(110));
+                    var gcdCodeNumber = LoadFile.model_code_xrefGCD[(int)gcdTimeSlider];
+                    GUILayout.Label("Code Line #: " + gcdCodeNumber.ToString(), KeyStyleR, GUILayout.Width(110));
+                }
+                GUILayout.EndHorizontal();
                 if (gcdTimeSliderMin >= gcdTimeSlider && gcdTimeSlider >= 0)
                     gcdTimeSliderMin = gcdTimeSlider;
                 gcdTimeSliderMin = GUILayout.HorizontalSlider(gcdTimeSliderMin, 0, gcdTimeSlider, GUILayout.Width(220), GUILayout.Height(12));
-                GUILayout.Label("Time Min: " + gcdTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(250));
+                GUILayout.BeginHorizontal(GUILayout.Width(220));
+                {
+                    GUILayout.Label("Path # (Min): " + gcdTimeSliderMin.ToString("f0"), KeyStyle, GUILayout.Width(110));
+                    var gcdCodeNumber = LoadFile.model_code_xrefGCD[(int)gcdTimeSliderMin];
+                    GUILayout.Label("Code Line #: " + gcdCodeNumber.ToString(), KeyStyleR, GUILayout.Width(110));
+                }
+                GUILayout.EndHorizontal();
 
                 GUILayout.Label(LoadFile.gcdCode.Count.ToString(), KeyStyle, GUILayout.Width(250));
                 if (gcdTimeSlider != gcdTimeSliderPrev)
@@ -302,7 +382,7 @@ public class InspectorL : InspectorManager
                 break;
         }
     }
-    private string[] GetAvailableToggles ()
+    private List<string> GetAvailableToggles ()
     {
         var list = new List<string>();
         if (LoadFile.stlCodeLoaded)
@@ -318,14 +398,16 @@ public class InspectorL : InspectorManager
             typeInt = list.IndexOf(lastLoaded.ToString());
             lastLoaded = LastLoaded.None;
         }
-        return list.ToArray();
+        if (list.Count == 0)
+            return null;
+        return list;
     }
     private string[] GetCode ()
     {
         var code = new string[2];
         var first = "";
         var bulk = "";
-        if (GetAvailableToggles().Length == 0) return null;
+        if (GetAvailableToggles() == null) return null;
         switch (GetAvailableToggles()[typeInt])
         {
             case "STL":
@@ -446,7 +528,7 @@ public class InspectorL : InspectorManager
     private void CoordinateBoxes()
     {
         GUILayout.BeginHorizontal();
-        if (GetAvailableToggles().Length == 0) return;
+        if (GetAvailableToggles() == null) return;
         switch (GetAvailableToggles()[typeInt])
         {
             #region STL
@@ -568,7 +650,11 @@ public class InspectorL : InspectorManager
     void Update()
     {
         if (!LoadFile.dmcCodeLoaded && !LoadFile.stlCodeLoaded && !LoadFile.jobCodeLoaded && !LoadFile.gcdCodeLoaded) return;
-        switch (GetAvailableToggles()[typeInt])
+        var availableToggles = GetAvailableToggles();
+        if (availableToggles == null) return;
+        if (availableToggles.Count - 1 < typeInt)
+            typeInt = availableToggles.Count - 1;
+        switch (availableToggles[typeInt])
         {
             case "STL":
                 if (Input.GetKeyDown(KeyCode.UpArrow) && stlTimeSlider < GameObject.Find("MESH").GetComponent<MakeMesh>().GetMesh().vertices.Length / 3 - 1)

@@ -15,7 +15,7 @@ public class InspectorT : InspectorManager
     private Rect fileRect;
     private Rect editRect;
     private Rect windowRect;
-    private Rect HelpRect;
+    private Rect helpRect;
     public GUISkin skin;
     public enum Dropdown {File,Edit,Window,Help, None };
     public Dropdown dropdown;
@@ -65,10 +65,14 @@ public class InspectorT : InspectorManager
                 }
                 if (GUILayout.Button("<b>Help</b>"))
                 {
+                    helpRect = GUILayoutUtility.GetLastRect();
                     index = 3;
                 }
                 else if (CheckForHover())
+                {
+                    helpRect = GUILayoutUtility.GetLastRect();
                     index = 3;
+                }
             }
             GUILayout.EndHorizontal();
 
@@ -81,6 +85,10 @@ public class InspectorT : InspectorManager
                 case Dropdown.Window:
                     _Window(windowRect, 4);
                     index = 2;
+                    break;
+                case Dropdown.Help:
+                    _Help(helpRect, 3);
+                    index = 3;
                     break;
                 default:
                     break;
@@ -98,6 +106,9 @@ public class InspectorT : InspectorManager
                 break;
             case 2:
                 dropdown = Dropdown.Window;
+                break;
+            case 3:
+                dropdown = Dropdown.Help;
                 break;
             default:
                 dropdown = Dropdown.None;
@@ -133,21 +144,21 @@ public class InspectorT : InspectorManager
         //if (dropdown != Dropdown.File) return;
         GUILayout.BeginVertical();
         {
-            if (GUILayout.Button("Save"))
+            if (GUILayout.Button("Save", "dd"))
             {
                 saveFile();
                 index = 100;
                 dropdown = Dropdown.None;
                 return;
             }
-            if (GUILayout.Button("Load"))
+            if (GUILayout.Button("Load", "dd"))
             {
                 Camera.main.GetComponent<LoadFile>().loadFile();
                 index = 100;
                 dropdown = Dropdown.None;
                 return;
             }
-            if (GUILayout.Button("Clear"))
+            if (GUILayout.Button("Clear", "dd"))
             {
                 Restart();
                 index = 100;
@@ -155,7 +166,7 @@ public class InspectorT : InspectorManager
                 return;
             }
 
-            if (GUILayout.Button("Quit"))
+            if (GUILayout.Button("Quit", "dd"))
             {
                 UnityEngine.Application.Quit();
             }
@@ -176,12 +187,11 @@ public class InspectorT : InspectorManager
             dropdown = Dropdown.None;
         }
     }
-
     public void saveFile()
     {
         System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
         saveFileDialog.InitialDirectory = UnityEngine.Application.dataPath + "/Samples";
-        var sel = "AMF Files (*.amf)|*.amf";
+        var sel = "VAME Files (*.vme)|*.vme";
         saveFileDialog.Filter = sel;
         saveFileDialog.RestoreDirectory = true;
         if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -269,26 +279,26 @@ public class InspectorT : InspectorManager
             GUILayout.Space(rect.xMin);
             GUILayout.BeginVertical();
             {
-                if (GUILayout.Button("Inspector"))
+                if (GUILayout.Button("Inspector", "dd"))
                 {
                     index = 100;
                     dropdown = Dropdown.None;
                     return;
                 }
-                if (GUILayout.Button("Voxel Manager"))
+                if (GUILayout.Button("Voxel Manager", "dd"))
                 {
                     index = 100;
                     dropdown = Dropdown.None;
                     return;
                 }
-                if (GUILayout.Button("Temp History"))
+                if (GUILayout.Button("Temp History", "dd"))
                 {
                     index = 100;
                     dropdown = Dropdown.None;
                     return;
                 }
 
-                if (GUILayout.Button("Main Panel"))
+                if (GUILayout.Button("Main Panel", "dd"))
                 {
                     index = 100;
                     dropdown = Dropdown.None;
@@ -306,6 +316,54 @@ public class InspectorT : InspectorManager
             && mp.y >= rect.yMin)
         {
             index = 2;
+        }
+        else
+        {
+            index = 100;
+            dropdown = Dropdown.None;
+        }
+    }
+
+    void _Help(Rect rect, int slots)
+    {
+        rect.height += slots * rect.height;
+        //rect.x += 2 * rect.width;
+        //if (dropdown != Dropdown.File) return;
+        GUILayout.BeginHorizontal();
+        {
+            GUILayout.Space(rect.xMin);
+            GUILayout.BeginVertical();
+            {
+                if (GUILayout.Button("Manual","dd"))
+                {
+                    index = 100;
+                    dropdown = Dropdown.None;
+                    return;
+                }
+                if (GUILayout.Button("Keyboard Commands", "dd"))
+                {
+                    index = 100;
+                    dropdown = Dropdown.None;
+                    return;
+                }
+                if (GUILayout.Button("About", "dd"))
+                {
+                    index = 100;
+                    dropdown = Dropdown.None;
+                    return;
+                }
+            }
+            GUILayout.EndVertical();
+        }
+        GUILayout.EndHorizontal();
+        var mp = Input.mousePosition;
+        mp.y = UnityEngine.Screen.height - mp.y;
+        if (mp.x <= rect.xMax
+            && mp.x >= rect.xMin
+            && mp.y <= rect.yMax
+            && mp.y >= rect.yMin)
+        {
+            index = 3;
         }
         else
         {

@@ -15,6 +15,7 @@ public class SingleCube : MonoBehaviour
     private Color thisColor;
     private Color specColor;
     private Color emissColor;
+    private Color blank;
     private int id;
     public static float scale = 0.9f;
 
@@ -24,6 +25,7 @@ public class SingleCube : MonoBehaviour
         thisColor = GetComponent<MeshRenderer>().material.color;
         specColor = GetComponent<MeshRenderer>().material.GetColor("_SpecColor");
         emissColor = GetComponent<MeshRenderer>().material.GetColor("_EmissionColor");
+        blank = new Color(0, 0, 0, 0);
     }
     public int Id { get; set; }
 
@@ -102,6 +104,28 @@ public class SingleCube : MonoBehaviour
                         color.a = InspectorR.voxelVis / 100;
                     }
                     break;
+                case InspectorR.HighlighType.PathSeparation:
+                    var stand = true;
+                    if ((MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MinDistance >= InspectorR.minIntDist
+                        && MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MinDistance <= InspectorR.maxIntDist)
+                        || (MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MaxDistance >= InspectorR.minIntDist
+                        && MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MaxDistance <= InspectorR.maxIntDist))
+                        stand = false;
+                    if (!stand)
+                    {
+                        color = Color.white;
+                        spec = color;
+                        emiss = Color.blue * Mathf.LinearToGammaSpace(0.2f);
+                        halo = true;
+                    }
+                    else
+                    {
+                        color = thisColor;
+                        spec = specColor;
+                        emiss = emissColor;
+                        color.a = InspectorR.voxelVis / 100;
+                    }
+                    break;
                 default:
                     color = thisColor;
                     spec = specColor;
@@ -109,6 +133,10 @@ public class SingleCube : MonoBehaviour
                     color.a = InspectorR.voxelVis / 100;
                     break;
             }
+            if (color.a <= 0.1f && GetComponent<BoxCollider>().enabled)
+                GetComponent<BoxCollider>().enabled = false;
+            else if (color.a > 0.1f && !GetComponent<BoxCollider>().enabled)
+                GetComponent<BoxCollider>().enabled = true;
             GetComponent<MeshRenderer>().material.color = color;
             spec.a = color.a;
             GetComponent<MeshRenderer>().material.SetColor("_SpecColor", spec);
@@ -116,6 +144,14 @@ public class SingleCube : MonoBehaviour
             if ((GetComponent("Halo") as Behaviour).enabled)
                 (GetComponent("Halo") as Behaviour).enabled = false;
         }
+        //if (Vector3.Distance(Camera.main.transform.position, transform.position) < Camera.main.nearClipPlane + 0.2f)
+        //{
+        //    GetComponent<MeshRenderer>().material.color = blank;
+        //    GetComponent<MeshRenderer>().material.SetColor("_SpecColor", blank);
+        //    GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", blank);
+        //    if ((GetComponent("Halo") as Behaviour).enabled)
+        //        (GetComponent("Halo") as Behaviour).enabled = false;
+        //}
     }
 
     public void Voxel ()
@@ -266,7 +302,7 @@ public class SingleCube : MonoBehaviour
         for (int i = 0; i < 3; i++)
             normals.Add(norm);
         for (int i = 0; i < 3; i++)
-            colors.Add(InspectorL.stlColor);
+            colors.Add(Camera.main.GetComponent<InspectorR>().voxelColor);
     }
 
     public Vector3 Normal(Vector3 p1, Vector3 p2, Vector3 p3)

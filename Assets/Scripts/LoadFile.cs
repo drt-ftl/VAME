@@ -78,7 +78,7 @@ public class LoadFile : MonoBehaviour
 		jobHolder = GameObject.Find ("jobHolder").transform;
         gcdHolder = GameObject.Find("gcdHolder").transform;
         var tbSpace = 20;
-        var tbWidth = InspectorT.TopToolbarStrings.Length * 100;
+        var tbWidth = InspectorT.TopToolbarStrings.Length * 120;
         GetComponent<InspectorT>().MainRect = new Rect(2, 0, tbWidth, 80);
         GetComponent<InspectorR>().MainRect = new Rect(Screen.width - 255, tbSpace, 250, 570);
         GetComponent<InspectorL>().MainRect = new Rect(5, tbSpace, 250, 570);
@@ -95,6 +95,7 @@ public class LoadFile : MonoBehaviour
 		System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog ();
 			openFileDialog.InitialDirectory = Application.dataPath + "/Samples";
         var sel = "";
+        sel += "VAME Files (*.vme)|*.vme|";
         if (!stlCodeLoaded)
             sel += "STL Files (*.STL)|*.STL|";
         if (!dmcCodeLoaded)
@@ -103,7 +104,6 @@ public class LoadFile : MonoBehaviour
             sel += "JOB Files (*.JOB)|*.JOB|";
         if (!gcdCodeLoaded)
             sel += "GCD Files (*.gcd)|*.gcd|";
-        sel += "AMF Files (*.amf)|*.amf";
         sel = sel.TrimEnd('|');
         openFileDialog.Filter = sel;
         openFileDialog.FilterIndex = 2;
@@ -159,6 +159,14 @@ public class LoadFile : MonoBehaviour
                             InspectorL.gcdVisSlider = 1;
                             InspectorL.lastLoaded = InspectorL.LastLoaded.GCD;
                             gcdCodeLoaded = true;
+                            if (InspectorR.voxelsLoaded)
+                            {
+                                foreach (var v in MeshVoxelizer.voxels)
+                                {
+                                    v.Value.IntersectedByLines.Clear();
+                                }
+                                GameObject.Find("VOXELIZER").GetComponent<PathFitter>().FitPaths();
+                            }
                             break;
                         case Type.JOB:
 						    Draw (Type.JOB);

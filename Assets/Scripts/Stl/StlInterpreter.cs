@@ -7,6 +7,12 @@ public class StlInterpreter
     private Vector3 Min { get; set; }
     private Vector3 Max { get; set; }
     public Vector3 offsetGCD { get; set; }
+
+    public void ClearAll()
+    {
+        Min = new Vector3(1000, 1000, 1000);
+        Max = new Vector3(-1000, -1000, -1000);
+    }
     public Vector3 centroid
     {
         get

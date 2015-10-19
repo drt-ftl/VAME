@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class JobInterpreter
 {
-	float y = 0;
+	public static float y = 0;
     private Vector3 Min { get; set; }
     private Vector3 Max { get; set; }
     public Vector3 centroid

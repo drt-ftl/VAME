@@ -6,7 +6,28 @@ public class LineSegment
 {
 	private Vector3 _p1;
 	private Vector3 _p2;
-
+    public bool MovesInX
+    {
+        get
+        {
+            if (p1.x == p2.x)
+            {
+                return false;
+            }
+            return true;
+        }
+    }
+    public bool MovesInZ
+    {
+        get
+        {
+            if (p1.z == p2.z)
+            {
+                return false;
+            }
+            return true;
+        }
+    }
     public List<VoxelClass> CrossesVoxels { get; set; }
 	public Color LineColor
 	{ 

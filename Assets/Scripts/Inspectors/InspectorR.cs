@@ -22,10 +22,13 @@ public class InspectorR : InspectorManager
     public static float highlight = 0;
     public static float minPathIntersects = 0;
     public static float maxPathIntersects = 0;
+    public static float minIntDist = 0;
+    public static float maxIntDist = 0;
     public enum HighlighType { PathDensity, PathSeparation, PathNumbers, None}
     public static HighlighType highlightType;
     public int highlightTypeIndex = 0;
     private string[] pathToggleNames = new string[] { "None", "Count", "Sep", "%" };
+    public Color voxelColor;
 
     public static bool ShowPathIntersects = false;
 
@@ -62,7 +65,7 @@ public class InspectorR : InspectorManager
             //}
 
 
-            if (LoadFile.stlCodeLoaded)
+            if (LoadFile.stlCodeLoaded || voxelsLoaded)
             {
                 if (GUILayout.Button("Voxelize"))
                 {
@@ -73,17 +76,6 @@ public class InspectorR : InspectorManager
                 var res = (int)resolution;
                 GUILayout.Label("Resolution: " + res.ToString(), KeyStyle, GUILayout.Width(250));
                 GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().divisions = res;
-                if (LoadFile.gcdCodeLoaded && voxelsLoaded)
-                {
-                    if (GUILayout.Button("Fit Lines"))
-                    {
-                        foreach (var v in MeshVoxelizer.voxels)
-                        {
-                            v.Value.IntersectedByLines.Clear();
-                        }
-                        GameObject.Find("VOXELIZER").GetComponent<PathFitter>().FitPaths();
-                    }
-                }
                 if (voxelsLoaded)
                     WhenVoxelsAreUp();
                 GUILayout.Space(18);
@@ -109,6 +101,14 @@ public class InspectorR : InspectorManager
         GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().VoxelizeSurfaces((int)resolution);
         voxelVis = 100;
         voxelsLoaded = true;
+        if (LoadFile.gcdCodeLoaded)
+        {
+            foreach (var v in MeshVoxelizer.voxels)
+            {
+                v.Value.IntersectedByLines.Clear();
+            }
+            GameObject.Find("VOXELIZER").GetComponent<PathFitter>().FitPaths();
+        }
     }
     void WhenVoxelsAreUp()
     {
@@ -127,6 +127,24 @@ public class InspectorR : InspectorManager
         {
             var intersects = "Intersected By " + v.IntersectedByLines.Count.ToString() + " lines.\r\n";
             GUILayout.Label(intersects, "i2");
+            
+            GUILayout.Label("Median Line Number: " + v.MedianLineNumber.ToString("f0"), "i");
+            GUILayout.Label("Line Number Std Dev: " + v.StandardDeviation.ToString("f3"), "i");
+            if (v.MinDistance < 100)
+                GUILayout.Label("Min Separation: " + v.MinDistance.ToString("f3"), "i");
+            else
+                GUILayout.Label("Min Separation: --", "i");
+            if (v.MaxDistance > 0)
+            {
+                GUILayout.Label("Max Separation: " + v.MaxDistance.ToString("f3"), "i");
+                GUILayout.Label("Mean Separation: " + v.MeanDistance.ToString("f3"), "i");
+            }
+            else
+            {
+                GUILayout.Label("Max Separation: --", "i");
+                GUILayout.Label("Mean Separation: --", "i");
+            }
+            GUILayout.Space(8);
             foreach (var ints in v.IntersectedByLines)
             {
                 var intersection = "[" + LoadFile.gcdLines.IndexOf(ints).ToString() + "]: " + "\r\n"
@@ -154,12 +172,20 @@ public class InspectorR : InspectorManager
                 break;
             case 2:
                 highlightType = HighlighType.PathSeparation;
+                minIntDist = GUILayout.HorizontalSlider(minIntDist, 0, maxIntDist);
+                GUILayout.Label("Min #: " + minIntDist.ToString("f4"), KeyStyle, GUILayout.Width(220));
+                maxIntDist = GUILayout.HorizontalSlider(maxIntDist, 0, PathFitter.maxIntersectDistance);
+                GUILayout.Label("Max #: " + maxIntDist.ToString("f4"), KeyStyle, GUILayout.Width(220));
                 break;
             case 3:
                 highlightType = HighlighType.PathNumbers;
                 break;
             default:
                 break;
+        }
+        if (GUILayout.Button("Clear Voxels"))
+        {
+            ClearVoxels();
         }
     }
 
