@@ -11,6 +11,8 @@ using System.Text;
 public class LoadFile : MonoBehaviour 
 {
     #region declarations
+    public Material graphMaterial;
+    public Color gridColor;
     public static Vector3 Min = new Vector3(1000,1000,1000);
     public static Vector3 Max = new Vector3(-1000, -1000, -1000);
     JobInterpreter jobInterpreter = new JobInterpreter();
@@ -50,7 +52,7 @@ public class LoadFile : MonoBehaviour
 	private Transform dmcHolder;
 	private Transform jobHolder;
     private Transform gcdHolder;
-    private enum Type {STL,DMC,JOB,GCD,AMF}
+    private enum Type {STL,DMC,JOB,GCD,AMF,CS}
 	private Type type;
 	public static float stlScale = 1f;
 	private float dmcScale = 25/2540000f;
@@ -98,15 +100,15 @@ public class LoadFile : MonoBehaviour
         sel += "VAME Files (*.vme)|*.vme|";
         if (!stlCodeLoaded)
             sel += "STL Files (*.STL)|*.STL|";
+        if (!gcdCodeLoaded)
+            sel += "GCD Files (*.gcd)|*.gcd|";
         if (!dmcCodeLoaded)
             sel += "DMC Files (*.DMC)|*.DMC|";
         if (!jobCodeLoaded)
             sel += "JOB Files (*.JOB)|*.JOB|";
-        if (!gcdCodeLoaded)
-            sel += "GCD Files (*.gcd)|*.gcd|";
         sel = sel.TrimEnd('|');
         openFileDialog.Filter = sel;
-        openFileDialog.FilterIndex = 2;
+        openFileDialog.FilterIndex = 1;
 			openFileDialog.RestoreDirectory = false;
 
 		if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
@@ -224,8 +226,38 @@ public class LoadFile : MonoBehaviour
         var groupRectT = GetComponent<InspectorT>().MainRect;
         GUI.Window(2, groupRectT, GetComponent<InspectorT>().InspectorWindowT, "", "Toolbar");
         GUI.BringWindowToFront(2);
+        DrawCS();
     }
 
+    private void DrawCS()
+    {
+        if (!cSection.ready) return;
+        var str = "";
+        foreach (var cs in cSection.csLines)
+        {
+            foreach (var line in cs.Value)
+            {
+                var closest = 0f;
+                var col = gridColor;
+                if (line.WallThickness < 100)
+                {
+                    var badness = 1.0f - line.WallThickness;
+                    col.g = 1.0f - 1.0f * badness;
+                    col.r = -12.0f + 24f * badness;
+                    col.b = 0.5f - 0.6f * badness;
+                }
+                var a = line.Endpoint0;
+                var b = line.Endpoint1;
+                graphMaterial.SetPass(0);
+                GL.Begin(GL.LINES);
+                GL.Color(col);
+                GL.Vertex(a);
+                GL.Vertex(b);
+                GL.End();
+            }
+        }
+        GUI.Label(new Rect(250, 100, 100, 300), "");
+    }
 	private void Draw(Type _type)
 	{
 		foreach (var Vertex1 in vertices)

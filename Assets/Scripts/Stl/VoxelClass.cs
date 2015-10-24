@@ -40,12 +40,14 @@ public class VoxelClass
     {
         var lineNumbers = new List<int>();
         MeanDistance = 0;
+        var alreadyChecked = new List<LineSegment>();
         foreach (var inter in IntersectedByLines)
         {
+            alreadyChecked.Add(inter);
             lineNumbers.Add(inter.step);
             foreach (var inter2 in IntersectedByLines)
             {
-                if (inter2 != inter)
+                if (!alreadyChecked.Contains(inter2))
                 {
                     var A = Vector2.zero;
                     var B = Vector2.zero;
@@ -105,7 +107,12 @@ public class VoxelClass
             variance += Mathf.Pow(average - ln, 2);
         }
         StandardDeviation = Mathf.Pow(variance, 0.5f);
-        MeanDistance /= count;
+        MeanDistance = MeanDistance / count;
+        if (Voxel.GetComponent<SingleCube>().Id == 170)
+        {
+            MonoBehaviour.print(count);
+            MonoBehaviour.print(MeanDistance);
+        }
     }
     public void DistanceBetweenSkewLines()
     {

@@ -78,7 +78,7 @@ public class InspectorL : InspectorManager
             {
                 if (GUILayout.Button("Load"))
                 {
-                    MessageBox(new IntPtr(0), "Hello World!", "Hello Dialog", 3);
+                    //MessageBox(new IntPtr(0), "Hello World!", "Hello Dialog", 3);
                     
                     LoadFile.loading = true;
                     GetComponent<LoadFile>().loadFile();

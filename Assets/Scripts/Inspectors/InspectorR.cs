@@ -56,7 +56,7 @@ public class InspectorR : InspectorManager
             GUILayout.Space(25);
 
             GUILayout.Box(hr, "hr", GUILayout.Width(230), GUILayout.Height(10));
-
+            GUILayout.Label(cSection.csLines.Count.ToString());
             GUILayout.Space(10);
             //if (GUILayout.Button("Slice"))
             //{

@@ -142,7 +142,12 @@ public class MakeMesh : MonoBehaviour
             Max = max;
             Min = min;
         }
-        gameObject.transform.position -= centroid;
+        var count = verts.Count;
+        for (int i = 0; i < count; i++)
+        {
+            verts[i] -= centroid;
+            verts_b[i] -= centroid;
+        }
         mesh.vertices = verts.ToArray();
         mesh.triangles = tris.ToArray();
         mesh.normals = normals.ToArray();
@@ -161,6 +166,7 @@ public class MakeMesh : MonoBehaviour
 
         mesh_b.RecalculateNormals();
         mesh_b.Optimize();
+        var cs = new cSection(0.02f);
     }
 
     public Vector3[] GetTriangleVertices(int id)

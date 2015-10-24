@@ -4,9 +4,9 @@ using System.Collections;
 public class StlInterpreter
 {
     private Vector3 Normal;
-    private Vector3 Min { get; set; }
-    private Vector3 Max { get; set; }
-    public Vector3 offsetGCD { get; set; }
+    public Vector3 Min { get; set; }
+    public Vector3 Max { get; set; }
+    public Vector3 offsetSTL { get; set; }
 
     public void ClearAll()
     {

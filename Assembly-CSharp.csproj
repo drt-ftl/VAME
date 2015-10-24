@@ -47,6 +47,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraControl.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\CheckWalls.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\Triangle.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\cSection.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\csLine.cs" />
      <Compile Include="Assets\Scripts\DxfLineConverter.cs" />
      <Compile Include="Assets\Scripts\DxfSurfaceConverter.cs" />
      <Compile Include="Assets\Scripts\Inspectors\InspectorL.cs" />
@@ -63,6 +67,7 @@
      <Compile Include="Assets\Scripts\Paths\JobInterpreter.cs" />
      <Compile Include="Assets\Scripts\Paths\LineSegment.cs" />
      <Compile Include="Assets\Scripts\Paths\PathVoxelizer.cs" />
+     <Compile Include="Assets\Scripts\Paths\ThinWallCheck.cs" />
      <Compile Include="Assets\Scripts\Stl\LoadSTL.cs" />
      <Compile Include="Assets\Scripts\Stl\MakeMesh.cs" />
      <Compile Include="Assets\Scripts\Stl\MeshVoxelizer.cs" />
