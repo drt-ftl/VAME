@@ -83,3 +83,7 @@ C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.Analytics.xml
 C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp-Editor-vs.csprojResolveAssemblyReference.cache
 C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp-Editor.dll
 C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp-Editor.pdb
+C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\MakarovDev.ExpandCollapsePanel.dll
+C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\System.Data.dll
+C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\System.Drawing.dll
+C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\MakarovDev.ExpandCollapsePanel.pdb

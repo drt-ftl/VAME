@@ -6,6 +6,8 @@ public class LineSegment
 {
 	private Vector3 _p1;
 	private Vector3 _p2;
+    private Color color;
+
     public bool MovesInX
     {
         get
@@ -30,25 +32,12 @@ public class LineSegment
     }
     public List<VoxelClass> CrossesVoxels { get; set; }
 	public Color LineColor
-	{ 
-		set
-		{
- 			if (Line != null)
-			{
-				Line.SetColors(value, value);
-			}
-		}
-	}
-
-	public float LineWidth
-	{ 
-		set
-		{
-			if (Line != null)
-			{
-				Line.SetWidth(value, value);
-			}
-		}
+	{
+        get
+        {            
+            return color;
+        }
+        set { color = value; }
 	}
 
 	public Vector3 p1 
@@ -57,7 +46,6 @@ public class LineSegment
 		set
 		{ 
 			_p1 = value;
-			Line.SetPosition(0, _p1);
 		}
 	}
 	public Vector3 p2 
@@ -66,15 +54,10 @@ public class LineSegment
 		set
 		{ 
 			_p2 = value;
-			Line.SetPosition(1, _p2);
 		}
 	}
 
 	public int step {get; set; }
-
-
-	public LineRenderer Line
-	{ get; set; }
 
 
 }

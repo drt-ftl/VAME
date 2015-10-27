@@ -57,10 +57,7 @@ public class InspectorManager : MonoBehaviour
         LoadFile.gcdCodeLoaded = false;
         InspectorR.voxelsFitted = false;
         InspectorR.highlightType = InspectorR.HighlighType.None;
-        foreach (var gl in LoadFile.gcdLines)
-        {
-            Destroy(gl.Line.gameObject);
-        }
+        
         LoadFile.gcdLines.Clear();
         LoadFile.firstGcdLineInCode = 0;
         LoadFile.gcdCode.Clear();
@@ -72,10 +69,6 @@ public class InspectorManager : MonoBehaviour
     public void ClearJOB()
     {
         LoadFile.jobCodeLoaded = false;
-        foreach (var jl in LoadFile.jobLines)
-        {
-            Destroy(jl.Line.gameObject);
-        }
         LoadFile.jobLines.Clear();
         LoadFile.firstJobLineInCode = 0;
         LoadFile.jobCode.Clear();
@@ -86,10 +79,7 @@ public class InspectorManager : MonoBehaviour
     public void ClearDMC()
     {
         LoadFile.dmcCodeLoaded = false;
-        foreach (var dl in LoadFile.dmcLines)
-        {
-            Destroy(dl.Line.gameObject);
-        }
+
         LoadFile.dmcLines.Clear();
         LoadFile.firstDmcLineInCode = 0;
         LoadFile.dmcCode.Clear();

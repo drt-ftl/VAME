@@ -94,7 +94,6 @@ public class SurfaceVoxelizer : MonoBehaviour
 
     public void InstVoxel(Vector3 pos)
     {
-        pos -= MM.centroid;
         if (!voxels.ContainsKey(pos))
         {
             var v = Instantiate(voxel, pos, Quaternion.identity) as GameObject;

@@ -25,6 +25,7 @@ public class GcdInterpreter
         Min = new Vector3(1000, 1000, 1000);
         Max = new Vector3(-1000, -1000, -1000);
     }
+
     public void StartsWithG(string _line)
     {
         if (!_line.Contains(' ')) return;

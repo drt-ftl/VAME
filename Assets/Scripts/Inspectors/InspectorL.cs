@@ -164,11 +164,9 @@ public class InspectorL : InspectorManager
                 GUILayout.Label("Visibility: " + (dmcVisSlider * 100).ToString("f0"), KeyStyle, GUILayout.Width(250));
                 foreach (var line in LoadFile.dmcLines)
                 {
-                    if (line.Line != null)
-                    {
-                        dmcLineColor.a = dmcVisSlider * dmcVisSlider;
-                        line.LineColor = dmcLineColor;
-                    }
+
+                    dmcLineColor.a = dmcVisSlider * dmcVisSlider;
+                    line.LineColor = dmcLineColor;
                 }
                 break;
             case "JOB":
@@ -176,11 +174,8 @@ public class InspectorL : InspectorManager
                 GUILayout.Label("Visibility: " + (jobVisSlider * 100).ToString("f0"), KeyStyle, GUILayout.Width(250));
                 foreach (var line in LoadFile.jobLines)
                 {
-                    if (line.Line != null)
-                    {
-                        jobLineColor.a = jobVisSlider * jobVisSlider;
-                        line.LineColor = jobLineColor;
-                    }
+                    jobLineColor.a = jobVisSlider * jobVisSlider;
+                    line.LineColor = jobLineColor;
                 }
                 break;
             case "GCD":
@@ -188,11 +183,8 @@ public class InspectorL : InspectorManager
                 GUILayout.Label("Visibility: " + (gcdVisSlider * 100).ToString("f0"), KeyStyle, GUILayout.Width(250));
                 foreach (var line in LoadFile.gcdLines)
                 {
-                    if (line.Line != null)
-                    {
-                        gcdLineColor.a = gcdVisSlider * gcdVisSlider;
-                        line.LineColor = gcdLineColor;
-                    }
+                    gcdLineColor.a = gcdVisSlider * gcdVisSlider;
+                    line.LineColor = gcdLineColor;
                 }
                 break;
             default:
@@ -256,25 +248,20 @@ public class InspectorL : InspectorManager
                 var indexDMC = 0;
                 foreach (var line in LoadFile.dmcLines)
                 {
-                    if (line.Line != null)
-                    {
                         if ((int)dmcTimeSlider < indexDMC || (int)dmcTimeSliderMin > indexDMC)
                         {
                             line.LineColor = new Color(dmcLineColor.r, dmcLineColor.g, dmcLineColor.b, 0f);
                         }
                         else if ((int)dmcTimeSlider == indexDMC)
                         {
-                            line.LineWidth = 0.01f;
                             line.LineColor = Camera.main.GetComponent<LoadFile>().LineHighlight;
                             _p1 = line.p1;
                             _p2 = line.p2;
                         }
                         else
                         {
-                            line.LineWidth = 0.002f;
                             line.LineColor = dmcLineColor;
                         }
-                    }
                     indexDMC++;
                 }
                 break;
@@ -306,24 +293,19 @@ public class InspectorL : InspectorManager
                 var indexJOB = 0;
                 foreach (var line in LoadFile.jobLines)
                 {
-                    if (line.Line != null)
+                    if ((int)jobTimeSlider < indexJOB || (int)jobTimeSliderMin > indexJOB)
                     {
-                        if ((int)jobTimeSlider < indexJOB || (int)jobTimeSliderMin > indexJOB)
-                        {
-                            line.LineColor = new Color(jobLineColor.r, jobLineColor.g, jobLineColor.b, 0f);
-                        }
-                        else if ((int)jobTimeSlider == indexJOB)
-                        {
-                            line.LineWidth = 0.01f;
-                            line.LineColor = Camera.main.GetComponent<LoadFile>().LineHighlight;
-                            _p1 = line.p1;
-                            _p2 = line.p2;
-                        }
-                        else
-                        {
-                            line.LineWidth = 0.002f;
-                            line.LineColor = jobLineColor;
-                        }
+                        line.LineColor = new Color(jobLineColor.r, jobLineColor.g, jobLineColor.b, 0f);
+                    }
+                    else if ((int)jobTimeSlider == indexJOB)
+                    {
+                        line.LineColor = Camera.main.GetComponent<LoadFile>().LineHighlight;
+                        _p1 = line.p1;
+                        _p2 = line.p2;
+                    }
+                    else
+                    {
+                        line.LineColor = jobLineColor;
                     }
                     indexJOB++;
                 }
@@ -356,24 +338,19 @@ public class InspectorL : InspectorManager
                 var indexGCD = 0;
                 foreach (var line in LoadFile.gcdLines)
                 {
-                    if (line.Line != null)
+                    if ((int)gcdTimeSlider < indexGCD || (int)gcdTimeSliderMin > indexGCD)
                     {
-                        if ((int)gcdTimeSlider < indexGCD || (int)gcdTimeSliderMin > indexGCD)
-                        {
-                            line.LineColor = new Color(gcdLineColor.r, gcdLineColor.g, gcdLineColor.b, 0f);
-                        }
-                        else if ((int)gcdTimeSlider == indexGCD)
-                        {
-                            line.LineWidth = 0.01f;
-                            line.LineColor = Camera.main.GetComponent<LoadFile>().LineHighlight;
-                            _p1 = line.p1;
-                            _p2 = line.p2;
-                        }
-                        else
-                        {
-                            line.LineWidth = 0.002f;
-                            line.LineColor = gcdLineColor;
-                        }
+                        line.LineColor = new Color(gcdLineColor.r, gcdLineColor.g, gcdLineColor.b, 0f);
+                    }
+                    else if ((int)gcdTimeSlider == indexGCD)
+                    {
+                        line.LineColor = Camera.main.GetComponent<LoadFile>().LineHighlight;
+                        _p1 = line.p1;
+                        _p2 = line.p2;
+                    }
+                    else
+                    {
+                        line.LineColor = gcdLineColor;
                     }
                     indexGCD++;
                 }

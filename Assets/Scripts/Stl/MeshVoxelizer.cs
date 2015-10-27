@@ -44,8 +44,8 @@ public class MeshVoxelizer : MonoBehaviour
     public void VoxelizeSurfaces(int divs)
     {
         divisions = divs;
-        var Min = (MM.Min) * divisions;
-        var Max = (MM.Max) * divisions;
+        var Min = (MM.Min - MM.centroid) * divisions;
+        var Max = (MM.Max - MM.centroid) * divisions;
         Min.x = Mathf.Round(Min.x);
         Min.y = Mathf.Round(Min.y);
         Min.z = Mathf.Round(Min.z);
@@ -86,7 +86,7 @@ public class MeshVoxelizer : MonoBehaviour
 
     public void HandleIt(Vector3 testPosition, Vector3 position)
     {
-        var coords = (position/ divisions) - LoadFile.stlInterpreter.centroid;
+        var coords = (position / divisions);
         if (IsPointInside(MM.GetMesh(), testPosition / divisions) && !voxels.ContainsKey(coords))
         {
             var v = Instantiate(voxel, coords, Quaternion.identity) as GameObject;

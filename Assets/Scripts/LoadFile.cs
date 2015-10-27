@@ -227,17 +227,21 @@ public class LoadFile : MonoBehaviour
         GUI.Window(2, groupRectT, GetComponent<InspectorT>().InspectorWindowT, "", "Toolbar");
         GUI.BringWindowToFront(2);
         DrawCS();
+        if (gcdCodeLoaded)
+            DrawPaths(Type.GCD);
+        if (jobCodeLoaded)
+            DrawPaths(Type.JOB);
+        if (dmcCodeLoaded)
+            DrawPaths(Type.DMC);
     }
 
     private void DrawCS()
     {
-        if (!cSection.ready) return;
-        var str = "";
-        foreach (var cs in cSection.csLines)
+        if (!cSectionGCD.ready) return;
+        foreach (var cs in cSectionGCD.csLines)
         {
             foreach (var line in cs.Value)
             {
-                var closest = 0f;
                 var col = gridColor;
                 if (line.WallThickness < 100)
                 {
@@ -258,6 +262,38 @@ public class LoadFile : MonoBehaviour
         }
         GUI.Label(new Rect(250, 100, 100, 300), "");
     }
+
+    private void DrawPaths(Type _type)
+    {
+        var tmpList = new List<LineSegment>();
+        switch(_type)
+        {
+            case Type.GCD:
+                tmpList = gcdLines;
+                break;
+            case Type.JOB:
+                tmpList = jobLines;
+                break;
+            case Type.DMC:
+                tmpList = dmcLines;
+                break;
+            default:
+                break;
+        }
+        foreach (var line in tmpList)
+        {
+            var col = line.LineColor;
+            var a = line.p1;
+            var b = line.p2;
+            graphMaterial.SetPass(0);
+            GL.Begin(GL.LINES);
+            GL.Color(col);
+            GL.Vertex(a);
+            GL.Vertex(b);
+            GL.End();
+        }
+    }
+
 	private void Draw(Type _type)
 	{
 		foreach (var Vertex1 in vertices)
@@ -267,22 +303,9 @@ public class LoadFile : MonoBehaviour
 			if (index <= 0)
 				continue;
 			var Vertex0 = vertices[index - 1];
-			var line = Instantiate (lineRenderer) as LineRenderer;
-			if (_type == Type.JOB)
-				line.transform.SetParent(jobHolder);
-            else if (_type == Type.GCD)
-                line.transform.SetParent(gcdHolder);
-            else if (_type == Type.DMC)
-				line.transform.SetParent(dmcHolder);
-			line.SetVertexCount (2);
-			line.SetPosition (0 , Vertex0);
-			line.SetPosition (1 , Vertex1);
-			line.material = mat;
-			line.SetWidth (0.002f, 0.002f);
 			if (_type == Type.JOB)
 			{
-				line.SetColors (GetComponent<InspectorL>().jobLineColor, GetComponent<InspectorL>().jobLineColor);
-				newSegment.Line = line;
+                newSegment.LineColor = new Color(0f, 0f, 1f, 1f);
 				newSegment.p1 = Vertex0 - jobInterpreter.centroid;
 				newSegment.p2 = Vertex1 - jobInterpreter.centroid;
                 newSegment.step = jobLines.Count;
@@ -290,8 +313,7 @@ public class LoadFile : MonoBehaviour
 			}
             else if (_type == Type.GCD)
             {
-                line.SetColors(GetComponent<InspectorL>().gcdLineColor, GetComponent<InspectorL>().gcdLineColor);
-                newSegment.Line = line;
+                newSegment.LineColor = new Color(0f, 0f, 1f, 1f);
                 newSegment.p1 = Vertex0 - gcdInterpreter.centroid;
                 newSegment.p2 = Vertex1 - gcdInterpreter.centroid;
                 newSegment.step = gcdLines.Count;
@@ -299,13 +321,12 @@ public class LoadFile : MonoBehaviour
             }
             else if (_type == Type.DMC)
 			{
-				line.SetColors (GetComponent<InspectorL>().dmcLineColor, GetComponent<InspectorL>().dmcLineColor);
-				newSegment.Line = line;
-				newSegment.p1 = Vertex0 - dmcInterpreter.centroid;
-				newSegment.p2 = Vertex1 - dmcInterpreter.centroid;
-				newSegment.step = dmcLines.Count;
-				dmcLines.Add (newSegment);
-			}
+                newSegment.LineColor = new Color(0f, 0f, 1f, 1f);
+                newSegment.p1 = Vertex0 - dmcInterpreter.centroid;
+                newSegment.p2 = Vertex1 - dmcInterpreter.centroid;
+                newSegment.step = dmcLines.Count;
+                dmcLines.Add(newSegment);
+            }
 		}
 	}
 

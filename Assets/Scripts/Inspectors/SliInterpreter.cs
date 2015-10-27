@@ -38,7 +38,6 @@ public class SliInterpreter : MonoBehaviour
                         System.Text.ASCIIEncoding Encoding = new System.Text.ASCIIEncoding();
                         var bytes = Encoding.GetBytes(full);
                         var text = Encoding.GetString(bytes);
-                        print(text);
                     }
                     reader.Close();
                 }

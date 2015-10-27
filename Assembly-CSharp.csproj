@@ -46,10 +46,20 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Forms\SlicerForm\Form1.Designer.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Form1.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Program.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Properties\AssemblyInfo.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Properties\Resources.Designer.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Properties\Settings.Designer.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
      <Compile Include="Assets\Scripts\CameraControl.cs" />
      <Compile Include="Assets\Scripts\CrossSection\CheckWalls.cs" />
      <Compile Include="Assets\Scripts\CrossSection\Triangle.cs" />
      <Compile Include="Assets\Scripts\CrossSection\cSection.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\cSectionGCD.cs" />
      <Compile Include="Assets\Scripts\CrossSection\csLine.cs" />
      <Compile Include="Assets\Scripts\DxfLineConverter.cs" />
      <Compile Include="Assets\Scripts\DxfSurfaceConverter.cs" />
@@ -106,6 +116,7 @@
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ContrastComposite.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset3.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\FisheyeShader.shader" />
+     <None Include="Assets\Forms\SlicerForm\obj\Debug\SlicerForm.csproj.FileListAbsolute.txt" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Apply.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\frag_ao.cginc" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
@@ -167,6 +178,15 @@
  </Reference>
  <Reference Include="UnityEngine.Analytics">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Data">
+ <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Forms/SlicerForm/System.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Drawing">
+ <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Forms/SlicerForm/System.Drawing.dll</HintPath>
+ </Reference>
+ <Reference Include="MakarovDev.ExpandCollapsePanel">
+ <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Forms/SlicerForm/bin/Debug/MakarovDev.ExpandCollapsePanel.dll</HintPath>
  </Reference>
  <Reference Include="System.Windows.Forms">
  <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Plugins/System.Windows.Forms.dll</HintPath>

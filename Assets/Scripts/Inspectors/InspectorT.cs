@@ -4,10 +4,11 @@ using UnityEngine.UI;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Windows.Forms;
+using SlicerForm;
 
 public class InspectorT : InspectorManager
 {
-    public static string[] TopToolbarStrings = { "File", "Edit", "Window", "Help" };
+    public static string[] TopToolbarStrings = { "File", "Edit", "Slice", "Window", "Help" };
     public static string[] FileStrings = { "Save", "Crazy", "Clear", "Quit" };
     bool FileUp = false;
     private Rect mainRect;
@@ -15,9 +16,10 @@ public class InspectorT : InspectorManager
     private Rect fileRect;
     private Rect editRect;
     private Rect windowRect;
+    private Rect sliceRect;
     private Rect helpRect;
     public GUISkin skin;
-    public enum Dropdown {File,Edit,Window,Help, None };
+    public enum Dropdown {File,Edit,Window,Slice,Help,None };
     public Dropdown dropdown;
     private int width = 100;
     int index = 100;
@@ -25,6 +27,8 @@ public class InspectorT : InspectorManager
     bool buttonPressed = false;
     [DllImport("user32.dll")]
     private static extern void SaveFileDialog();
+    cSectionGCD csGCD;
+    public static Form1 slicerForm;
 
 
 
@@ -49,18 +53,22 @@ public class InspectorT : InspectorManager
                 }
                 if (GUILayout.Button("<b>Edit</b>"))
                 {
+                    editRect = GUILayoutUtility.GetLastRect();
                     index = 1;
                 }
                 else if (CheckForHover())
-                    index = 1;
-                if (GUILayout.Button("<b>Window</b>"))
                 {
-                    windowRect = GUILayoutUtility.GetLastRect();
+                    editRect = GUILayoutUtility.GetLastRect();
+                    index = 1;
+                }
+                if (GUILayout.Button("<b>Slice</b>"))
+                {
+                    sliceRect = GUILayoutUtility.GetLastRect();
                     index = 2;
                 }
                 else if (CheckForHover())
                 {
-                    windowRect = GUILayoutUtility.GetLastRect();
+                    sliceRect = GUILayoutUtility.GetLastRect();
                     index = 2;
                 }
                 if (GUILayout.Button("<b>Help</b>"))
@@ -73,6 +81,16 @@ public class InspectorT : InspectorManager
                     helpRect = GUILayoutUtility.GetLastRect();
                     index = 3;
                 }
+                if (GUILayout.Button("<b>Window</b>"))
+                {
+                    windowRect = GUILayoutUtility.GetLastRect();
+                    index = 4;
+                }
+                else if (CheckForHover())
+                {
+                    windowRect = GUILayoutUtility.GetLastRect();
+                    index = 4;
+                }
             }
             GUILayout.EndHorizontal();
 
@@ -82,13 +100,17 @@ public class InspectorT : InspectorManager
                     _File(fileRect, FileStrings.Length);
                     index = 0;
                     break;
-                case Dropdown.Window:
-                    _Window(windowRect, 4);
+                case Dropdown.Slice:
+                    _Slice(sliceRect, 3);
                     index = 2;
                     break;
                 case Dropdown.Help:
-                    _Help(helpRect, 3);
+                    _Help(helpRect, 4);
                     index = 3;
+                    break;
+                case Dropdown.Window:
+                    _Window(windowRect, 3);
+                    index = 4;
                     break;
                 default:
                     break;
@@ -104,11 +126,17 @@ public class InspectorT : InspectorManager
             case 0:
                 dropdown = Dropdown.File;
                 break;
+            case 1:
+                dropdown = Dropdown.Edit;
+                break;
             case 2:
-                dropdown = Dropdown.Window;
+                dropdown = Dropdown.Slice;
                 break;
             case 3:
                 dropdown = Dropdown.Help;
+                break;
+            case 4:
+                dropdown = Dropdown.Window;
                 break;
             default:
                 dropdown = Dropdown.None;
@@ -269,6 +297,112 @@ public class InspectorT : InspectorManager
             tw.Close();
         }
     }
+
+    void _Slice(Rect rect, int slots)
+    {
+        rect.height += slots * rect.height;
+        //rect.x += 2 * rect.width;
+        //if (dropdown != Dropdown.File) return;
+        GUILayout.BeginHorizontal();
+        {
+            GUILayout.Space(rect.xMin);
+            GUILayout.BeginVertical();
+            {
+                if (GUILayout.Button("Slice","dd"))
+                {
+                    csGCD = new cSectionGCD();
+                    index = 100;
+                    dropdown = Dropdown.None;
+                    return;
+                }
+                if (GUILayout.Button("Slicer Panel", "dd"))
+                {
+                    slicerForm = new Form1();
+                    Form1.buttonPressed += ButtonPressed;
+                    slicerForm.Show();
+                    index = 100;
+                    dropdown = Dropdown.None;
+                    return;
+                }
+                if (GUILayout.Button("Paths", "dd"))
+                {
+                    index = 100;
+                    slicerForm.Hide();
+                    dropdown = Dropdown.None;
+                    return;
+                }
+            }
+            GUILayout.EndVertical();
+        }
+        GUILayout.EndHorizontal();
+        var mp = Input.mousePosition;
+        mp.y = UnityEngine.Screen.height - mp.y;
+        if (mp.x <= rect.xMax
+            && mp.x >= rect.xMin
+            && mp.y <= rect.yMax
+            && mp.y >= rect.yMin)
+        {
+            index = 2;
+        }
+        else
+        {
+            index = 100;
+            dropdown = Dropdown.None;
+        }
+    }
+
+    private void ButtonPressed(string _name, bool _active)
+    {
+        csGCD = new cSectionGCD();
+    }
+
+    void _Help(Rect rect, int slots)
+    {
+        rect.height += slots * rect.height;
+        //rect.x += 2 * rect.width;
+        //if (dropdown != Dropdown.File) return;
+        GUILayout.BeginHorizontal();
+        {
+            GUILayout.Space(rect.xMin);
+            GUILayout.BeginVertical();
+            {
+                if (GUILayout.Button("Manual", "dd"))
+                {
+                    index = 100;
+                    dropdown = Dropdown.None;
+                    return;
+                }
+                if (GUILayout.Button("Keyboard Commands", "dd"))
+                {
+                    index = 100;
+                    dropdown = Dropdown.None;
+                    return;
+                }
+                if (GUILayout.Button("About", "dd"))
+                {
+                    index = 100;
+                    dropdown = Dropdown.None;
+                    return;
+                }
+            }
+            GUILayout.EndVertical();
+        }
+        GUILayout.EndHorizontal();
+        var mp = Input.mousePosition;
+        mp.y = UnityEngine.Screen.height - mp.y;
+        if (mp.x <= rect.xMax
+            && mp.x >= rect.xMin
+            && mp.y <= rect.yMax
+            && mp.y >= rect.yMin)
+        {
+            index = 3;
+        }
+        else
+        {
+            index = 100;
+            dropdown = Dropdown.None;
+        }
+    }
     public void _Window(Rect rect, int slots)
     {
         rect.height += slots * rect.height;
@@ -315,55 +449,7 @@ public class InspectorT : InspectorManager
             && mp.y <= rect.yMax
             && mp.y >= rect.yMin)
         {
-            index = 2;
-        }
-        else
-        {
-            index = 100;
-            dropdown = Dropdown.None;
-        }
-    }
-
-    void _Help(Rect rect, int slots)
-    {
-        rect.height += slots * rect.height;
-        //rect.x += 2 * rect.width;
-        //if (dropdown != Dropdown.File) return;
-        GUILayout.BeginHorizontal();
-        {
-            GUILayout.Space(rect.xMin);
-            GUILayout.BeginVertical();
-            {
-                if (GUILayout.Button("Manual","dd"))
-                {
-                    index = 100;
-                    dropdown = Dropdown.None;
-                    return;
-                }
-                if (GUILayout.Button("Keyboard Commands", "dd"))
-                {
-                    index = 100;
-                    dropdown = Dropdown.None;
-                    return;
-                }
-                if (GUILayout.Button("About", "dd"))
-                {
-                    index = 100;
-                    dropdown = Dropdown.None;
-                    return;
-                }
-            }
-            GUILayout.EndVertical();
-        }
-        GUILayout.EndHorizontal();
-        var mp = Input.mousePosition;
-        mp.y = UnityEngine.Screen.height - mp.y;
-        if (mp.x <= rect.xMax
-            && mp.x >= rect.xMin
-            && mp.y <= rect.yMax
-            && mp.y >= rect.yMin)
-        {
-            index = 3;
+            index = 4;
         }
         else
         {

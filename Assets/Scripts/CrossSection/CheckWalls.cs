@@ -7,7 +7,7 @@ public class CheckWalls
     Dictionary<float, List<csLine>> CSs = new Dictionary<float, List<csLine>>();
     public CheckWalls()
     {
-        CSs = cSection.csLines;
+        CSs = cSectionGCD.csLines;
         foreach (var cs in CSs) // Each Slice
         {
             foreach (var line in cs.Value) // Each Line In Slice

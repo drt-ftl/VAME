@@ -107,12 +107,7 @@ public class VoxelClass
             variance += Mathf.Pow(average - ln, 2);
         }
         StandardDeviation = Mathf.Pow(variance, 0.5f);
-        MeanDistance = MeanDistance / count;
-        if (Voxel.GetComponent<SingleCube>().Id == 170)
-        {
-            MonoBehaviour.print(count);
-            MonoBehaviour.print(MeanDistance);
-        }
+        MeanDistance = MeanDistance / count;        
     }
     public void DistanceBetweenSkewLines()
     {

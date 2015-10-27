@@ -166,7 +166,6 @@ public class MakeMesh : MonoBehaviour
 
         mesh_b.RecalculateNormals();
         mesh_b.Optimize();
-        var cs = new cSection(0.02f);
     }
 
     public Vector3[] GetTriangleVertices(int id)
