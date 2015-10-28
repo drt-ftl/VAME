@@ -47,19 +47,90 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Forms\SlicerForm\Form1.Designer.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Form1.cs">
+    <Compile Include="Assets\Forms\SlicerForm\Backup\ColorSlider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup\ValueChangedEventArgs.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup\ValueChangedHandler.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\AddNewColorSwatchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorConverter.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorFieldPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorRenderingHelper.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSelectedEventArgs.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpace.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceComponent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceComponentEventHandler.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceComponentTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceEventHandler.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatch.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatchPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatchSelectedHandler.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatchXml.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\ComponentUnit.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\DragForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\HSB.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\HexTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\HsbColorSpace.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\IColorSpaceStructure.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\RGB.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup1\RgbColorSpace.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\Caret.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\Gdi32.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\HitTestValues.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\ImageManipulation.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\ImageManipulationException.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\RasterOperationCodes.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\Resources.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\ShowWindowMessages.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\User32.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\Window.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup2\WindowsMessages.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\Backup3\AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\SlicerForm\Backup3\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Assets\Forms\SlicerForm\Program.cs" />
     <Compile Include="Assets\Forms\SlicerForm\Properties\AssemblyInfo.cs" />
     <Compile Include="Assets\Forms\SlicerForm\Properties\Resources.Designer.cs" />
     <Compile Include="Assets\Forms\SlicerForm\Properties\Settings.Designer.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\SlicerForm.Designer.cs" />
+    <Compile Include="Assets\Forms\SlicerForm\SlicerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Assets\Scripts\CameraControl.cs" />
     <Compile Include="Assets\Scripts\CrossSection\CheckWalls.cs" />
+    <Compile Include="Assets\Scripts\CrossSection\Sloxel.cs" />
     <Compile Include="Assets\Scripts\CrossSection\Triangle.cs" />
     <Compile Include="Assets\Scripts\CrossSection\cSection.cs" />
     <Compile Include="Assets\Scripts\CrossSection\cSectionGCD.cs" />
@@ -99,6 +170,7 @@
     <None Include="Assets\Shaders\UnityVC\StandardVC.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ShowAlphaChannel.shader" />
     <None Include="Assets\Shaders\UnityVC\StandardSpecularVC.shader" />
+    <None Include="Assets\Forms\SlicerForm\Backup1\ColorSwatches.xml" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SunShaftsComposite.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurves.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ScreenSpaceAmbientObscurance.shader" />
@@ -163,6 +235,7 @@
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\LensFlareCreate.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\EdgeDetectNormals.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\PrepareSunShaftsBlur.shader" />
+    <None Include="Assets\Forms\SlicerForm\bin\Debug\CustomSwatches.xml" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\Blend.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SimpleClear.shader" />

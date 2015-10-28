@@ -49,33 +49,4 @@ C:\Users\David\Documents\Unity5\Additive\GCode Generator\VAME\Temp\bin\Debug\Uni
 C:\Users\David\Documents\Unity5\Additive\GCode Generator\VAME\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
 C:\Users\David\Documents\Unity5\Additive\GCode Generator\VAME\obj\Debug\Assembly-CSharp.dll
 C:\Users\David\Documents\Unity5\Additive\GCode Generator\VAME\obj\Debug\Assembly-CSharp.pdb
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Assembly-CSharp.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Assembly-CSharp.pdb
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\System.Windows.Forms.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEditor.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEditor.iOS.Extensions.Xcode.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.Analytics.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.Networking.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.UI.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Mono.Cecil.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Unity.SerializationLogic.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Unity.DataContract.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\ICSharpCode.NRefactory.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Unity.UNetWeaver.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Unity.CecilTools.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Mono.Cecil.Pdb.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Mono.Cecil.Mdb.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.xml
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEditor.xml
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.UI.xml
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.Networking.xml
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.Analytics.xml
 C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp-vs.csprojResolveAssemblyReference.cache
-C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp.dll
-C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp.pdb
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\MakarovDev.ExpandCollapsePanel.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\System.Data.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\System.Drawing.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\MakarovDev.ExpandCollapsePanel.pdb

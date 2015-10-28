@@ -28,7 +28,7 @@ public class InspectorT : InspectorManager
     [DllImport("user32.dll")]
     private static extern void SaveFileDialog();
     cSectionGCD csGCD;
-    public static Form1 slicerForm;
+    public static SlicerForm.SlicerForm slicerForm;
 
 
 
@@ -318,8 +318,11 @@ public class InspectorT : InspectorManager
                 }
                 if (GUILayout.Button("Slicer Panel", "dd"))
                 {
-                    slicerForm = new Form1();
-                    Form1.buttonPressed += ButtonPressed;                    
+                    if (slicerForm == null)
+                    {
+                        slicerForm = new SlicerForm.SlicerForm();
+                        SlicerForm.SlicerForm.buttonPressed += ButtonPressed;
+                    }                  
                     slicerForm.Show();
                     index = 100;
                     dropdown = Dropdown.None;
@@ -366,6 +369,9 @@ public class InspectorT : InspectorManager
                 cSectionGCD.csMode = cSectionGCD.CsMode.ByGcdCode;
                 break;
             case "Radio_wt":
+                slicerForm.trackBar1.Minimum = 1;
+                slicerForm.trackBar1.Maximum = 100;
+                slicerForm.trackBar1.Value = 25;
                 cSectionGCD.csMode = cSectionGCD.CsMode.WallThickness;
                 break;
             case "Radio_none":

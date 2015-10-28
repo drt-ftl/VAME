@@ -13,11 +13,11 @@ C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\bin\Debug\SlicerFor
 C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\bin\Debug\SlicerForm.exe
 C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\bin\Debug\SlicerForm.pdb
 C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\bin\Debug\MakarovDev.ExpandCollapsePanel.dll
+C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\bin\Debug\UnityEngine.dll
 C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\bin\Debug\MakarovDev.ExpandCollapsePanel.pdb
 C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\obj\Debug\SlicerForm.csprojResolveAssemblyReference.cache
-C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\obj\Debug\SlicerForm.Form1.resources
+C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\obj\Debug\SlicerForm.SlicerForm.resources
 C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\obj\Debug\SlicerForm.Properties.Resources.resources
 C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\obj\Debug\SlicerForm.csproj.GenerateResource.Cache
 C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\obj\Debug\SlicerForm.exe
 C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\obj\Debug\SlicerForm.pdb
-C:\Users\David\Documents\GitHub\VAME\Assets\Forms\SlicerForm\bin\Debug\UnityEngine.dll

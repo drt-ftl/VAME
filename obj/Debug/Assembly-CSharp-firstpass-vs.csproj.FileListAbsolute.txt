@@ -25,6 +25,9 @@ C:\Users\David\Documents\Unity5\Additive\GCode Generator\gCodeGenerator\obj\Debu
 C:\Users\David\Documents\Unity5\Additive\GCode Generator\gCodeGenerator\obj\Debug\Assembly-CSharp-firstpass.pdb
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
+C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\MakarovDev.ExpandCollapsePanel.dll
+C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\System.Data.dll
+C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\System.Drawing.dll
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\System.Windows.Forms.dll
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEditor.dll
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEditor.iOS.Extensions.Xcode.dll
@@ -45,10 +48,6 @@ C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEditor.xml
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.UI.xml
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.Networking.xml
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.Analytics.xml
-C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp-firstpass-vs.csprojResolveAssemblyReference.cache
+C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\MakarovDev.ExpandCollapsePanel.pdb
 C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp-firstpass.pdb
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\MakarovDev.ExpandCollapsePanel.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\System.Data.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\System.Drawing.dll
-C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\MakarovDev.ExpandCollapsePanel.pdb

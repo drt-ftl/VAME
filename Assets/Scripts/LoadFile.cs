@@ -92,6 +92,7 @@ public class LoadFile : MonoBehaviour
 
     void OnApplicationQuit()
     {
+        if (InspectorT.slicerForm != null)
         InspectorT.slicerForm.Close();
     }
 	public void loadFile()
@@ -244,18 +245,17 @@ public class LoadFile : MonoBehaviour
         if (!cSectionGCD.ready) return;
         foreach (var cs in cSectionGCD.csLines)
         {
-            var col = gridColor;
+            int low = 0;
+            int high = 0;
+            var col = new Color(0f, 0f, 1f, 1f);
             switch (cSectionGCD.csMode)
             {
                 case cSectionGCD.CsMode.StepThrough:
                     if (cSectionGCD.layerHeights.IndexOf(cs.Key) != InspectorT.slicerForm.trackBar1.Value) col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
                     break;
                 case cSectionGCD.CsMode.ByGcdCode:
-                    var low = cSectionGCD.layerHeights.IndexOf(gcdLines[(int)InspectorL.gcdTimeSliderMin].p1.y);
-                    var high = cSectionGCD.layerHeights.IndexOf(gcdLines[(int)InspectorL.gcdTimeSlider].p1.y);
-                    if (cSectionGCD.layerHeights.IndexOf(cs.Key) <= low
-                        && cSectionGCD.layerHeights.IndexOf(cs.Key) > high)
-                        col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
+                    low = cSectionGCD.layerHeights.IndexOf(gcdLines[(int)InspectorL.gcdTimeSliderMin].p1.y);
+                    high = cSectionGCD.layerHeights.IndexOf(gcdLines[(int)InspectorL.gcdTimeSlider].p1.y);                    
                     break;
                 case cSectionGCD.CsMode.WallThickness:
                     break;
@@ -270,14 +270,17 @@ public class LoadFile : MonoBehaviour
                     case cSectionGCD.CsMode.StepThrough:
                         break;
                     case cSectionGCD.CsMode.ByGcdCode:
+                        if (cSectionGCD.layerHeights.IndexOf(cs.Key) <= low
+                        || cSectionGCD.layerHeights.IndexOf(cs.Key) > high)
+                            col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
+                        else col.a = 1.0f;
                         break;
                     case cSectionGCD.CsMode.WallThickness:
-                        if (line.WallThickness < 100)
+                        var minWT = InspectorT.slicerForm.trackBar1.Value / 100f;
+                        if (line.WallThickness < minWT)
                         {
-                            var badness = 1.0f - line.WallThickness;
-                            col.g = 1.0f - 1.0f * badness;
-                            col.r = -12.0f + 24f * badness;
-                            col.b = 0.5f - 0.6f * badness;
+                            col.r = 1.0f - line.WallThickness / minWT;
+                            col.b = line.WallThickness / minWT;
                         }
                         break;
                 }

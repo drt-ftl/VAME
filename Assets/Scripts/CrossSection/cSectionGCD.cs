@@ -61,6 +61,7 @@ public class cSectionGCD
         }
         var wt = new CheckWalls();
         ready = true;
+        if (InspectorT.slicerForm != null)
         InspectorT.slicerForm.trackBar1.Maximum = cSectionGCD.csLines.Count - 1;
     }
     public void CrossSection()
@@ -104,7 +105,7 @@ public class cSectionGCD
     public void GetLineEqn(Triangle t)
     {
         var h = csPlaneEqn.w;
-        
+        var norm = Vector3.Normalize(t.Normal);
         var P = t.Points[0];
         var Q = t.Points[1];
         var R = t.Points[2];
@@ -112,34 +113,34 @@ public class cSectionGCD
         var PQ = Q - P;
         var PR = R - P;
         var RQ = Q - R;
-        if (P.y == h)
+        if (P.y == h) // P is on plane
         {
             if (Q.y == h) //PQ ParallelToPlane
             {
-                csLines[h].Add(new csLine(P, Q, t.Normal));
+                csLines[h].Add(new csLine(P, Q, norm));
             }
             else if (R.y == h) //RP ParallelToPlane
             {
-                csLines[h].Add(new csLine(R, P, t.Normal));
+                csLines[h].Add(new csLine(R, P, norm));
             }
             else if ((Q.y > h && R.y < h) || (Q.y < h && R.y > h))
             {
-                csLines[h].Add(new csLine(P, GetIntersectionPoint(R, Q), t.Normal));
+                csLines[h].Add(new csLine(P, GetIntersectionPoint(R, Q), norm));
             }
         }
         else if (Q.y == h)
         {
             if (R.y == h) // RQ Parallel
-                csLines[h].Add(new csLine(R, Q, t.Normal));
+                csLines[h].Add(new csLine(R, Q, norm));
             else if ((R.y > h && P.y < h) || (R.y < h && P.y > h))
             {
-                csLines[h].Add(new csLine(Q, GetIntersectionPoint(R, P), t.Normal));
+                csLines[h].Add(new csLine(Q, GetIntersectionPoint(R, P), norm));
             }
         }
         else if (R.y == h &&
             ((Q.y > h && P.y < h) || (Q.y < h && P.y > h)))
         {
-            csLines[h].Add(new csLine(R, GetIntersectionPoint(P, Q), t.Normal));
+            csLines[h].Add(new csLine(R, GetIntersectionPoint(P, Q), norm));
         }
         else // no vertices on plane
         {
@@ -158,7 +159,7 @@ public class cSectionGCD
             }
             if (pts.Count > 1)
             {
-                csLines[h].Add(new csLine(pts[0], pts[1], t.Normal));
+                csLines[h].Add(new csLine(pts[0], pts[1], norm));
             }
         }
 
