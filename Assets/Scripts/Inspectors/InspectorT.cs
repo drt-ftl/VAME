@@ -196,6 +196,7 @@ public class InspectorT : InspectorManager
 
             if (GUILayout.Button("Quit", "dd"))
             {
+                InspectorT.slicerForm.Close();
                 UnityEngine.Application.Quit();
             }
         }
@@ -318,7 +319,7 @@ public class InspectorT : InspectorManager
                 if (GUILayout.Button("Slicer Panel", "dd"))
                 {
                     slicerForm = new Form1();
-                    Form1.buttonPressed += ButtonPressed;
+                    Form1.buttonPressed += ButtonPressed;                    
                     slicerForm.Show();
                     index = 100;
                     dropdown = Dropdown.None;
@@ -353,7 +354,26 @@ public class InspectorT : InspectorManager
 
     private void ButtonPressed(string _name, bool _active)
     {
-        csGCD = new cSectionGCD();
+        switch (_name)
+        {
+            case "Slice":
+                csGCD = new cSectionGCD();
+                break;
+            case "Radio_step":
+                cSectionGCD.csMode = cSectionGCD.CsMode.StepThrough;
+                break;
+            case "Radio_gcd":
+                cSectionGCD.csMode = cSectionGCD.CsMode.ByGcdCode;
+                break;
+            case "Radio_wt":
+                cSectionGCD.csMode = cSectionGCD.CsMode.WallThickness;
+                break;
+            case "Radio_none":
+                cSectionGCD.csMode = cSectionGCD.CsMode.None;
+                break;
+            default:
+                break;
+        }
     }
 
     void _Help(Rect rect, int slots)

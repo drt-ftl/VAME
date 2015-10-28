@@ -90,6 +90,10 @@ public class LoadFile : MonoBehaviour
         MM.Begin();
     }
 
+    void OnApplicationQuit()
+    {
+        InspectorT.slicerForm.Close();
+    }
 	public void loadFile()
 	{
 		loading = true;
@@ -240,15 +244,42 @@ public class LoadFile : MonoBehaviour
         if (!cSectionGCD.ready) return;
         foreach (var cs in cSectionGCD.csLines)
         {
+            var col = gridColor;
+            switch (cSectionGCD.csMode)
+            {
+                case cSectionGCD.CsMode.StepThrough:
+                    if (cSectionGCD.layerHeights.IndexOf(cs.Key) != InspectorT.slicerForm.trackBar1.Value) col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
+                    break;
+                case cSectionGCD.CsMode.ByGcdCode:
+                    var low = cSectionGCD.layerHeights.IndexOf(gcdLines[(int)InspectorL.gcdTimeSliderMin].p1.y);
+                    var high = cSectionGCD.layerHeights.IndexOf(gcdLines[(int)InspectorL.gcdTimeSlider].p1.y);
+                    if (cSectionGCD.layerHeights.IndexOf(cs.Key) <= low
+                        && cSectionGCD.layerHeights.IndexOf(cs.Key) > high)
+                        col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
+                    break;
+                case cSectionGCD.CsMode.WallThickness:
+                    break;
+                default:
+                    break;
+            }
+            
             foreach (var line in cs.Value)
             {
-                var col = gridColor;
-                if (line.WallThickness < 100)
+                switch (cSectionGCD.csMode)
                 {
-                    var badness = 1.0f - line.WallThickness;
-                    col.g = 1.0f - 1.0f * badness;
-                    col.r = -12.0f + 24f * badness;
-                    col.b = 0.5f - 0.6f * badness;
+                    case cSectionGCD.CsMode.StepThrough:
+                        break;
+                    case cSectionGCD.CsMode.ByGcdCode:
+                        break;
+                    case cSectionGCD.CsMode.WallThickness:
+                        if (line.WallThickness < 100)
+                        {
+                            var badness = 1.0f - line.WallThickness;
+                            col.g = 1.0f - 1.0f * badness;
+                            col.r = -12.0f + 24f * badness;
+                            col.b = 0.5f - 0.6f * badness;
+                        }
+                        break;
                 }
                 var a = line.Endpoint0;
                 var b = line.Endpoint1;

@@ -81,14 +81,12 @@
     <Compile Include="Assets\Scripts\Paths\LineSegment.cs" />
     <Compile Include="Assets\Scripts\Paths\PathVoxelizer.cs" />
     <Compile Include="Assets\Scripts\Paths\ThinWallCheck.cs" />
-    <Compile Include="Assets\Scripts\Stl\LoadSTL.cs" />
     <Compile Include="Assets\Scripts\Stl\MakeMesh.cs" />
     <Compile Include="Assets\Scripts\Stl\MeshVoxelizer.cs" />
     <Compile Include="Assets\Scripts\Stl\PathFitter.cs" />
     <Compile Include="Assets\Scripts\Stl\StlInterpreter.cs" />
     <Compile Include="Assets\Scripts\Stl\SurfaceVoxelizer.cs" />
     <Compile Include="Assets\Scripts\Stl\VoxelClass.cs" />
-    <Compile Include="Assets\Scripts\Stl\VoxelizeSTL2.cs" />
     <Compile Include="Assets\Scripts\Voxels\Voxelize.cs" />
     <Compile Include="Assets\ShowSkin.cs" />
     <Compile Include="Assets\SingleCube.cs" />

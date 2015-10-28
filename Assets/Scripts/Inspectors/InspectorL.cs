@@ -143,6 +143,7 @@ public class InspectorL : InspectorManager
             // Quit
             if (GUILayout.Button("Quit"))
             {
+                InspectorT.slicerForm.Close();
                 Application.Quit();
             }
         }

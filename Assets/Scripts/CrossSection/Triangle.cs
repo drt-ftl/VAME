@@ -20,4 +20,5 @@ public class Triangle
     public List<Vector3> LineInts { get; set; }
     public List<Vector3> Endpoint1 { get; set; }
     public List<Vector3> Endpoint2 { get; set; }
+    public Vector3 Normal { get; set; }
 }

@@ -39,10 +39,10 @@ public class InspectorManager : MonoBehaviour
 
     public void ClearSTL(int i)
     {
-        cSection.ready = false;
-        cSection.triangles.Clear();
-        cSection.csLines.Clear();
-        cSection.csPlaneEqn = new Vector4(0f, 1f, 0f, 0f);
+        cSectionGCD.ready = false;
+        cSectionGCD.triangles.Clear();
+        cSectionGCD.csLines.Clear();
+        cSectionGCD.csPlaneEqn = new Vector4(0f, 1f, 0f, 0f);
         if (i == 0)
         {
             LoadFile.stlCodeLoaded = false;

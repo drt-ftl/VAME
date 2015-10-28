@@ -32,5 +32,25 @@ namespace SlicerForm
         {
             ButtonPressed("Slice", true);
         }
+
+        private void radioButtonSingleStep_CheckedChanged(object sender, EventArgs e)
+        {
+            ButtonPressed("Radio_step", true);
+        }
+
+        private void radioButtonByGCD_CheckedChanged(object sender, EventArgs e)
+        {
+            ButtonPressed("Radio_gcd", true);
+        }
+
+        private void None_CheckedChanged(object sender, EventArgs e)
+        {
+            ButtonPressed("Radio_none", true);
+        }
+
+        private void WallThickness_CheckedChanged(object sender, EventArgs e)
+        {
+            ButtonPressed("Radio_wt", true);
+        }
     }
 }
