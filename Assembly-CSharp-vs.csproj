@@ -1,279 +1,242 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.20506</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FA999C87-8CEF-C01D-DEF7-8F34DCDA9EBF}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>
-    </RootNamespace>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <BaseDirectory>Assets</BaseDirectory>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+	<ProductVersion>10.0.20506</ProductVersion>
+	<SchemaVersion>2.0</SchemaVersion>
+	<ProjectGuid>{FA999C87-8CEF-C01D-DEF7-8F34DCDA9EBF}</ProjectGuid>
+	<OutputType>Library</OutputType>
+	<AppDesignerFolder>Properties</AppDesignerFolder>
+	<RootNamespace></RootNamespace>
+	<AssemblyName>Assembly-CSharp</AssemblyName>
+	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	<FileAlignment>512</FileAlignment>
+	<BaseDirectory>Assets</BaseDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_1_1;UNITY_5_1;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PHYSICS_PHYSX3;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_LICENSE;ENABLE_AUDIOMIXER_SUSPEND;ENABLE_EDITOR_METRICS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;CROSS_PLATFORM_INPUT</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0169</NoWarn>
+	<DebugSymbols>true</DebugSymbols>
+	<DebugType>full</DebugType>
+	<Optimize>false</Optimize>
+	<OutputPath>Temp\bin\Debug\</OutputPath>
+	<DefineConstants>DEBUG;TRACE;UNITY_5_1_1;UNITY_5_1;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PHYSICS_PHYSX3;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_LICENSE;ENABLE_AUDIOMIXER_SUSPEND;ENABLE_EDITOR_METRICS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;CROSS_PLATFORM_INPUT</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>Temp\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0169</NoWarn>
+	<DebugType>pdbonly</DebugType>
+	<Optimize>true</Optimize>
+	<OutputPath>Temp\bin\Release\</OutputPath>
+	<DefineConstants>TRACE</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+	<NoWarn>0169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
+	<Reference Include="System" />
     <Reference Include="System.XML" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="UnityEngine">
-      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
-    </Reference>
+	<Reference Include="System.Core" />
+	<Reference Include="System.Xml.Linq" />
+	<Reference Include="UnityEngine">
+	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	</Reference>
+	<Reference Include="UnityEditor">
+	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	</Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Forms\SlicerForm\Backup\ColorSlider.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup\ValueChangedEventArgs.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup\ValueChangedHandler.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\AddNewColorSwatchForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorConverter.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorFieldPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorRenderingHelper.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSelectedEventArgs.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpace.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceComponent.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceComponentEventHandler.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceComponentTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceEventHandler.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatch.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatchPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatchSelectedHandler.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatchXml.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\ComponentUnit.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\DragForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\HSB.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\HexTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\HsbColorSpace.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\IColorSpaceStructure.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\RGB.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup1\RgbColorSpace.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\Caret.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\Gdi32.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\HitTestValues.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\ImageManipulation.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\ImageManipulationException.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\RasterOperationCodes.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\Resources.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\ShowWindowMessages.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\User32.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\Window.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup2\WindowsMessages.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Backup3\AboutForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Backup3\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\Program.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Properties\AssemblyInfo.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Properties\Resources.Designer.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\Properties\Settings.Designer.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\SlicerForm.Designer.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\SlicerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
-    <Compile Include="Assets\Scripts\CameraControl.cs" />
-    <Compile Include="Assets\Scripts\CrossSection\CheckWalls.cs" />
-    <Compile Include="Assets\Scripts\CrossSection\Sloxel.cs" />
-    <Compile Include="Assets\Scripts\CrossSection\Triangle.cs" />
-    <Compile Include="Assets\Scripts\CrossSection\cSection.cs" />
-    <Compile Include="Assets\Scripts\CrossSection\cSectionGCD.cs" />
-    <Compile Include="Assets\Scripts\CrossSection\csLine.cs" />
-    <Compile Include="Assets\Scripts\DxfLineConverter.cs" />
-    <Compile Include="Assets\Scripts\DxfSurfaceConverter.cs" />
-    <Compile Include="Assets\Scripts\Inspectors\InspectorL.cs" />
-    <Compile Include="Assets\Scripts\Inspectors\InspectorManager.cs" />
-    <Compile Include="Assets\Scripts\Inspectors\InspectorR.cs" />
-    <Compile Include="Assets\Scripts\Inspectors\InspectorT.cs" />
-    <Compile Include="Assets\Scripts\Inspectors\Popup.cs" />
-    <Compile Include="Assets\Scripts\Inspectors\SliInterpreter.cs" />
-    <Compile Include="Assets\Scripts\Inspectors\Slicer.cs" />
-    <Compile Include="Assets\Scripts\Inspectors\Time.cs" />
-    <Compile Include="Assets\Scripts\LoadFile.cs" />
-    <Compile Include="Assets\Scripts\Paths\DmcInterpreter.cs" />
-    <Compile Include="Assets\Scripts\Paths\GcdInterpreter.cs" />
-    <Compile Include="Assets\Scripts\Paths\JobInterpreter.cs" />
-    <Compile Include="Assets\Scripts\Paths\LineSegment.cs" />
-    <Compile Include="Assets\Scripts\Paths\PathVoxelizer.cs" />
-    <Compile Include="Assets\Scripts\Paths\ThinWallCheck.cs" />
-    <Compile Include="Assets\Scripts\Stl\MakeMesh.cs" />
-    <Compile Include="Assets\Scripts\Stl\MeshVoxelizer.cs" />
-    <Compile Include="Assets\Scripts\Stl\PathFitter.cs" />
-    <Compile Include="Assets\Scripts\Stl\StlInterpreter.cs" />
-    <Compile Include="Assets\Scripts\Stl\SurfaceVoxelizer.cs" />
-    <Compile Include="Assets\Scripts\Stl\VoxelClass.cs" />
-    <Compile Include="Assets\Scripts\Voxels\Voxelize.cs" />
-    <Compile Include="Assets\ShowSkin.cs" />
-    <Compile Include="Assets\SingleCube.cs" />
-    <Compile Include="Assets\vTest.cs" />
-    <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
-    <None Include="Assets\Shaders\UnityVC\StandardVC.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ShowAlphaChannel.shader" />
-    <None Include="Assets\Shaders\UnityVC\StandardSpecularVC.shader" />
-    <None Include="Assets\Forms\SlicerForm\Backup1\ColorSwatches.xml" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SunShaftsComposite.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurves.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ScreenSpaceAmbientObscurance.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\NFAA.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\VignetteShader.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldScatter.shader" />
-    <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularSmooth.shader" />
-    <None Include="Assets\Standard Assets\Effects\Projectors\Guidelines.txt" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\MotionBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBloom.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\MinMaxReduction.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\SSAA.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\RadialBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ContrastComposite.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset3.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\FisheyeShader.shader" />
-    <None Include="Assets\Forms\SlicerForm\obj\Debug\SlicerForm.csproj.FileListAbsolute.txt" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Apply.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\frag_ao.cginc" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfField34.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SSAOShader.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ConvertDepth.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurvesSimple.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderYUV.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CreaseApply.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ChromaticAberrationShader.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GlobalFog.shader" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Luminance.shader" />
-    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionSelective.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\Bokeh34.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlurDX11.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />
-    <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MultiPassHollywoodFlares.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\DLAA.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrainDX11.shader" />
-    <None Include="Assets\Shaders\UnityVC\UnityVC.cginc" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter2.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableBlur.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\MotionBlurClear.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GrayscaleEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SepiaToneEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\TwirlEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\VortexEffect.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Adaptation.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrain.shader" />
-    <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\VignettingShader.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA2.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrection3DLut.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\LensFlareCreate.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\EdgeDetectNormals.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\PrepareSunShaftsBlur.shader" />
-    <None Include="Assets\Forms\SlicerForm\bin\Debug\CustomSwatches.xml" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\Blend.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SimpleClear.shader" />
-    <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularDisplacement.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA3Console.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset2.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
-    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendForBloom.shader" />
-    <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Analytics">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data">
-      <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Forms/SlicerForm/System.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Drawing">
-      <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Forms/SlicerForm/System.Drawing.dll</HintPath>
-    </Reference>
-    <Reference Include="MakarovDev.ExpandCollapsePanel">
-      <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Forms/SlicerForm/bin/Debug/MakarovDev.ExpandCollapsePanel.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Forms">
-      <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Plugins/System.Windows.Forms.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
+     <Compile Include="Assets\Forms\SlicerForm\Backup\ColorSlider.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup\Form1.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup\ValueChangedEventArgs.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup\ValueChangedHandler.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\AddNewColorSwatchForm.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorConverter.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorFieldPanel.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorPanel.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorRenderingHelper.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSelectedEventArgs.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpace.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceComponent.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceComponentEventHandler.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceComponentTextBox.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSpaceEventHandler.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatch.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatchPanel.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatchSelectedHandler.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ColorSwatchXml.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\ComponentUnit.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\DragForm.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\HSB.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\HexTextBox.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\HsbColorSpace.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\IColorSpaceStructure.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\RGB.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup1\RgbColorSpace.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\Caret.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\Gdi32.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\HitTestValues.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\ImageManipulation.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\ImageManipulationException.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\RasterOperationCodes.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\Resources.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\ShowWindowMessages.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\User32.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\Window.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup2\WindowsMessages.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup3\AboutForm.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Backup3\MainForm.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Program.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Properties\AssemblyInfo.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Properties\Resources.Designer.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\Properties\Settings.Designer.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\SlicerForm.Designer.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\SlicerForm.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+     <Compile Include="Assets\Forms\SlicerForm\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+     <Compile Include="Assets\Scripts\CameraControl.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\CheckWalls.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\CrossSectionLayer.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\Sloxel.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\Triangle.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\cSection.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\cSectionGCD.cs" />
+     <Compile Include="Assets\Scripts\CrossSection\csLine.cs" />
+     <Compile Include="Assets\Scripts\DxfLineConverter.cs" />
+     <Compile Include="Assets\Scripts\DxfSurfaceConverter.cs" />
+     <Compile Include="Assets\Scripts\Inspectors\InspectorL.cs" />
+     <Compile Include="Assets\Scripts\Inspectors\InspectorManager.cs" />
+     <Compile Include="Assets\Scripts\Inspectors\InspectorR.cs" />
+     <Compile Include="Assets\Scripts\Inspectors\InspectorT.cs" />
+     <Compile Include="Assets\Scripts\Inspectors\Popup.cs" />
+     <Compile Include="Assets\Scripts\Inspectors\SliInterpreter.cs" />
+     <Compile Include="Assets\Scripts\Inspectors\Slicer.cs" />
+     <Compile Include="Assets\Scripts\Inspectors\Time.cs" />
+     <Compile Include="Assets\Scripts\LoadFile.cs" />
+     <Compile Include="Assets\Scripts\Paths\DmcInterpreter.cs" />
+     <Compile Include="Assets\Scripts\Paths\GcdInterpreter.cs" />
+     <Compile Include="Assets\Scripts\Paths\JobInterpreter.cs" />
+     <Compile Include="Assets\Scripts\Paths\LineSegment.cs" />
+     <Compile Include="Assets\Scripts\Paths\PathVoxelizer.cs" />
+     <Compile Include="Assets\Scripts\Paths\ThinWallCheck.cs" />
+     <Compile Include="Assets\Scripts\Stl\MakeMesh.cs" />
+     <Compile Include="Assets\Scripts\Stl\MeshVoxelizer.cs" />
+     <Compile Include="Assets\Scripts\Stl\PathFitter.cs" />
+     <Compile Include="Assets\Scripts\Stl\StlInterpreter.cs" />
+     <Compile Include="Assets\Scripts\Stl\SurfaceVoxelizer.cs" />
+     <Compile Include="Assets\Scripts\Stl\VoxelClass.cs" />
+     <Compile Include="Assets\Scripts\Voxels\Voxelize.cs" />
+     <Compile Include="Assets\ShowSkin.cs" />
+     <Compile Include="Assets\SingleCube.cs" />
+     <Compile Include="Assets\vTest.cs" />
+     <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
+     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
+     <None Include="Assets\Shaders\UnityVC\StandardVC.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ShowAlphaChannel.shader" />
+     <None Include="Assets\Shaders\UnityVC\StandardSpecularVC.shader" />
+     <None Include="Assets\Forms\SlicerForm\Backup1\ColorSwatches.xml" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SunShaftsComposite.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurves.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ScreenSpaceAmbientObscurance.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\NFAA.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\VignetteShader.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldScatter.shader" />
+     <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularSmooth.shader" />
+     <None Include="Assets\Standard Assets\Effects\Projectors\Guidelines.txt" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\MotionBlur.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBloom.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\MinMaxReduction.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\SSAA.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\RadialBlur.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ContrastComposite.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset3.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\FisheyeShader.shader" />
+     <None Include="Assets\Forms\SlicerForm\obj\Debug\SlicerForm.csproj.FileListAbsolute.txt" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Apply.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\frag_ao.cginc" />
+     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfField34.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBlur.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SSAOShader.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ConvertDepth.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurvesSimple.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderYUV.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CreaseApply.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ChromaticAberrationShader.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GlobalFog.shader" />
+     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Luminance.shader" />
+     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionSelective.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\Bokeh34.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlurDX11.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />
+     <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MultiPassHollywoodFlares.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlur.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\DLAA.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrainDX11.shader" />
+     <None Include="Assets\Shaders\UnityVC\UnityVC.cginc" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter2.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableBlur.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\MotionBlurClear.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionEffect.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GrayscaleEffect.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SepiaToneEffect.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\TwirlEffect.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\VortexEffect.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Adaptation.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrain.shader" />
+     <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\VignettingShader.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA2.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrection3DLut.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\LensFlareCreate.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\EdgeDetectNormals.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\PrepareSunShaftsBlur.shader" />
+     <None Include="Assets\Forms\SlicerForm\bin\Debug\CustomSwatches.xml" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\Blend.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SimpleClear.shader" />
+     <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularDisplacement.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA3Console.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset2.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
+     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendForBloom.shader" />
+ <Reference Include="UnityEngine.UI">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Analytics">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Data">
+ <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Forms/SlicerForm/System.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Drawing">
+ <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Forms/SlicerForm/System.Drawing.dll</HintPath>
+ </Reference>
+ <Reference Include="MakarovDev.ExpandCollapsePanel">
+ <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Forms/SlicerForm/bin/Debug/MakarovDev.ExpandCollapsePanel.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Windows.Forms">
+ <HintPath>C:/Users/David/Documents/GitHub/VAME/Assets/Plugins/System.Windows.Forms.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
-      <Project>{D91FD14E-6706-AE03-D157-8721153045CE}</Project>
-      <Name>Assembly-CSharp-firstpass-vs</Name>
-    </ProjectReference>
+      <Project>{D91FD14E-6706-AE03-D157-8721153045CE}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -283,4 +246,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  
 </Project>

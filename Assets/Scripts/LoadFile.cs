@@ -168,7 +168,7 @@ public class LoadFile : MonoBehaviour
                             gcdCodeLoaded = true;
                             if (InspectorR.voxelsLoaded)
                             {
-                                foreach (var v in MeshVoxelizer.voxels)
+                                foreach (var v in cSectionGCD.voxels)
                                 {
                                     v.Value.IntersectedByLines.Clear();
                                 }
@@ -231,7 +231,9 @@ public class LoadFile : MonoBehaviour
         var groupRectT = GetComponent<InspectorT>().MainRect;
         GUI.Window(2, groupRectT, GetComponent<InspectorT>().InspectorWindowT, "", "Toolbar");
         GUI.BringWindowToFront(2);
-        DrawCS();
+        //DrawCS();
+        DrawCSX();
+        DrawCSZ();
         if (gcdCodeLoaded)
             DrawPaths(Type.GCD);
         if (jobCodeLoaded)
@@ -243,7 +245,7 @@ public class LoadFile : MonoBehaviour
     private void DrawCS()
     {
         if (!cSectionGCD.ready) return;
-        foreach (var cs in cSectionGCD.csLines)
+        foreach (var cs in cSectionGCD.layers)
         {
             int low = 0;
             int high = 0;
@@ -251,7 +253,7 @@ public class LoadFile : MonoBehaviour
             switch (cSectionGCD.csMode)
             {
                 case cSectionGCD.CsMode.StepThrough:
-                    if (cSectionGCD.layerHeights.IndexOf(cs.Key) != InspectorT.slicerForm.trackBar1.Value) col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
+                    //if (cSectionGCD.layerHeights.IndexOf(cs.Key) != InspectorT.slicerForm.LayerTrackbar.Value) col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
                     break;
                 case cSectionGCD.CsMode.ByGcdCode:
                     low = cSectionGCD.layerHeights.IndexOf(gcdLines[(int)InspectorL.gcdTimeSliderMin].p1.y);
@@ -263,20 +265,20 @@ public class LoadFile : MonoBehaviour
                     break;
             }
             
-            foreach (var line in cs.Value)
+            foreach (var line in cs.Value.border)
             {
                 switch (cSectionGCD.csMode)
                 {
                     case cSectionGCD.CsMode.StepThrough:
                         break;
                     case cSectionGCD.CsMode.ByGcdCode:
-                        if (cSectionGCD.layerHeights.IndexOf(cs.Key) <= low
-                        || cSectionGCD.layerHeights.IndexOf(cs.Key) > high)
-                            col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
-                        else col.a = 1.0f;
+                        //if (cSectionGCD.layerHeights.IndexOf(cs.Key) <= low
+                        //|| cSectionGCD.layerHeights.IndexOf(cs.Key) > high)
+                        //    col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
+                        //else col.a = 1.0f;
                         break;
                     case cSectionGCD.CsMode.WallThickness:
-                        var minWT = InspectorT.slicerForm.trackBar1.Value / 100f;
+                        var minWT = InspectorT.slicerForm.LayerTrackbar.Value / 100f;
                         if (line.WallThickness < minWT)
                         {
                             col.r = 1.0f - line.WallThickness / minWT;
@@ -295,6 +297,54 @@ public class LoadFile : MonoBehaviour
             }
         }
         GUI.Label(new Rect(250, 100, 100, 300), "");
+    }
+
+    private void DrawCSX()
+    {
+        if (!cSectionGCD.ready) return;
+        //foreach (var cs in cSectionGCD.layers)
+        var y = gcdLines[(int)InspectorL.gcdTimeSlider].p1.y;
+        var sloxels = cSectionGCD.layers[y].Sloxels;
+        {
+            foreach (var slox in sloxels)
+            {
+                var dim = 1.0f / slox.Dim;
+                var a = slox.Position;
+                a.x -= dim / 2;
+                a.z -= dim / 2;
+                var b = a;
+                b.x += dim;
+                var c = b;
+                c.z += dim;
+                var d = c;
+                d.x -= dim;
+                graphMaterial.SetPass(0);
+                GL.Begin(GL.LINES);
+                GL.Color(gridColor);
+                GL.Vertex(a);
+                GL.Vertex(b);
+                GL.End();
+                GL.Begin(GL.LINES);
+                GL.Color(gridColor);
+                GL.Vertex(b);
+                GL.Vertex(c);
+                GL.End();
+                GL.Begin(GL.LINES);
+                GL.Color(gridColor);
+                GL.Vertex(c);
+                GL.Vertex(d);
+                GL.End();
+                GL.Begin(GL.LINES);
+                GL.Color(gridColor);
+                GL.Vertex(d);
+                GL.Vertex(a);
+                GL.End();
+            }
+        }
+        GUI.Label(new Rect(250, 100, 100, 300), "");
+    }
+    private void DrawCSZ()
+    {
     }
 
     private void DrawPaths(Type _type)
@@ -559,7 +609,7 @@ public class LoadFile : MonoBehaviour
                     }
                     else
                     {
-                        Camera.main.GetComponent<InspectorR>().OnVoxelize();
+                        //Camera.main.GetComponent<InspectorR>().OnVoxelize();
                         type = Type.AMF;
                     }
                 }

@@ -49,5 +49,6 @@ C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.UI.xml
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.Networking.xml
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\UnityEngine.Analytics.xml
 C:\Users\David\Documents\GitHub\VAME\Temp\bin\Debug\MakarovDev.ExpandCollapsePanel.pdb
+C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp-firstpass-vs.csprojResolveAssemblyReference.cache
 C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\David\Documents\GitHub\VAME\obj\Debug\Assembly-CSharp-firstpass.pdb

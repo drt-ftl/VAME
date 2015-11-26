@@ -281,11 +281,11 @@ public class InspectorT : InspectorManager
                 }
                 #endregion
                 #region Voxels
-                if (MeshVoxelizer.voxels.Count > 0)
+                if (cSectionGCD.voxels.Count > 0)
                 {
                     tw.WriteLine("|||ftlVAME Voxels BEGIN " + InspectorR.voxelVis.ToString("f2") + " " + InspectorR.resolution.ToString("f2"));
                     {
-                        foreach (var voxel in MeshVoxelizer.voxels)
+                        foreach (var voxel in cSectionGCD.voxels)
                         {
                             tw.WriteLine(voxel.Key.ToString());
                         }
@@ -369,9 +369,9 @@ public class InspectorT : InspectorManager
                 cSectionGCD.csMode = cSectionGCD.CsMode.ByGcdCode;
                 break;
             case "Radio_wt":
-                slicerForm.trackBar1.Minimum = 1;
-                slicerForm.trackBar1.Maximum = 100;
-                slicerForm.trackBar1.Value = 25;
+                slicerForm.LayerTrackbar.Minimum = 1;
+                slicerForm.LayerTrackbar.Maximum = 100;
+                slicerForm.LayerTrackbar.Value = 25;
                 cSectionGCD.csMode = cSectionGCD.CsMode.WallThickness;
                 break;
             case "Radio_none":

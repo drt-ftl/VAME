@@ -18,4 +18,6 @@ public class csLine
     public csLine Closest { get; set; }
     public float WallThickness { get; set; }
     public Vector3 Normal { get; set; }
+    public Triangle Triangle0 { get; set; }
+    public Triangle Triangle1 { get; set; }
 }

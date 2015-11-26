@@ -13,6 +13,6 @@ public class Sloxel
     public int Id { get; set; }
     public Vector2 GridPosition {get; set;}
     public Vector3 Position { get; set; }
-
-    
+    public VoxelClass Voxel { get; set; } 
+    public float Dim { get; set; }   
 }

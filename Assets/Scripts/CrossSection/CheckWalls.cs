@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 public class CheckWalls
 {
-    Dictionary<float, List<csLine>> CSs = new Dictionary<float, List<csLine>>();
+    Dictionary<float, CrossSectionLayer> CSs = new Dictionary<float, CrossSectionLayer>();
     public CheckWalls()
     {
-        CSs = cSectionGCD.csLines;
+        CSs = cSectionGCD.layers;
         foreach (var cs in CSs) // Each Slice
         {
-            foreach (var line in cs.Value) // Each Line In Slice
+            foreach (var line in cs.Value.border) // Each Line In Slice
             {
-                foreach (var other in cs.Value) // Check Against All On Slice
+                foreach (var other in cs.Value.border) // Check Against All On Slice
                 {
                     if (other == line) continue; // But Skip This One
                     CheckForSkewLines(line, other);

@@ -41,7 +41,7 @@ public class InspectorManager : MonoBehaviour
     {
         cSectionGCD.ready = false;
         cSectionGCD.triangles.Clear();
-        cSectionGCD.csLines.Clear();
+        cSectionGCD.layers.Clear();
         cSectionGCD.csPlaneEqn = new Vector4(0f, 1f, 0f, 0f);
         if (i == 0)
         {
@@ -92,13 +92,13 @@ public class InspectorManager : MonoBehaviour
         InspectorR.voxelsLoaded = false;
         InspectorR.voxelsFitted = false;
         InspectorR.highlightType = InspectorR.HighlighType.None;
-        foreach (var v in MeshVoxelizer.voxels)
+        foreach (var v in cSectionGCD.voxels)
         {
             Destroy(v.Value.Voxel);
         }
-        MeshVoxelizer.voxels.Clear();
-        MeshVoxelizer.highlights.Clear();
-        MeshVoxelizer.ClearAll();
+        cSectionGCD.voxels.Clear();
+        cSectionGCD.highlights.Clear();
+        cSectionGCD.ClearAll();
         PathFitter.maxPathsThrough = 0;
     }
 

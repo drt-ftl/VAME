@@ -16,10 +16,11 @@ public class InspectorR : InspectorManager
     public static bool voxelsLoaded = false;
     public static bool voxelsFitted = false;
 
-    public static float voxelVis;
+    public static float voxelVis = 100;
     public static float resolution = 20;
     private float negHighlight = 0;
     public static float highlight = 0;
+    public static Vector3 highlightVector = new Vector3();
     public static float minPathIntersects = 0;
     public static float maxPathIntersects = 0;
     public static float minIntDist = 0;
@@ -59,10 +60,10 @@ public class InspectorR : InspectorManager
             GUILayout.Space(10);
             if (LoadFile.stlCodeLoaded || voxelsLoaded)
             {
-                if (GUILayout.Button("Voxelize"))
-                {
-                    OnVoxelize();
-                }
+                //if (GUILayout.Button("Voxelize"))
+                //{
+                //    OnVoxelize();
+                //}
 
                 resolution = GUILayout.HorizontalSlider(resolution, 1, 25, GUILayout.Width(220), GUILayout.Height(12));
                 var res = (int)resolution;
@@ -79,23 +80,23 @@ public class InspectorR : InspectorManager
 
     public void OnVoxelize()
     {
-        foreach (var v in MeshVoxelizer.voxels)
+        foreach (var v in cSectionGCD.voxels)
         {
             v.Value.IntersectedByLines.Clear();
         }
         voxelsFitted = false;
         highlight = 0;
-        foreach (var v in MeshVoxelizer.voxels)
+        foreach (var v in cSectionGCD.voxels)
             Destroy(v.Value.Voxel);
-        MeshVoxelizer.voxels.Clear();
-        MeshVoxelizer.highlights.Clear();
+        cSectionGCD.voxels.Clear();
+        cSectionGCD.highlights.Clear();
         //GameObject.Find("VOXELIZER").GetComponent<SurfaceVoxelizer>().VoxelizeSurfaces((int)resolution);
-        GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().VoxelizeSurfaces((int)resolution);
+        //GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().VoxelizeSurfaces((int)resolution);
         voxelVis = 100;
         voxelsLoaded = true;
         if (LoadFile.gcdCodeLoaded)
         {
-            foreach (var v in MeshVoxelizer.voxels)
+            foreach (var v in cSectionGCD.voxels)
             {
                 v.Value.IntersectedByLines.Clear();
             }
@@ -106,9 +107,10 @@ public class InspectorR : InspectorManager
     {
         voxelVis = GUILayout.HorizontalSlider(voxelVis, 0, 100, GUILayout.Width(220), GUILayout.Height(12));
         GUILayout.Label("Visibility: " + voxelVis.ToString("f2"), KeyStyle, GUILayout.Width(250));
-        highlight = GUILayout.HorizontalSlider(highlight, 0, MeshVoxelizer.voxels.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
+        highlight = GUILayout.HorizontalSlider(highlight, 0, cSectionGCD.voxels.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
         GUILayout.Label("Highlight: " + highlight.ToString("f0"), KeyStyle, GUILayout.Width(250));
-        var v = MeshVoxelizer.voxels[MeshVoxelizer.highlights[(int)highlight]];
+        if (!cSectionGCD.voxels.ContainsKey(highlightVector)) return;
+        var v = cSectionGCD.voxels[highlightVector];//[cSectionGCD.highlights[(int)highlight]];
         var str = "Voxel " + highlight.ToString("f0") + "\r\n";
         str += "Position: " + v.Voxel.transform.position.ToString("f3") + "\r\n";
         str += "Temperature: " + "\r\n";
@@ -150,7 +152,7 @@ public class InspectorR : InspectorManager
         }
         GUILayout.EndScrollView();
         highlightTypeIndex = GUILayout.Toolbar(highlightTypeIndex, pathToggleNames);
-        switch(highlightTypeIndex)
+        switch (highlightTypeIndex)
         {
             case 0:
                 highlightType = HighlighType.None;
@@ -187,9 +189,9 @@ public class InspectorR : InspectorManager
     }
     void Update()
     {
-        if (MeshVoxelizer.voxels.Count > 0)
+        if (cSectionGCD.voxels.Count > 0)
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow) && highlight < MeshVoxelizer.voxels.Count - 1)
+            if (Input.GetKeyDown(KeyCode.RightArrow) && highlight < cSectionGCD.voxels.Count - 1)
                 highlight++;
             if (Input.GetKeyDown(KeyCode.LeftArrow) && highlight > 1)
                 highlight--;

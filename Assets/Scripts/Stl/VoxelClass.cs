@@ -7,9 +7,11 @@ public class VoxelClass
     public VoxelClass()
     {
         IntersectedByLines = new List<LineSegment>();
+        Sloxels = new List<Sloxel>();
         MaxDistance = -1;
         MinDistance = 1000000;
     }
+    public List<Sloxel> Sloxels { get; set; }
     public void SetMaxAndMin()
     {
         MaxLine = -1;
@@ -26,6 +28,7 @@ public class VoxelClass
             GetDistanceBetweenParallelLines();
         }
     }
+    public float Id { get; set; }
     public GameObject Voxel { get; set; }
     public Vector3 ScanDirection { get; set; }
     public List<LineSegment> IntersectedByLines { get; set; }

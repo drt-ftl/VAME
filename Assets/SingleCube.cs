@@ -26,9 +26,10 @@ public class SingleCube : MonoBehaviour
         specColor = GetComponent<MeshRenderer>().material.GetColor("_SpecColor");
         emissColor = GetComponent<MeshRenderer>().material.GetColor("_EmissionColor");
         blank = new Color(0, 0, 0, 0);
+        //Origin = Vector3.zero;
     }
     public int Id { get; set; }
-
+    public Vector3 Origin { get; set; }
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -55,6 +56,7 @@ public class SingleCube : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 InspectorR.highlight = Id;
+                InspectorR.highlightVector = Origin;
             }
         }
         else
@@ -66,8 +68,8 @@ public class SingleCube : MonoBehaviour
             switch (InspectorR.highlightType)
             {
                 case InspectorR.HighlighType.PathDensity:
-                    if (MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].IntersectedByLines.Count >= InspectorR.minPathIntersects
-                && MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].IntersectedByLines.Count <= InspectorR.maxPathIntersects)
+                    if (cSectionGCD.voxels[cSectionGCD.highlights[Id]].IntersectedByLines.Count >= InspectorR.minPathIntersects
+                && cSectionGCD.voxels[cSectionGCD.highlights[Id]].IntersectedByLines.Count <= InspectorR.maxPathIntersects)
                     {
                         color = Color.white;
                         spec = color;
@@ -84,10 +86,10 @@ public class SingleCube : MonoBehaviour
                     break;
                 case InspectorR.HighlighType.PathNumbers:
                     var standard = true;
-                    if ((MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MinLine >= InspectorL.gcdTimeSliderMin
-                        && MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MinLine <= InspectorL.gcdTimeSlider)
-                        || (MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MaxLine >= InspectorL.gcdTimeSliderMin
-                        && MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MaxLine <= InspectorL.gcdTimeSlider))
+                    if ((cSectionGCD.voxels[cSectionGCD.highlights[Id]].MinLine >= InspectorL.gcdTimeSliderMin
+                        && cSectionGCD.voxels[cSectionGCD.highlights[Id]].MinLine <= InspectorL.gcdTimeSlider)
+                        || (cSectionGCD.voxels[cSectionGCD.highlights[Id]].MaxLine >= InspectorL.gcdTimeSliderMin
+                        && cSectionGCD.voxels[cSectionGCD.highlights[Id]].MaxLine <= InspectorL.gcdTimeSlider))
                         standard = false;
                     if (!standard)
                     {
@@ -106,10 +108,10 @@ public class SingleCube : MonoBehaviour
                     break;
                 case InspectorR.HighlighType.PathSeparation:
                     var stand = true;
-                    if ((MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MinDistance >= InspectorR.minIntDist
-                        && MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MinDistance <= InspectorR.maxIntDist)
-                        || (MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MaxDistance >= InspectorR.minIntDist
-                        && MeshVoxelizer.voxels[MeshVoxelizer.highlights[Id]].MaxDistance <= InspectorR.maxIntDist))
+                    if ((cSectionGCD.voxels[cSectionGCD.highlights[Id]].MinDistance >= InspectorR.minIntDist
+                        && cSectionGCD.voxels[cSectionGCD.highlights[Id]].MinDistance <= InspectorR.maxIntDist)
+                        || (cSectionGCD.voxels[cSectionGCD.highlights[Id]].MaxDistance >= InspectorR.minIntDist
+                        && cSectionGCD.voxels[cSectionGCD.highlights[Id]].MaxDistance <= InspectorR.maxIntDist))
                         stand = false;
                     if (!stand)
                     {

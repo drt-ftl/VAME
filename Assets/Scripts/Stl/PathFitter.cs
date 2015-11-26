@@ -54,7 +54,7 @@ public class PathFitter : MonoBehaviour
             }
         }
         Camera.main.GetComponent<InspectorR>().SetVoxelsFitted();
-        foreach (var v in MeshVoxelizer.voxels)
+        foreach (var v in cSectionGCD.voxels)
         {
             v.Value.SetMaxAndMin();
             if (v.Value.IntersectedByLines.Count > 1 
@@ -67,7 +67,7 @@ public class PathFitter : MonoBehaviour
     {
         var divisions = GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().divisions;
         var half = 0.5f / divisions;
-        foreach (var v in MeshVoxelizer.voxels)
+        foreach (var v in cSectionGCD.voxels)
         {
             if (movesInX)
             {
