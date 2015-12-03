@@ -14,6 +14,8 @@ namespace SlicerForm
     public partial class SlicerForm : Form
     {
         private bool sliced = false;
+        float scale = 300f;
+
         public SlicerForm()
         {
             InitializeComponent();
@@ -53,6 +55,7 @@ namespace SlicerForm
         private void WallThickness_CheckedChanged(object sender, EventArgs e)
         {
             ButtonPressed("Radio_wt", true);
+            cSectionGCD.csMode = cSectionGCD.CsMode.WallThickness;
         }
 
         private void SlicerEC_Paint(object sender, PaintEventArgs e)
@@ -62,7 +65,7 @@ namespace SlicerForm
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -85,7 +88,6 @@ namespace SlicerForm
                 System.Drawing.Graphics g = panel1.CreateGraphics();
                 System.Drawing.Pen p = new System.Drawing.Pen(System.Drawing.Color.Red);
                 System.Drawing.Pen pen2 = new System.Drawing.Pen(System.Drawing.Color.Aquamarine);
-                var scale = 300f;
                 var center = new Vector2(panel1.Size.Width / 2, panel1.Size.Height / 2);
                 var dim = (0.5f / cSectionGCD.sloxelResolution.x) * scale;
                 var readout = "";
@@ -136,11 +138,13 @@ namespace SlicerForm
 
         private void LayerTrackbar_Scroll(object sender, EventArgs e)
         {
+            LayerUpDown.Value = LayerTrackbar.Value;
             panel1.Invalidate();
         }
 
         private void SloxelNumber_Scroll(object sender, EventArgs e)
         {
+            SloxelUpDown.Value = SloxelNumber.Value;
             panel1.Invalidate();
         }
 
@@ -152,6 +156,47 @@ namespace SlicerForm
         private void ShowGCD_CheckedChanged(object sender, EventArgs e)
         {
             panel1.Invalidate();
+        }
+
+        private void LayerUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            LayerTrackbar.Value = (int)LayerUpDown.Value;
+            panel1.Invalidate();
+        }
+
+        private void SloxelUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            SloxelNumber.Value = (int)SloxelUpDown.Value;
+            panel1.Invalidate();
+        }
+
+        private void panel1_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            
+        }
+        private void panel1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            var sloxList = cSectionGCD.layers[cSectionGCD.layerHeights[LayerTrackbar.Value]].Sloxels;
+            var mPos = e.Location;
+            var dim = (0.5f / cSectionGCD.sloxelResolution.x) * scale;
+            var center = new Vector2(panel1.Size.Width / 2, panel1.Size.Height / 2);
+            foreach (var sloxel in sloxList)
+            {
+                var sPosRaw = new Vector2(sloxel.Position.x, sloxel.Position.z);
+                var sPos = sPosRaw * scale + center;
+                if (mPos.X > sPos.x - dim && mPos.X < sPos.x + dim
+                    && mPos.Y > sPos.y - dim && mPos.Y < sPos.y + dim)
+                {
+                    SloxelNumber.Value = sloxList.IndexOf(sloxel);
+                    InspectorR.highlightVector = sloxel.Voxel.Origin;
+                    panel1.Invalidate();
+                }
+                //else
+                //{
+                //    SloxelReadout.Text = "MPos: " + mPos.ToString();
+                //    panel1.Invalidate();
+                //}
+            }
         }
     }
 }

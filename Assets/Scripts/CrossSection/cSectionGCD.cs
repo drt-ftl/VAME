@@ -123,6 +123,7 @@ public class cSectionGCD
         InspectorT.slicerForm.LayerTrackbar.Maximum = cSectionGCD.layers.Count - 1;
         Camera.main.GetComponent<InspectorR>().OnVoxelize();
         InspectorR.voxelsLoaded = true;
+        InspectorR.voxelsFitted = true;
         InspectorT.slicerForm.panel1.Invalidate();
     }
     public void CrossSection()
@@ -371,7 +372,7 @@ public class cSectionGCD
             var incZ = 1 / sloxelResolution.z;
             var near = Mathf.Floor(layer.Value.Min.z * sloxelResolution.z) / sloxelResolution.z;
             var far = Mathf.Ceil(layer.Value.Max.z * sloxelResolution.z) / sloxelResolution.z;
-            for (float z = near - incZ; z <= far + incZ; z += incZ)
+            for (float z = near - 1.5f * incZ; z <= far + 1.5f * incZ; z += incZ)
             {
                 var crosses = new List<Vector3>();
                 var crossesNear = new List<Vector3>();
@@ -387,11 +388,13 @@ public class cSectionGCD
                     var newCross = new Vector3(x, y, z);
                     if (t >= 0 && t <= 1 && !crosses.Contains(newCross))
                         crosses.Add(newCross);
-                    t = (z - borderLine.Endpoint0.z) / slope.z;
+
+                    t = (z - borderLine.Endpoint0.z - incZ / 2) / slope.z;
                     newCross.x = borderLine.Endpoint0.x + t * slope.x;
                     if (t >= 0 && t <= 1 && !crossesNear.Contains(newCross))
                         crossesNear.Add(newCross);
-                    t = (z - borderLine.Endpoint0.z) / slope.z;
+
+                    t = (z - borderLine.Endpoint0.z + incZ / 2) / slope.z;
                     newCross.x = borderLine.Endpoint0.x + t * slope.x;
                     
                     if (t >= 0 && t <= 1 && !crossesFar.Contains(newCross))
@@ -399,7 +402,7 @@ public class cSectionGCD
                     var minX = Mathf.Min(borderLine.Endpoint0.x, borderLine.Endpoint1.x);
                     var maxX = Mathf.Max(borderLine.Endpoint0.x, borderLine.Endpoint1.x);
                 }
-                for (float x = left - 2 * incX; x <= right + 2 * incX; x += incX)
+                for (float x = left - 2.5f * incX; x <= right + 2.5f * incX; x += incX)
                 {
                     var leftsN = 0;
                     var rightsN = 0;
@@ -407,30 +410,72 @@ public class cSectionGCD
                     var rightsC = 0;
                     var leftsF = 0;
                     var rightsF = 0;
+                    var leftsN_L = 0;
+                    var rightsN_L = 0;
+                    var leftsC_L = 0;
+                    var rightsC_L = 0;
+                    var leftsF_L = 0;
+                    var rightsF_L = 0;
+                    var leftsN_R = 0;
+                    var rightsN_R = 0;
+                    var leftsC_R = 0;
+                    var rightsC_R = 0;
+                    var leftsF_R = 0;
+                    var rightsF_R = 0;
                     foreach (var cross in crosses)
                     {   // DRT Change here to expand range
-                        if (cross.x < x)
+                        if (cross.x <= x)
                             leftsC++;
                         if (cross.x >= x)
                             rightsC++;
+                        if (cross.x <= x - incX / 2)
+                            leftsC_L++;
+                        if (cross.x >= x - incX / 2)
+                            rightsC_L++;
+                        if (cross.x <= x + incX / 2)
+                            leftsC_R++;
+                        if (cross.x >= x + incX / 2)
+                            rightsC_R++;
                     }
                     foreach (var crossNear in crossesNear)
                     {
-                        if (crossNear.x < x)
+                        if (crossNear.x <= x)
                             leftsN++;
                         if (crossNear.x >= x)
                             rightsN++;
+                        if (crossNear.x <= x - incX / 2)
+                            leftsN_L++;
+                        if (crossNear.x >= x - incX / 2)
+                            rightsN_L++;
+                        if (crossNear.x <= x + incX / 2)
+                            leftsN_R++;
+                        if (crossNear.x >= x + incX / 2)
+                            rightsN_R++;
                     }
                     foreach (var crossFar in crossesFar)
                     {
-                        if (crossFar.x < x)
+                        if (crossFar.x <= x)
                             leftsF++;
                         if (crossFar.x >= x)
                             rightsF++;
+                        if (crossFar.x <= x - incX / 2)
+                            leftsF_L++;
+                        if (crossFar.x >= x - incX / 2)
+                            rightsF_L++;
+                        if (crossFar.x <= x + incX / 2)
+                            leftsF_R++;
+                        if (crossFar.x >= x + incX / 2)
+                            rightsF_R++;
                     }
                     if ((leftsC % 2 == 1 && rightsC % 2 == 1)
                         || (leftsN % 2 == 1 && rightsN % 2 == 1)
-                        || (leftsF % 2 == 1 && rightsF % 2 == 1))
+                        || (leftsF % 2 == 1 && rightsF % 2 == 1)
+                        || (leftsC_L % 2 == 1 && rightsC_L % 2 == 1)
+                        || (leftsN_L % 2 == 1 && rightsN_L % 2 == 1)
+                        || (leftsF_L % 2 == 1 && rightsF_L % 2 == 1)
+                        || (leftsC_R % 2 == 1 && rightsC_R % 2 == 1)
+                        || (leftsN_R % 2 == 1 && rightsN_R % 2 == 1)
+                        || (leftsF_R % 2 == 1 && rightsF_R % 2 == 1))
                     {
                         AddSloxel(new Vector3(x, y, z), layer.Value);
                     }
@@ -464,6 +509,7 @@ public class cSectionGCD
                     voxObj.GetComponent<BoxCollider>().size = new Vector3(small, small, small);
                     var newVox = new VoxelClass();
                     newVox.Id = (float)voxels.Count;
+                    newVox.Origin = voxPos;
                     newVox.Voxel = Voxel;
                     voxels.Add(voxPos, newVox);
                     InspectorR.highlightVector = voxPos;

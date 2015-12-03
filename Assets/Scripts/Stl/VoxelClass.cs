@@ -31,6 +31,7 @@ public class VoxelClass
     public float Id { get; set; }
     public GameObject Voxel { get; set; }
     public Vector3 ScanDirection { get; set; }
+    public Vector3 Origin { get; set; }
     public List<LineSegment> IntersectedByLines { get; set; }
     public int MaxLine { get; internal set; }
     public int MinLine { get; internal set; }

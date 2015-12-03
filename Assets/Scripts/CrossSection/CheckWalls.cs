@@ -22,8 +22,12 @@ public class CheckWalls
     }
     void CheckForSkewLines(csLine line, csLine other)
     {
-        var dot = Vector3.Dot(line.Normal, other.Normal);
-        if (dot >= 0) return; // If normals are at less than 90 degrees to each other, they are not facing each other
+        var nLine = line.Normal;
+        nLine = Vector3.Normalize(nLine);
+        var nOther = line.Normal;
+        nOther = Vector3.Normalize(nOther);
+        var dot = Vector3.Dot(nLine, nOther);
+        //if (dot >= 0) return; // If normals are at less than 90 degrees to each other, they are not facing each other
         var lSl = line.Endpoint1 - line.Endpoint0;
         var oSl = other.Endpoint1 - other.Endpoint0;
         line.CloseLines.Add(other);
@@ -39,7 +43,7 @@ public class CheckWalls
             {
                 d = Mathf.Abs(line.Endpoint0.x - other.Endpoint0.x);                
             }
-            else if (Mathf.Abs(lSl.z) <= 0.001f && Mathf.Abs(oSl.x) <= 0.001f) // parallel to z
+            else if (Mathf.Abs(lSl.z) <= 0.001f && Mathf.Abs(oSl.z) <= 0.001f) // parallel to z
             {
                 d = Mathf.Abs(line.Endpoint0.z - other.Endpoint0.z);
             }
@@ -58,7 +62,7 @@ public class CheckWalls
             if (d > 0.0001f && d < other.WallThickness)
             {
                 other.WallThickness = d;
-                other.Closest = other;
+                other.Closest = line;
             }
         }
         #endregion

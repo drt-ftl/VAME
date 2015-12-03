@@ -35,6 +35,7 @@ public class LoadFile : MonoBehaviour
     public static Dictionary <int, int> model_code_xrefDMC = new Dictionary<int, int>();
     public static Dictionary<int, int> model_code_xrefJOB = new Dictionary<int, int>();
     public static Dictionary<int, int> model_code_xrefGCD = new Dictionary<int, int>();
+    public static Dictionary<int, bool> LaserOnModelRef = new Dictionary<int, bool>();
     public static List<int> model_code_xrefSTL = new List<int>();
     public static List<string> jobCode = new List<string>();
     public static List<string> gcdCode = new List<string>();
@@ -231,7 +232,7 @@ public class LoadFile : MonoBehaviour
         var groupRectT = GetComponent<InspectorT>().MainRect;
         GUI.Window(2, groupRectT, GetComponent<InspectorT>().InspectorWindowT, "", "Toolbar");
         GUI.BringWindowToFront(2);
-        //DrawCS();
+        DrawCS();
         DrawCSX();
         DrawCSZ();
         if (gcdCodeLoaded)
@@ -386,7 +387,8 @@ public class LoadFile : MonoBehaviour
 			var index = vertices.IndexOf(Vertex1);
 			if (index <= 0)
 				continue;
-			var Vertex0 = vertices[index - 1];
+            if (!LaserOnModelRef[index]) continue;
+            var Vertex0 = vertices[index - 1];
 			if (_type == Type.JOB)
 			{
                 newSegment.LineColor = new Color(0f, 0f, 1f, 1f);
@@ -451,6 +453,19 @@ public class LoadFile : MonoBehaviour
                 {
                     gcdInterpreter.StartsWithG(_line);
                 }
+                break;
+            case 'O':
+                if (chunks[0][1] == 'U')
+                {
+                    if (chunks.Length > 1 && chunks[1].Contains(","))
+                    {
+                        var command = chunks[1].Split(',');
+                        if (command[1] == "0")
+                            gcdInterpreter.LaserOn = false;
+                        else gcdInterpreter.LaserOn = true;
+                    }
+                }
+                //    gcdInterpreter.StartsWithO(_line);
                 break;
             default:
                 break;

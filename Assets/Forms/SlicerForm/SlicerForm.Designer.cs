@@ -30,7 +30,8 @@ namespace SlicerForm
         /// </summary>
         private void InitializeComponent()
         {
-            this.SlicerEC = new MakarovDev.ExpandCollapsePanel.ExpandCollapsePanel();
+            this.ShowGCD = new System.Windows.Forms.CheckBox();
+            this.ShowSloxels = new System.Windows.Forms.CheckBox();
             this.SloxelReadout = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelSlox = new System.Windows.Forms.Label();
@@ -42,43 +43,49 @@ namespace SlicerForm
             this.None = new System.Windows.Forms.RadioButton();
             this.ByGcdLayers = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.ShowSloxels = new System.Windows.Forms.CheckBox();
-            this.ShowGCD = new System.Windows.Forms.CheckBox();
-            this.SlicerEC.SuspendLayout();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.SloxelUpDown = new System.Windows.Forms.NumericUpDown();
+            this.LayerUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.SloxelNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LayerTrackbar)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SloxelUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LayerUpDown)).BeginInit();
             this.SuspendLayout();
             // 
-            // SlicerEC
+            // ShowGCD
             // 
-            this.SlicerEC.ButtonSize = MakarovDev.ExpandCollapsePanel.ExpandCollapseButton.ExpandButtonSize.Normal;
-            this.SlicerEC.ButtonStyle = MakarovDev.ExpandCollapsePanel.ExpandCollapseButton.ExpandButtonStyle.Circle;
-            this.SlicerEC.Controls.Add(this.ShowGCD);
-            this.SlicerEC.Controls.Add(this.ShowSloxels);
-            this.SlicerEC.Controls.Add(this.SloxelReadout);
-            this.SlicerEC.Controls.Add(this.label1);
-            this.SlicerEC.Controls.Add(this.labelSlox);
-            this.SlicerEC.Controls.Add(this.SloxelNumber);
-            this.SlicerEC.Controls.Add(this.LayerTrackbar);
-            this.SlicerEC.Controls.Add(this.singleStep);
-            this.SlicerEC.Controls.Add(this.SliceButton);
-            this.SlicerEC.Controls.Add(this.WallThickness);
-            this.SlicerEC.Controls.Add(this.None);
-            this.SlicerEC.Controls.Add(this.ByGcdLayers);
-            this.SlicerEC.ExpandedHeight = 0;
-            this.SlicerEC.IsExpanded = true;
-            this.SlicerEC.Location = new System.Drawing.Point(491, 12);
-            this.SlicerEC.Name = "SlicerEC";
-            this.SlicerEC.Size = new System.Drawing.Size(331, 433);
-            this.SlicerEC.TabIndex = 0;
-            this.SlicerEC.Text = "Slicer";
-            this.SlicerEC.UseAnimation = true;
-            this.SlicerEC.Paint += new System.Windows.Forms.PaintEventHandler(this.SlicerEC_Paint);
+            this.ShowGCD.AutoSize = true;
+            this.ShowGCD.Checked = true;
+            this.ShowGCD.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ShowGCD.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowGCD.Location = new System.Drawing.Point(260, 355);
+            this.ShowGCD.Name = "ShowGCD";
+            this.ShowGCD.Size = new System.Drawing.Size(71, 16);
+            this.ShowGCD.TabIndex = 12;
+            this.ShowGCD.Text = "Show GCD";
+            this.ShowGCD.UseVisualStyleBackColor = true;
+            this.ShowGCD.CheckedChanged += new System.EventHandler(this.ShowGCD_CheckedChanged);
+            // 
+            // ShowSloxels
+            // 
+            this.ShowSloxels.AutoSize = true;
+            this.ShowSloxels.Checked = true;
+            this.ShowSloxels.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ShowSloxels.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowSloxels.Location = new System.Drawing.Point(121, 355);
+            this.ShowSloxels.Name = "ShowSloxels";
+            this.ShowSloxels.Size = new System.Drawing.Size(80, 16);
+            this.ShowSloxels.TabIndex = 11;
+            this.ShowSloxels.Text = "Show Sloxels";
+            this.ShowSloxels.UseVisualStyleBackColor = true;
+            this.ShowSloxels.CheckedChanged += new System.EventHandler(this.ShowSloxels_CheckedChanged);
             // 
             // SloxelReadout
             // 
             this.SloxelReadout.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.SloxelReadout.Location = new System.Drawing.Point(118, 212);
+            this.SloxelReadout.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.SloxelReadout.Location = new System.Drawing.Point(118, 122);
             this.SloxelReadout.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.SloxelReadout.Name = "SloxelReadout";
             this.SloxelReadout.Size = new System.Drawing.Size(213, 221);
@@ -87,46 +94,49 @@ namespace SlicerForm
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(4, 116);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(6, 68);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 13);
+            this.label1.Size = new System.Drawing.Size(33, 12);
             this.label1.TabIndex = 9;
             this.label1.Text = "Layer: ";
             // 
             // labelSlox
             // 
             this.labelSlox.AutoSize = true;
-            this.labelSlox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelSlox.Location = new System.Drawing.Point(4, 168);
+            this.labelSlox.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelSlox.Location = new System.Drawing.Point(7, 107);
             this.labelSlox.Name = "labelSlox";
-            this.labelSlox.Size = new System.Drawing.Size(41, 13);
+            this.labelSlox.Size = new System.Drawing.Size(35, 12);
             this.labelSlox.TabIndex = 8;
             this.labelSlox.Text = "Sloxel: ";
             // 
             // SloxelNumber
             // 
-            this.SloxelNumber.Location = new System.Drawing.Point(3, 137);
+            this.SloxelNumber.AutoSize = false;
+            this.SloxelNumber.Location = new System.Drawing.Point(6, 87);
             this.SloxelNumber.Maximum = 100;
             this.SloxelNumber.Name = "SloxelNumber";
-            this.SloxelNumber.Size = new System.Drawing.Size(253, 45);
+            this.SloxelNumber.Size = new System.Drawing.Size(253, 20);
             this.SloxelNumber.TabIndex = 7;
             this.SloxelNumber.Scroll += new System.EventHandler(this.SloxelNumber_Scroll);
             // 
             // LayerTrackbar
             // 
-            this.LayerTrackbar.Location = new System.Drawing.Point(3, 86);
+            this.LayerTrackbar.AutoSize = false;
+            this.LayerTrackbar.Location = new System.Drawing.Point(6, 48);
             this.LayerTrackbar.Name = "LayerTrackbar";
-            this.LayerTrackbar.Size = new System.Drawing.Size(253, 45);
+            this.LayerTrackbar.Size = new System.Drawing.Size(253, 20);
             this.LayerTrackbar.TabIndex = 2;
             this.LayerTrackbar.Scroll += new System.EventHandler(this.LayerTrackbar_Scroll);
             // 
             // singleStep
             // 
             this.singleStep.AutoSize = true;
-            this.singleStep.Location = new System.Drawing.Point(3, 207);
+            this.singleStep.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.singleStep.Location = new System.Drawing.Point(6, 122);
             this.singleStep.Name = "singleStep";
-            this.singleStep.Size = new System.Drawing.Size(88, 19);
+            this.singleStep.Size = new System.Drawing.Size(69, 16);
             this.singleStep.TabIndex = 3;
             this.singleStep.TabStop = true;
             this.singleStep.Text = "Single Step";
@@ -135,7 +145,8 @@ namespace SlicerForm
             // 
             // SliceButton
             // 
-            this.SliceButton.Location = new System.Drawing.Point(3, 57);
+            this.SliceButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SliceButton.Location = new System.Drawing.Point(6, 19);
             this.SliceButton.Name = "SliceButton";
             this.SliceButton.Size = new System.Drawing.Size(75, 23);
             this.SliceButton.TabIndex = 1;
@@ -146,9 +157,10 @@ namespace SlicerForm
             // WallThickness
             // 
             this.WallThickness.AutoSize = true;
-            this.WallThickness.Location = new System.Drawing.Point(3, 257);
+            this.WallThickness.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WallThickness.Location = new System.Drawing.Point(6, 162);
             this.WallThickness.Name = "WallThickness";
-            this.WallThickness.Size = new System.Drawing.Size(104, 19);
+            this.WallThickness.Size = new System.Drawing.Size(83, 16);
             this.WallThickness.TabIndex = 5;
             this.WallThickness.TabStop = true;
             this.WallThickness.Text = "WallThickness";
@@ -158,9 +170,10 @@ namespace SlicerForm
             // None
             // 
             this.None.AutoSize = true;
-            this.None.Location = new System.Drawing.Point(3, 282);
+            this.None.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.None.Location = new System.Drawing.Point(6, 182);
             this.None.Name = "None";
-            this.None.Size = new System.Drawing.Size(55, 19);
+            this.None.Size = new System.Drawing.Size(45, 16);
             this.None.TabIndex = 6;
             this.None.TabStop = true;
             this.None.Text = "None";
@@ -170,9 +183,10 @@ namespace SlicerForm
             // ByGcdLayers
             // 
             this.ByGcdLayers.AutoSize = true;
-            this.ByGcdLayers.Location = new System.Drawing.Point(3, 232);
+            this.ByGcdLayers.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ByGcdLayers.Location = new System.Drawing.Point(6, 142);
             this.ByGcdLayers.Name = "ByGcdLayers";
-            this.ByGcdLayers.Size = new System.Drawing.Size(90, 19);
+            this.ByGcdLayers.Size = new System.Drawing.Size(74, 16);
             this.ByGcdLayers.TabIndex = 4;
             this.ByGcdLayers.TabStop = true;
             this.ByGcdLayers.Text = "GCD Layers";
@@ -189,53 +203,72 @@ namespace SlicerForm
             this.panel1.Size = new System.Drawing.Size(433, 433);
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            this.panel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
             // 
-            // ShowSloxels
+            // groupBox1
             // 
-            this.ShowSloxels.AutoSize = true;
-            this.ShowSloxels.Checked = true;
-            this.ShowSloxels.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ShowSloxels.Location = new System.Drawing.Point(3, 323);
-            this.ShowSloxels.Name = "ShowSloxels";
-            this.ShowSloxels.Size = new System.Drawing.Size(100, 19);
-            this.ShowSloxels.TabIndex = 11;
-            this.ShowSloxels.Text = "Show Sloxels";
-            this.ShowSloxels.UseVisualStyleBackColor = true;
-            this.ShowSloxels.CheckedChanged += new System.EventHandler(this.ShowSloxels_CheckedChanged);
+            this.groupBox1.Controls.Add(this.SloxelUpDown);
+            this.groupBox1.Controls.Add(this.LayerUpDown);
+            this.groupBox1.Controls.Add(this.SliceButton);
+            this.groupBox1.Controls.Add(this.singleStep);
+            this.groupBox1.Controls.Add(this.ShowGCD);
+            this.groupBox1.Controls.Add(this.SloxelNumber);
+            this.groupBox1.Controls.Add(this.ShowSloxels);
+            this.groupBox1.Controls.Add(this.WallThickness);
+            this.groupBox1.Controls.Add(this.LayerTrackbar);
+            this.groupBox1.Controls.Add(this.labelSlox);
+            this.groupBox1.Controls.Add(this.SloxelReadout);
+            this.groupBox1.Controls.Add(this.None);
+            this.groupBox1.Controls.Add(this.ByGcdLayers);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Location = new System.Drawing.Point(453, 13);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(355, 432);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Slice Parameters";
             // 
-            // ShowGCD
+            // SloxelUpDown
             // 
-            this.ShowGCD.AutoSize = true;
-            this.ShowGCD.Checked = true;
-            this.ShowGCD.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ShowGCD.Location = new System.Drawing.Point(3, 348);
-            this.ShowGCD.Name = "ShowGCD";
-            this.ShowGCD.Size = new System.Drawing.Size(86, 19);
-            this.ShowGCD.TabIndex = 12;
-            this.ShowGCD.Text = "Show GCD";
-            this.ShowGCD.UseVisualStyleBackColor = true;
-            this.ShowGCD.CheckedChanged += new System.EventHandler(this.ShowGCD_CheckedChanged);
+            this.SloxelUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SloxelUpDown.Location = new System.Drawing.Point(266, 87);
+            this.SloxelUpDown.Name = "SloxelUpDown";
+            this.SloxelUpDown.Size = new System.Drawing.Size(83, 18);
+            this.SloxelUpDown.TabIndex = 14;
+            this.SloxelUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.SloxelUpDown.ValueChanged += new System.EventHandler(this.SloxelUpDown_ValueChanged);
+            // 
+            // LayerUpDown
+            // 
+            this.LayerUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LayerUpDown.Location = new System.Drawing.Point(266, 48);
+            this.LayerUpDown.Name = "LayerUpDown";
+            this.LayerUpDown.Size = new System.Drawing.Size(83, 18);
+            this.LayerUpDown.TabIndex = 13;
+            this.LayerUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.LayerUpDown.ValueChanged += new System.EventHandler(this.LayerUpDown_ValueChanged);
             // 
             // SlicerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(834, 457);
+            this.ClientSize = new System.Drawing.Size(818, 457);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.SlicerEC);
             this.Name = "SlicerForm";
-            this.Text = "Form1";
-            this.SlicerEC.ResumeLayout(false);
-            this.SlicerEC.PerformLayout();
+            this.Text = " ";
             ((System.ComponentModel.ISupportInitialize)(this.SloxelNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LayerTrackbar)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SloxelUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LayerUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private MakarovDev.ExpandCollapsePanel.ExpandCollapsePanel SlicerEC;
         public System.Windows.Forms.Button SliceButton;
         public System.Windows.Forms.TrackBar LayerTrackbar;
         public System.Windows.Forms.RadioButton None;
@@ -249,6 +282,9 @@ namespace SlicerForm
         public System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox ShowGCD;
         private System.Windows.Forms.CheckBox ShowSloxels;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.NumericUpDown SloxelUpDown;
+        private System.Windows.Forms.NumericUpDown LayerUpDown;
     }
 }
 

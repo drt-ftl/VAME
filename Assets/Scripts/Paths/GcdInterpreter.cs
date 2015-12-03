@@ -10,6 +10,7 @@ public class GcdInterpreter
     public static float y = 0;
     public Vector3 Min { get; set; }
     public Vector3 Max { get; set; }
+    public bool LaserOn = false;
     public Vector3 centroid
     {
         get
@@ -36,6 +37,24 @@ public class GcdInterpreter
         {
             case '1':
                 DoG(_chunks);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void StartsWithOU(string _line)
+    {
+        if (!_line.Contains(' ')) return;
+        var _chunks = _line.Split(' ');
+        var onOff = _chunks[1].Split(',')[1];
+        switch (onOff[1])
+        {
+            case '1':
+                LaserOn = true;
+                break;
+            case '0':
+                LaserOn = false;
                 break;
             default:
                 break;
@@ -71,7 +90,6 @@ public class GcdInterpreter
             newVertex.z = z;
         }
         newVertex.y = y;
-
         var max = Max;
         var min = Min;
         if (x > Max.x) max.x = x;
@@ -88,6 +106,7 @@ public class GcdInterpreter
         Camera.main.GetComponent<LoadFile>().vertices.Add(newVertex);
         if (LoadFile.model_code_xrefGCD.Count == 0)
             LoadFile.firstGcdLineInCode = LoadFile.gcdCode.Count - 1;
+        LoadFile.LaserOnModelRef.Add(LoadFile.model_code_xrefGCD.Count, LaserOn);
         LoadFile.model_code_xrefGCD.Add(LoadFile.model_code_xrefGCD.Count, LoadFile.gcdCode.Count - 1);
     }
 
@@ -101,10 +120,10 @@ public class GcdInterpreter
                 switch (_chunks[2][3])
                 {
                     case '0':
-                        //MessageBox.Show("G00");
+                        MessageBox.Show("Off");
                         break;
                     case '1':
-                        //MessageBox.Show("G01");
+                        MessageBox.Show("On");
                         break;
                     default:
                         break;
