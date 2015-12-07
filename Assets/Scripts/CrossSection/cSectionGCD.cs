@@ -121,7 +121,7 @@ public class cSectionGCD
         ready = true;
         if (InspectorT.slicerForm != null)
         InspectorT.slicerForm.LayerTrackbar.Maximum = cSectionGCD.layers.Count - 1;
-        Camera.main.GetComponent<InspectorR>().OnVoxelize();
+        //Camera.main.GetComponent<InspectorR>().OnVoxelize();
         InspectorR.voxelsLoaded = true;
         InspectorR.voxelsFitted = true;
         InspectorT.slicerForm.panel1.Invalidate();
@@ -510,7 +510,9 @@ public class cSectionGCD
                     var newVox = new VoxelClass();
                     newVox.Id = (float)voxels.Count;
                     newVox.Origin = voxPos;
-                    newVox.Voxel = Voxel;
+                    newVox.singleCube = voxObj.GetComponent<SingleCube>();
+                    voxObj.GetComponent<SingleCube>().voxelClass = newVox;
+                    newVox.Voxel = voxObj;
                     voxels.Add(voxPos, newVox);
                     InspectorR.highlightVector = voxPos;
                 }
@@ -552,8 +554,10 @@ public class cSectionGCD
                 }
                 v.Sloxels.Add(slox);
                 slox.Voxel = v;
+                slox.VoxelOrigin = voxPos;
             }
         }
+        //GameObject.Find("VOXELIZER").GetComponent<PathFitter>().FitPaths();
     }
 
     public float RoundToLayer (float layerY, float numToRound)

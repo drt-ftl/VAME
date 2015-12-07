@@ -14,5 +14,6 @@ public class Sloxel
     public Vector2 GridPosition {get; set;}
     public Vector3 Position { get; set; }
     public VoxelClass Voxel { get; set; } 
-    public float Dim { get; set; }   
+    public float Dim { get; set; }  
+    public Vector3 VoxelOrigin { get; set; } 
 }

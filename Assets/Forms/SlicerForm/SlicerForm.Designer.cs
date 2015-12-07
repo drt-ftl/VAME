@@ -44,6 +44,7 @@ namespace SlicerForm
             this.ByGcdLayers = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ShowCsection = new System.Windows.Forms.CheckBox();
             this.SloxelUpDown = new System.Windows.Forms.NumericUpDown();
             this.LayerUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.SloxelNumber)).BeginInit();
@@ -59,11 +60,11 @@ namespace SlicerForm
             this.ShowGCD.Checked = true;
             this.ShowGCD.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ShowGCD.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShowGCD.Location = new System.Drawing.Point(260, 355);
+            this.ShowGCD.Location = new System.Drawing.Point(286, 355);
             this.ShowGCD.Name = "ShowGCD";
-            this.ShowGCD.Size = new System.Drawing.Size(71, 16);
+            this.ShowGCD.Size = new System.Drawing.Size(45, 16);
             this.ShowGCD.TabIndex = 12;
-            this.ShowGCD.Text = "Show GCD";
+            this.ShowGCD.Text = "GCD";
             this.ShowGCD.UseVisualStyleBackColor = true;
             this.ShowGCD.CheckedChanged += new System.EventHandler(this.ShowGCD_CheckedChanged);
             // 
@@ -75,9 +76,9 @@ namespace SlicerForm
             this.ShowSloxels.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ShowSloxels.Location = new System.Drawing.Point(121, 355);
             this.ShowSloxels.Name = "ShowSloxels";
-            this.ShowSloxels.Size = new System.Drawing.Size(80, 16);
+            this.ShowSloxels.Size = new System.Drawing.Size(54, 16);
             this.ShowSloxels.TabIndex = 11;
-            this.ShowSloxels.Text = "Show Sloxels";
+            this.ShowSloxels.Text = "Sloxels";
             this.ShowSloxels.UseVisualStyleBackColor = true;
             this.ShowSloxels.CheckedChanged += new System.EventHandler(this.ShowSloxels_CheckedChanged);
             // 
@@ -208,6 +209,7 @@ namespace SlicerForm
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ShowCsection);
             this.groupBox1.Controls.Add(this.SloxelUpDown);
             this.groupBox1.Controls.Add(this.LayerUpDown);
             this.groupBox1.Controls.Add(this.SliceButton);
@@ -228,6 +230,17 @@ namespace SlicerForm
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Slice Parameters";
+            // 
+            // ShowCsection
+            // 
+            this.ShowCsection.AutoSize = true;
+            this.ShowCsection.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowCsection.Location = new System.Drawing.Point(187, 355);
+            this.ShowCsection.Name = "ShowCsection";
+            this.ShowCsection.Size = new System.Drawing.Size(82, 16);
+            this.ShowCsection.TabIndex = 15;
+            this.ShowCsection.Text = "Cross Section";
+            this.ShowCsection.UseVisualStyleBackColor = true;
             // 
             // SloxelUpDown
             // 
@@ -284,7 +297,8 @@ namespace SlicerForm
         private System.Windows.Forms.CheckBox ShowSloxels;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.NumericUpDown SloxelUpDown;
-        private System.Windows.Forms.NumericUpDown LayerUpDown;
+        public System.Windows.Forms.NumericUpDown LayerUpDown;
+        public System.Windows.Forms.CheckBox ShowCsection;
     }
 }
 

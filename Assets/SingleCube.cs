@@ -30,6 +30,7 @@ public class SingleCube : MonoBehaviour
     }
     public int Id { get; set; }
     public Vector3 Origin { get; set; }
+    public VoxelClass voxelClass { get; set; }
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -57,6 +58,23 @@ public class SingleCube : MonoBehaviour
             {
                 InspectorR.highlight = Id;
                 InspectorR.highlightVector = Origin;
+                var sloxels = voxelClass.Sloxels;
+                if (sloxels.Count > 0)
+                {
+                    var sloxel = sloxels[0];
+                    if (cSectionGCD.layerHeights.Contains(sloxel.Position.y))
+                    {
+                        InspectorT.slicerForm.LayerTrackbar.Value = cSectionGCD.layerHeights.IndexOf(sloxel.Position.y);
+                        InspectorT.slicerForm.LayerUpDown.Value = cSectionGCD.layerHeights.IndexOf(sloxel.Position.y);
+                        if (cSectionGCD.layers[sloxel.Position.y].Sloxels.Contains(voxelClass.Sloxels[0]))
+                        {
+                            InspectorT.slicerForm.SloxelNumber.Maximum = cSectionGCD.layers[sloxel.Position.y].Sloxels.Count;
+                            InspectorT.slicerForm.SloxelNumber.Value = cSectionGCD.layers[sloxel.Position.y].Sloxels.IndexOf(voxelClass.Sloxels[0]);
+                            InspectorL.gcdTimeSlider = InspectorT.slicerForm.LayerTrackbar.Value;
+                        }
+                        InspectorT.slicerForm.panel1.Invalidate();
+                    }
+                }
             }
         }
         else

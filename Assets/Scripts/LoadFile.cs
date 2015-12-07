@@ -265,36 +265,39 @@ public class LoadFile : MonoBehaviour
                 default:
                     break;
             }
-            
-            foreach (var line in cs.Value.border)
+
+            if (InspectorT.slicerForm.ShowCsection.Checked)
             {
-                switch (cSectionGCD.csMode)
+                foreach (var line in cs.Value.border)
                 {
-                    case cSectionGCD.CsMode.StepThrough:
-                        break;
-                    case cSectionGCD.CsMode.ByGcdCode:
-                        //if (cSectionGCD.layerHeights.IndexOf(cs.Key) <= low
-                        //|| cSectionGCD.layerHeights.IndexOf(cs.Key) > high)
-                        //    col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
-                        //else col.a = 1.0f;
-                        break;
-                    case cSectionGCD.CsMode.WallThickness:
-                        var minWT = InspectorT.slicerForm.LayerTrackbar.Value / 100f;
-                        if (line.WallThickness < minWT)
-                        {
-                            col.r = 1.0f - line.WallThickness / minWT;
-                            col.b = line.WallThickness / minWT;
-                        }
-                        break;
+                    switch (cSectionGCD.csMode)
+                    {
+                        case cSectionGCD.CsMode.StepThrough:
+                            break;
+                        case cSectionGCD.CsMode.ByGcdCode:
+                            //if (cSectionGCD.layerHeights.IndexOf(cs.Key) <= low
+                            //|| cSectionGCD.layerHeights.IndexOf(cs.Key) > high)
+                            //    col.a = (float)InspectorT.slicerForm.transparency.Value / 100f;
+                            //else col.a = 1.0f;
+                            break;
+                        case cSectionGCD.CsMode.WallThickness:
+                            var minWT = InspectorT.slicerForm.LayerTrackbar.Value / 100f;
+                            if (line.WallThickness < minWT)
+                            {
+                                col.r = 1.0f - line.WallThickness / minWT;
+                                col.b = line.WallThickness / minWT;
+                            }
+                            break;
+                    }
+                    var a = line.Endpoint0;
+                    var b = line.Endpoint1;
+                    graphMaterial.SetPass(0);
+                    GL.Begin(GL.LINES);
+                    GL.Color(col);
+                    GL.Vertex(a);
+                    GL.Vertex(b);
+                    GL.End();
                 }
-                var a = line.Endpoint0;
-                var b = line.Endpoint1;
-                graphMaterial.SetPass(0);
-                GL.Begin(GL.LINES);
-                GL.Color(col);
-                GL.Vertex(a);
-                GL.Vertex(b);
-                GL.End();
             }
         }
         GUI.Label(new Rect(250, 100, 100, 300), "");
@@ -304,7 +307,9 @@ public class LoadFile : MonoBehaviour
     {
         if (!cSectionGCD.ready) return;
         //foreach (var cs in cSectionGCD.layers)
-        var y = gcdLines[(int)InspectorL.gcdTimeSlider].p1.y;
+        var layerTrackbar = InspectorT.slicerForm.LayerTrackbar.Value;
+        var y = cSectionGCD.layerHeights[layerTrackbar];
+        //var y = gcdLines[(int)InspectorL.gcdTimeSlider].p1.y;
         var sloxels = cSectionGCD.layers[y].Sloxels;
         {
             foreach (var slox in sloxels)

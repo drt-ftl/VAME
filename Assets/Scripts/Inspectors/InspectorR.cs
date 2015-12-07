@@ -119,6 +119,18 @@ public class InspectorR : InspectorManager
         if (!voxelsFitted) return;
         IntScrollPosition = GUILayout.BeginScrollView(IntScrollPosition, GUILayout.Width(225), GUILayout.Height(180));
         {
+            if (!v.Ready)
+            {
+                var intersectsVoxel = new List<LineSegment>();
+                foreach (var s in v.Sloxels)
+                {
+                    foreach (var l in s.IntersectedByLines)
+                        intersectsVoxel.Add(l);
+                }
+                v.IntersectedByLines = intersectsVoxel;
+                //v.SetMaxAndMin();
+                //v.DistanceBetweenSkewLines();
+            }
             var intersects = "Intersected By " + v.IntersectedByLines.Count.ToString() + " lines.\r\n";
             GUILayout.Label(intersects, "i2");
             

@@ -40,6 +40,8 @@ public class VoxelClass
     public float MedianLineNumber { get; internal set; }
     public float StandardDeviation { get; internal set; }
     public float MeanDistance { get; internal set; }
+    public bool Ready { get; set; }
+    public SingleCube singleCube { get; set; }
     public void GetDistanceBetweenParallelLines()
     {
         var lineNumbers = new List<int>();
