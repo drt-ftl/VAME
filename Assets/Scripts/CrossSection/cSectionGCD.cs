@@ -15,7 +15,7 @@ public class cSectionGCD
     public static bool ready = false;
     public enum CsMode { StepThrough, ByGcdCode, WallThickness, None }
     public static CsMode csMode;
-    public static Vector3 sloxelResolution = Vector3.one * 20;
+    public static Vector3 sloxelResolution = Vector3.one * 8;
     static float increment = 0;
     private static float topLayerHeight = -1000000;
     private static float bottomLayerHeight = 1000000;
@@ -24,16 +24,40 @@ public class cSectionGCD
     static float voxelHeight = 0;
     static int voxelLayers = 0;
     public GameObject Voxel;
+    public float minLineSepSloxels = 1000000;
+    public float maxLineSepSloxels = -1;
+    public float minLineCountSloxels = 1000000;
+    public float maxLineCountSloxels = -1;
 
     public cSectionGCD()
     {
         csMode = CsMode.None;
         ready = false;
+        sloxelResolution = Vector3.one * (float)InspectorT.slicerForm.ResUpDown.Value;
         increment = 1.0f / sloxelResolution.x;
         csPlaneEqn = new Vector4(0f, 1f, 0f, 0f);
         triangles.Clear();
         layers.Clear();
         layerHeights.Clear();
+        voxelHeights.Clear();
+        highlights.Clear();
+        foreach (var voxel in voxels)
+        {
+            MonoBehaviour.Destroy(voxel.Value.Voxel);
+        }
+        voxels.Clear();
+        topLayerHeight = -1000000;
+        bottomLayerHeight = 1000000;
+        tlhGrid = -1000000;
+        blhGrid = 1000000;
+        voxelHeight = 0;
+        voxelLayers = 0;
+        minLineSepSloxels = 1000000;
+        maxLineSepSloxels = -1;
+        minLineCountSloxels = 1000000;
+        maxLineCountSloxels = -1;
+        InspectorR.voxelsFitted = false;
+
         foreach (var l in LoadFile.gcdLines)
         {
             if (!layers.ContainsKey(l.p1.y))
@@ -112,6 +136,7 @@ public class cSectionGCD
                 if (line.Endpoint1.z > max.z)
                     max.z = line.Endpoint1.z;
             }
+            
             layer.Value.Min = min;
             layer.Value.Max = max;
         }
@@ -121,9 +146,8 @@ public class cSectionGCD
         ready = true;
         if (InspectorT.slicerForm != null)
         InspectorT.slicerForm.LayerTrackbar.Maximum = cSectionGCD.layers.Count - 1;
-        //Camera.main.GetComponent<InspectorR>().OnVoxelize();
         InspectorR.voxelsLoaded = true;
-        InspectorR.voxelsFitted = true;
+        
         InspectorT.slicerForm.panel1.Invalidate();
     }
     public void CrossSection()
@@ -361,6 +385,30 @@ public class cSectionGCD
         return pt;
     }
 
+    public static void SetStatistics()
+    {
+        foreach (var _v in voxels)
+        {
+            var intersectsVoxel = new List<LineSegment>();
+            var minLineNumber = 10000000;
+            var maxLineNumber = 0;
+            foreach (var s in _v.Value.Sloxels)
+            {
+                foreach (var l in s.IntersectedByLines)
+                    intersectsVoxel.Add(l);
+            }
+            _v.Value.IntersectedByLines = intersectsVoxel;
+            _v.Value.SetMaxAndMin();
+        }
+        foreach (var l in layers)
+        {
+            foreach (var s in l.Value.Sloxels)
+            {
+                var linesThrough = s.IntersectedByLines.Count;
+            }
+        }
+        InspectorR.voxelsFitted = true;
+    }
     public void GetSloxels ()
     {
         foreach (var layer in layers)
@@ -475,7 +523,10 @@ public class cSectionGCD
                         || (leftsF_L % 2 == 1 && rightsF_L % 2 == 1)
                         || (leftsC_R % 2 == 1 && rightsC_R % 2 == 1)
                         || (leftsN_R % 2 == 1 && rightsN_R % 2 == 1)
-                        || (leftsF_R % 2 == 1 && rightsF_R % 2 == 1))
+                        || (leftsF_R % 2 == 1 && rightsF_R % 2 == 1)
+                        || leftsC_L != leftsC_R
+                        || leftsN_L != leftsN_R
+                        || leftsF_L != leftsF_R)
                     {
                         AddSloxel(new Vector3(x, y, z), layer.Value);
                     }
@@ -514,12 +565,8 @@ public class cSectionGCD
                     voxObj.GetComponent<SingleCube>().voxelClass = newVox;
                     newVox.Voxel = voxObj;
                     voxels.Add(voxPos, newVox);
+                    highlights.Add(voxPos);
                     InspectorR.highlightVector = voxPos;
-                }
-                var v = voxels[voxPos];
-                if (!layer.Voxels.Contains(v))
-                {
-                    layer.Voxels.Add(v);                    
                 }
                 foreach (var line in layer.gcdLines)
                 {
@@ -529,12 +576,19 @@ public class cSectionGCD
                         {
                             var m = line.p2 - line.p1;
                             var sloxMinX = slox.Position.x - inc / 2;
-                            var sloxMaxX = slox.Position.x - inc / 2;
+                            var sloxMaxX = slox.Position.x + inc / 2;
                             var factorMinX = (sloxMinX - line.p1.x) / m.x;
                             var factorMaxX = (sloxMaxX - line.p1.x) / m.x;
                             if ((factorMinX >= 0 && factorMinX <= 1)
                                 || (factorMaxX >= 0 && factorMaxX <= 1))
-                                slox.IntersectedByLines.Add(line);
+                            {
+                                if (line.step < slox.MinLineNumber)
+                                    slox.MinLineNumber = line.step;
+                                if (line.step > slox.MaxLineNumber)
+                                    slox.MaxLineNumber = line.step;
+                                if (!slox.IntersectedByLines.Contains(line))
+                                    slox.IntersectedByLines.Add(line);
+                            }
                         }
                     }
                     else if (line.MovesInZ)
@@ -543,21 +597,36 @@ public class cSectionGCD
                         {
                             var m = line.p2 - line.p1;
                             var sloxMinZ = slox.Position.z - inc / 2;
-                            var sloxMaxZ = slox.Position.z - inc / 2;
+                            var sloxMaxZ = slox.Position.z + inc / 2;
                             var factorMinZ = (sloxMinZ - line.p1.z) / m.z;
                             var factorMaxZ = (sloxMaxZ - line.p1.z) / m.z;
                             if ((factorMinZ >= 0 && factorMinZ <= 1)
                                 || (factorMaxZ >= 0 && factorMaxZ <= 1))
-                                slox.IntersectedByLines.Add(line);
+                            {
+                                if (line.step < slox.MinLineNumber)
+                                    slox.MinLineNumber = line.step;
+                                if (line.step > slox.MaxLineNumber)
+                                    slox.MaxLineNumber = line.step;
+                                if (!slox.IntersectedByLines.Contains(line))
+                                    slox.IntersectedByLines.Add(line);
+                            }
                         }
                     }
                 }
+                var v = voxels[voxPos];
+                if (slox.MinLineNumber < v.MinLine)
+                    v.MinLine = slox.MinLineNumber;
+                if (slox.MaxLineNumber > v.MaxLine)
+                    v.MaxLine = slox.MaxLineNumber;
                 v.Sloxels.Add(slox);
                 slox.Voxel = v;
+                if (!layer.Voxels.Contains(v))
+                {
+                    layer.Voxels.Add(v);
+                }
                 slox.VoxelOrigin = voxPos;
             }
         }
-        //GameObject.Find("VOXELIZER").GetComponent<PathFitter>().FitPaths();
     }
 
     public float RoundToLayer (float layerY, float numToRound)

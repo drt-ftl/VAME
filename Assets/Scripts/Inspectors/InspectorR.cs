@@ -60,49 +60,14 @@ public class InspectorR : InspectorManager
             GUILayout.Space(10);
             if (LoadFile.stlCodeLoaded || voxelsLoaded)
             {
-                //if (GUILayout.Button("Voxelize"))
-                //{
-                //    OnVoxelize();
-                //}
-
-                resolution = GUILayout.HorizontalSlider(resolution, 1, 25, GUILayout.Width(220), GUILayout.Height(12));
-                var res = (int)resolution;
-                GUILayout.Label("Resolution: " + res.ToString(), KeyStyle, GUILayout.Width(250));
-                GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().divisions = res;
                 if (voxelsLoaded)
                     WhenVoxelsAreUp();
-                GUILayout.Space(18);
             }
-            else GUILayout.Label("Load STL file to voxelize.");
+            //else GUILayout.Label("Load STL file to voxelize.");
         }
         GUILayout.EndArea();
     }
 
-    public void OnVoxelize()
-    {
-        foreach (var v in cSectionGCD.voxels)
-        {
-            v.Value.IntersectedByLines.Clear();
-        }
-        voxelsFitted = false;
-        highlight = 0;
-        foreach (var v in cSectionGCD.voxels)
-            Destroy(v.Value.Voxel);
-        cSectionGCD.voxels.Clear();
-        cSectionGCD.highlights.Clear();
-        //GameObject.Find("VOXELIZER").GetComponent<SurfaceVoxelizer>().VoxelizeSurfaces((int)resolution);
-        //GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().VoxelizeSurfaces((int)resolution);
-        voxelVis = 100;
-        voxelsLoaded = true;
-        if (LoadFile.gcdCodeLoaded)
-        {
-            foreach (var v in cSectionGCD.voxels)
-            {
-                v.Value.IntersectedByLines.Clear();
-            }
-            GameObject.Find("VOXELIZER").GetComponent<PathFitter>().FitPaths();
-        }
-    }
     void WhenVoxelsAreUp()
     {
         voxelVis = GUILayout.HorizontalSlider(voxelVis, 0, 100, GUILayout.Width(220), GUILayout.Height(12));
@@ -110,27 +75,23 @@ public class InspectorR : InspectorManager
         highlight = GUILayout.HorizontalSlider(highlight, 0, cSectionGCD.voxels.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
         GUILayout.Label("Highlight: " + highlight.ToString("f0"), KeyStyle, GUILayout.Width(250));
         if (!cSectionGCD.voxels.ContainsKey(highlightVector)) return;
-        var v = cSectionGCD.voxels[highlightVector];//[cSectionGCD.highlights[(int)highlight]];
+        var v = cSectionGCD.voxels[highlightVector];
         var str = "Voxel " + highlight.ToString("f0") + "\r\n";
         str += "Position: " + v.Voxel.transform.position.ToString("f3") + "\r\n";
         str += "Temperature: " + "\r\n";
         str += "Position Error: " + "\r\n";
         GUILayout.Box(str, GUILayout.Width(220), GUILayout.Height(60));
-        if (!voxelsFitted) return;
+        if (!voxelsFitted)
+        {
+            if (GUILayout.Button("Get Statistics"))
+            {
+                cSectionGCD.SetStatistics();
+            }
+            else
+                return;
+        }
         IntScrollPosition = GUILayout.BeginScrollView(IntScrollPosition, GUILayout.Width(225), GUILayout.Height(180));
         {
-            if (!v.Ready)
-            {
-                var intersectsVoxel = new List<LineSegment>();
-                foreach (var s in v.Sloxels)
-                {
-                    foreach (var l in s.IntersectedByLines)
-                        intersectsVoxel.Add(l);
-                }
-                v.IntersectedByLines = intersectsVoxel;
-                //v.SetMaxAndMin();
-                //v.DistanceBetweenSkewLines();
-            }
             var intersects = "Intersected By " + v.IntersectedByLines.Count.ToString() + " lines.\r\n";
             GUILayout.Label(intersects, "i2");
             

@@ -32,7 +32,7 @@ namespace SlicerForm
 
         private void SliceButton_Click(object sender, EventArgs e)
         {
-            if (sliced) return;
+            //if (sliced) return;
             ButtonPressed("Slice", true);
             sliced = true;
         }
@@ -140,6 +140,36 @@ namespace SlicerForm
                         readout += "p2: " + IntLine.p2.ToString("f4") + "\r\n";
                     }
                 }
+                if (ShowCsection.Checked)
+                {
+                    foreach (var border in cSectionGCD.layers[cSectionGCD.layerHeights[LayerTrackbar.Value]].border)
+                    {
+                        var minWT = InspectorT.slicerForm.LayerTrackbar.Value / 100f;
+                        var r = 0;
+                        var gr = 0;
+                        var b = 255;
+
+
+                        if (border.WallThickness < minWT)
+                        {
+                            r = (int)(255f * 1.0f - border.WallThickness / minWT);
+                            b = (int)(255f * border.WallThickness / minWT);
+                        }
+                        var col = System.Drawing.Color.FromArgb(r, gr, b);
+                        p = new System.Drawing.Pen(col);
+                        var x0 = (int)(center.x + border.Endpoint0.x * scale);
+                        var y0 = (int)(center.y - border.Endpoint0.z * scale);
+                        var x1 = (int)(center.x + border.Endpoint1.x * scale);
+                        var y1 = (int)(center.y - border.Endpoint1.z * scale);
+                        g.DrawLine(p, new Point(x0, y0), new Point(x1, y1));
+                    }                    
+                }
+                var pCam = new System.Drawing.Pen(System.Drawing.Color.LimeGreen);
+                var camPos = new Vector3 (InspectorT.CamPos().x, InspectorT.CamPos().y, 0);
+                camPos = Vector3.Normalize(camPos);
+                camPos.x = center.x + camPos.x * 200;
+                camPos.y = center.y - camPos.y * 200;
+                g.DrawEllipse(pCam, new Rectangle((int)camPos.x - 5, (int)camPos.y - 5, 10, 10));
                 SloxelReadout.Text = readout;
             }
         }

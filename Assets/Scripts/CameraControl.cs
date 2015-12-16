@@ -37,6 +37,8 @@ public class CameraControl : MonoBehaviour {
 			var ratio = distance/_distance;
 			transform.position *= ratio;
 			transform.LookAt (target);
+            if (InspectorT.slicerForm != null)
+                InspectorT.slicerForm.panel1.Invalidate();
 		}
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {

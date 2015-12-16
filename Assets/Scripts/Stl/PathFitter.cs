@@ -31,14 +31,14 @@ public class PathFitter : MonoBehaviour
 
     public void MakeNew(VoxelClass vc, LineSegment line)
     {
-        vc.IntersectedByLines.Add(line);
-        if (vc.IntersectedByLines.Count > maxPathsThrough)
-            maxPathsThrough = vc.IntersectedByLines.Count;
+        //vc.IntersectedByLines.Add(line);
+        //if (vc.IntersectedByLines.Count > maxPathsThrough)
+        //    maxPathsThrough = vc.IntersectedByLines.Count;
     }
 
     public void FitPaths()
     {
-        var divisions = GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().divisions;
+        var divisions = (int)cSectionGCD.sloxelResolution.x;
         foreach (var l in LoadFile.gcdLines)
         {
             var p1 = l.p1;
@@ -56,7 +56,7 @@ public class PathFitter : MonoBehaviour
         Camera.main.GetComponent<InspectorR>().SetVoxelsFitted();
         foreach (var v in cSectionGCD.voxels)
         {
-            v.Value.SetMaxAndMin();
+            //v.Value.SetMaxAndMin();
             if (v.Value.IntersectedByLines.Count > 1 
                 && v.Value.MaxDistance > maxIntersectDistance)
                 maxIntersectDistance = v.Value.MaxDistance;
@@ -65,7 +65,7 @@ public class PathFitter : MonoBehaviour
 
     public void ScanVoxels(LineSegment line, bool movesInX)
     {
-        var divisions = GameObject.Find("VOXELIZER").GetComponent<MeshVoxelizer>().divisions;
+        var divisions = cSectionGCD.sloxelResolution.x;
         var half = 0.5f / divisions;
         foreach (var v in cSectionGCD.voxels)
         {

@@ -9,22 +9,22 @@ public class VoxelClass
         IntersectedByLines = new List<LineSegment>();
         Sloxels = new List<Sloxel>();
         MaxDistance = -1;
-        MinDistance = 1000000;
+        MinDistance = 10000000;
     }
     public List<Sloxel> Sloxels { get; set; }
     public void SetMaxAndMin()
     {
-        MaxLine = -1;
-        MinLine = 1000000000;
+        //MaxLine = -1;
+        //MinLine = 1000000000;
         MaxDistance = 0;
         MinDistance = 1000000000;
         foreach (var inter in IntersectedByLines)
         {
-            var index = LoadFile.gcdLines.IndexOf(inter);
-            if (index > MaxLine)
-                MaxLine = index;
-            if (index < MinLine)
-                MinLine = index;
+            //var index = LoadFile.gcdLines.IndexOf(inter);
+            //if (index > MaxLine)
+            //    MaxLine = index;
+            //if (index < MinLine)
+            //    MinLine = index;
             GetDistanceBetweenParallelLines();
         }
     }
@@ -113,7 +113,44 @@ public class VoxelClass
             variance += Mathf.Pow(average - ln, 2);
         }
         StandardDeviation = Mathf.Pow(variance, 0.5f);
-        MeanDistance = MeanDistance / count;        
+        MeanDistance = MeanDistance / count; 
+        
+        foreach (var s in Sloxels)
+        {
+            var minSep = 1000000f;
+            var maxSep = -1f;
+            var alreadyDone = new List<LineSegment>();
+            foreach (var l in s.IntersectedByLines)
+            {
+                alreadyDone.Add(l);
+                var d = 0f;
+              
+                if (l.MovesInX)
+                {
+                    foreach (var other in s.IntersectedByLines)
+                    {
+                        if (other.MovesInX && !alreadyDone.Contains(other))
+                        {
+                            d = Mathf.Abs(l.p1.z - l.p2.z);
+                            if (d < s.MinimumSeparation)
+                                s.MinimumSeparation = d;
+                        }
+                    }
+                }
+                else if (l.MovesInZ)
+                {
+                    foreach (var other in s.IntersectedByLines)
+                    {
+                        if (other.MovesInZ && !alreadyDone.Contains(other))
+                        {
+                            d = Mathf.Abs(l.p1.x - l.p2.x);
+                            if (d < s.MinimumSeparation)
+                                s.MinimumSeparation = d;
+                        }
+                    }
+                }
+            }
+        }       
     }
     public void DistanceBetweenSkewLines()
     {

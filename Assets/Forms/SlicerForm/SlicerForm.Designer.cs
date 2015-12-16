@@ -47,11 +47,14 @@ namespace SlicerForm
             this.ShowCsection = new System.Windows.Forms.CheckBox();
             this.SloxelUpDown = new System.Windows.Forms.NumericUpDown();
             this.LayerUpDown = new System.Windows.Forms.NumericUpDown();
+            this.ResUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.SloxelNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LayerTrackbar)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SloxelUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LayerUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ResUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // ShowGCD
@@ -209,6 +212,8 @@ namespace SlicerForm
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.ResUpDown);
             this.groupBox1.Controls.Add(this.ShowCsection);
             this.groupBox1.Controls.Add(this.SloxelUpDown);
             this.groupBox1.Controls.Add(this.LayerUpDown);
@@ -262,6 +267,40 @@ namespace SlicerForm
             this.LayerUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.LayerUpDown.ValueChanged += new System.EventHandler(this.LayerUpDown_ValueChanged);
             // 
+            // ResUpDown
+            // 
+            this.ResUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ResUpDown.Location = new System.Drawing.Point(144, 21);
+            this.ResUpDown.Maximum = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            this.ResUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ResUpDown.Name = "ResUpDown";
+            this.ResUpDown.Size = new System.Drawing.Size(46, 18);
+            this.ResUpDown.TabIndex = 16;
+            this.ResUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ResUpDown.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(88, 23);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(54, 12);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Resolution: ";
+            // 
             // SlicerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -277,6 +316,7 @@ namespace SlicerForm
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SloxelUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LayerUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ResUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -299,6 +339,8 @@ namespace SlicerForm
         private System.Windows.Forms.NumericUpDown SloxelUpDown;
         public System.Windows.Forms.NumericUpDown LayerUpDown;
         public System.Windows.Forms.CheckBox ShowCsection;
+        private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.NumericUpDown ResUpDown;
     }
 }
 

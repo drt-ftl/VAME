@@ -101,7 +101,7 @@ public class LoadFile : MonoBehaviour
 		loading = true;
         vertices.Clear();
 		System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog ();
-			openFileDialog.InitialDirectory = Application.dataPath + "/Samples";
+		openFileDialog.InitialDirectory = Application.dataPath + "/Samples";
         var sel = "";
         sel += "VAME Files (*.vme)|*.vme|";
         if (!stlCodeLoaded)
@@ -115,7 +115,7 @@ public class LoadFile : MonoBehaviour
         sel = sel.TrimEnd('|');
         openFileDialog.Filter = sel;
         openFileDialog.FilterIndex = 1;
-			openFileDialog.RestoreDirectory = false;
+		openFileDialog.RestoreDirectory = false;
 
 		if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 		{
@@ -167,14 +167,6 @@ public class LoadFile : MonoBehaviour
                             InspectorL.gcdVisSlider = 1;
                             InspectorL.lastLoaded = InspectorL.LastLoaded.GCD;
                             gcdCodeLoaded = true;
-                            if (InspectorR.voxelsLoaded)
-                            {
-                                foreach (var v in cSectionGCD.voxels)
-                                {
-                                    v.Value.IntersectedByLines.Clear();
-                                }
-                                GameObject.Find("VOXELIZER").GetComponent<PathFitter>().FitPaths();
-                            }
                             break;
                         case Type.JOB:
 						    Draw (Type.JOB);

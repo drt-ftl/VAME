@@ -10,11 +10,13 @@ public class CheckWalls
         CSs = cSectionGCD.layers;
         foreach (var cs in CSs) // Each Slice
         {
+            var doneList = new List<csLine>();
             foreach (var line in cs.Value.border) // Each Line In Slice
             {
+                if (doneList.Contains(line)) continue;
+                doneList.Add(line);
                 foreach (var other in cs.Value.border) // Check Against All On Slice
                 {
-                    if (other == line) continue; // But Skip This One
                     CheckForSkewLines(line, other);
                 }
             }
@@ -22,6 +24,11 @@ public class CheckWalls
     }
     void CheckForSkewLines(csLine line, csLine other)
     {
+        if (line.Endpoint0 == other.Endpoint0
+            || line.Endpoint0 == other.Endpoint1
+            || line.Endpoint1 == other.Endpoint0
+            || line.Endpoint1 == other.Endpoint1)
+            return;
         var nLine = line.Normal;
         nLine = Vector3.Normalize(nLine);
         var nOther = line.Normal;
@@ -34,38 +41,52 @@ public class CheckWalls
         other.CloseLines.Add(line);
         var d = 100000f;
         #region parallel
-        //var lMag = Vector3.Magnitude(lSl);
-        //var oMag = Vector3.Magnitude(oSl);
-        //var lmagOmag = lMag * oMag;
-        //if (Mathf.Abs(Vector3.Dot(lSl, oSl) - lmagOmag) < 0.001f) //parallel
+        if (Mathf.Abs(lSl.x) == 0 && Mathf.Abs(oSl.x) == 0) // parallel to x
         {
-            if (Mathf.Abs(lSl.x) <= 0.001f && Mathf.Abs(oSl.x) <= 0.001f) // parallel to x
-            {
                 d = Mathf.Abs(line.Endpoint0.x - other.Endpoint0.x);                
-            }
-            else if (Mathf.Abs(lSl.z) <= 0.001f && Mathf.Abs(oSl.z) <= 0.001f) // parallel to z
-            {
+        }
+        else if (Mathf.Abs(lSl.z) == 0 && Mathf.Abs(oSl.z) == 0) // parallel to z
+        {
                 d = Mathf.Abs(line.Endpoint0.z - other.Endpoint0.z);
-            }
-            else
-            {
-                d = 0f;
-                var x = lSl.x;
-                var z = lSl.z;
-            }
-
-            if (d > 0.001f && d < line.WallThickness)
-            {
-                line.WallThickness = d;
-                line.Closest = other;
-            }
-            if (d > 0.0001f && d < other.WallThickness)
-            {
-                other.WallThickness = d;
-                other.Closest = line;
-            }
         }
         #endregion
+        else
+        {
+            var lNorm = line.Normal;
+            var oNorm = other.Normal;
+            var lMag = Vector3.SqrMagnitude(lNorm);
+            var oMag = Vector3.SqrMagnitude(oNorm);
+            var denom = lMag * oMag;
+            var numer = Vector3.Dot(lNorm, oNorm);
+            var theta = Mathf.Acos(numer / denom);
+            theta = (theta / (2 * Mathf.PI)) * 360f;
+            if (theta < 90 || theta > 270) return;
+            var diff = line.Endpoint0 - other.Endpoint0;
+            var sCheck1Constant = diff.x / oSl.x;
+            var sCheck2Constant = diff.y / oSl.y;
+            var sCheck1Slope = lSl.x / oSl.x;
+            var sCheck2Slope = lSl.y / oSl.y;
+            var constant = sCheck1Constant - sCheck2Constant;
+            var slope = sCheck1Slope - sCheck2Slope;
+            var t = (-constant) / slope;
+            var s = diff.x + t * oSl.z;
+            if (t < 0) t = 0;
+            if (t > 1) t = 1;
+            if (s < 0) s = 0;
+            if (s > 1) s = 1;
+            d = Vector3.Distance(line.Endpoint0 + t * lSl, other.Endpoint0 + s * oSl);
+        }
+
+        if (d > 0.0001f && d< line.WallThickness)
+        {
+            line.WallThickness = d;
+            line.Closest = other;
+        }
+        if (d > 0.0001f && d < other.WallThickness)
+        {
+            other.WallThickness = d;
+            other.Closest = line;
+        }
     }
 
 

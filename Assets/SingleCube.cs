@@ -70,7 +70,8 @@ public class SingleCube : MonoBehaviour
                         {
                             InspectorT.slicerForm.SloxelNumber.Maximum = cSectionGCD.layers[sloxel.Position.y].Sloxels.Count;
                             InspectorT.slicerForm.SloxelNumber.Value = cSectionGCD.layers[sloxel.Position.y].Sloxels.IndexOf(voxelClass.Sloxels[0]);
-                            InspectorL.gcdTimeSlider = InspectorT.slicerForm.LayerTrackbar.Value;
+                            if (InspectorR.highlightType != InspectorR.HighlighType.PathNumbers)
+                                InspectorL.gcdTimeSlider = InspectorT.slicerForm.LayerTrackbar.Value;
                         }
                         InspectorT.slicerForm.panel1.Invalidate();
                     }
@@ -104,10 +105,12 @@ public class SingleCube : MonoBehaviour
                     break;
                 case InspectorR.HighlighType.PathNumbers:
                     var standard = true;
-                    if ((cSectionGCD.voxels[cSectionGCD.highlights[Id]].MinLine >= InspectorL.gcdTimeSliderMin
-                        && cSectionGCD.voxels[cSectionGCD.highlights[Id]].MinLine <= InspectorL.gcdTimeSlider)
-                        || (cSectionGCD.voxels[cSectionGCD.highlights[Id]].MaxLine >= InspectorL.gcdTimeSliderMin
-                        && cSectionGCD.voxels[cSectionGCD.highlights[Id]].MaxLine <= InspectorL.gcdTimeSlider))
+                    if ((voxelClass.MinLine > InspectorL.gcdTimeSliderMin
+                        && voxelClass.MinLine < InspectorL.gcdTimeSlider)
+                        || (voxelClass.MaxLine > InspectorL.gcdTimeSliderMin
+                        && voxelClass.MaxLine < InspectorL.gcdTimeSlider)
+                        && voxelClass.MaxLine >= 0
+                        && voxelClass.MinLine < 10000000)
                         standard = false;
                     if (!standard)
                     {
@@ -126,10 +129,10 @@ public class SingleCube : MonoBehaviour
                     break;
                 case InspectorR.HighlighType.PathSeparation:
                     var stand = true;
-                    if ((cSectionGCD.voxels[cSectionGCD.highlights[Id]].MinDistance >= InspectorR.minIntDist
-                        && cSectionGCD.voxels[cSectionGCD.highlights[Id]].MinDistance <= InspectorR.maxIntDist)
-                        || (cSectionGCD.voxels[cSectionGCD.highlights[Id]].MaxDistance >= InspectorR.minIntDist
-                        && cSectionGCD.voxels[cSectionGCD.highlights[Id]].MaxDistance <= InspectorR.maxIntDist))
+                    if ((voxelClass.MinDistance >= InspectorR.minIntDist
+                        && voxelClass.MinDistance <= InspectorR.maxIntDist)
+                        || (voxelClass.MaxDistance >= InspectorR.minIntDist
+                        && voxelClass.MaxDistance <= InspectorR.maxIntDist))
                         stand = false;
                     if (!stand)
                     {
@@ -164,14 +167,6 @@ public class SingleCube : MonoBehaviour
             if ((GetComponent("Halo") as Behaviour).enabled)
                 (GetComponent("Halo") as Behaviour).enabled = false;
         }
-        //if (Vector3.Distance(Camera.main.transform.position, transform.position) < Camera.main.nearClipPlane + 0.2f)
-        //{
-        //    GetComponent<MeshRenderer>().material.color = blank;
-        //    GetComponent<MeshRenderer>().material.SetColor("_SpecColor", blank);
-        //    GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", blank);
-        //    if ((GetComponent("Halo") as Behaviour).enabled)
-        //        (GetComponent("Halo") as Behaviour).enabled = false;
-        //}
     }
 
     public void Voxel ()

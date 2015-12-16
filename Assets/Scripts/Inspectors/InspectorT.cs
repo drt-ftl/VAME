@@ -8,6 +8,12 @@ using SlicerForm;
 
 public class InspectorT : InspectorManager
 {
+    public static Vector2 CamPos()
+    {
+        var p = Camera.main.transform.position;
+        var camPos = new Vector2(p.x, p.z);
+        return camPos;
+    }
     public static string[] TopToolbarStrings = { "File", "Edit", "Slice", "Window", "Help" };
     public static string[] FileStrings = { "Save", "Crazy", "Clear", "Quit" };
     bool FileUp = false;
