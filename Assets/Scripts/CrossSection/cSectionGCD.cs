@@ -69,12 +69,12 @@ public class cSectionGCD
                 if (l.p1.y < bottomLayerHeight)
                 {
                     bottomLayerHeight = l.p1.y;
-                    blhGrid = Mathf.Floor(bottomLayerHeight * sloxelResolution.x) * increment;
+                    blhGrid = Mathf.Floor(bottomLayerHeight * sloxelResolution.x) * increment - increment / 2.0f;
                 }
                 if (l.p1.y > topLayerHeight)
                 {
                     topLayerHeight = l.p1.y;
-                    tlhGrid = Mathf.Ceil(topLayerHeight * sloxelResolution.x) * increment;
+                    tlhGrid = Mathf.Ceil(topLayerHeight * sloxelResolution.x) * increment + increment / 2.0f;
                 }
             }
             layers[l.p1.y].gcdLines.Add(l);
@@ -83,7 +83,7 @@ public class cSectionGCD
         var remainder = (int)(layers.Count % sloxelResolution.x);
         var sloxelsPerVoxel = (int)(layers.Count - remainder);
         voxelHeight = increment;// layers.Count / sloxelsPerVoxel;// (topLayerHeight - bottomLayerHeight + increment) / sloxelsPerVoxel;
-        for (float i = bottomLayerHeight - voxelHeight / 2; i <= topLayerHeight + voxelHeight / 2; i += voxelHeight)
+        for (float i = bottomLayerHeight - voxelHeight; i <= topLayerHeight + voxelHeight; i += voxelHeight)
         {
             if (!voxelHeights.Contains(i))
                 voxelHeights.Add(i);
@@ -393,6 +393,7 @@ public class cSectionGCD
         {
             _v.Value.SetMaxAndMin();
         }
+        InspectorR.maxIntDist = maxLineSepSloxels;
         foreach (var l in layers)
         {
             foreach (var s in l.Value.Sloxels)
@@ -413,7 +414,7 @@ public class cSectionGCD
             var incZ = 1 / sloxelResolution.z;
             var near = Mathf.Floor(layer.Value.Min.z * sloxelResolution.z) / sloxelResolution.z;
             var far = Mathf.Ceil(layer.Value.Max.z * sloxelResolution.z) / sloxelResolution.z;
-            for (float z = near - 1.5f * incZ; z <= far + 1.5f * incZ; z += incZ)
+            for (float z = near - incZ; z <= far + incZ; z += incZ)
             {
                 var crosses = new List<Vector3>();
                 var crossesNear = new List<Vector3>();
@@ -443,7 +444,7 @@ public class cSectionGCD
                     var minX = Mathf.Min(borderLine.Endpoint0.x, borderLine.Endpoint1.x);
                     var maxX = Mathf.Max(borderLine.Endpoint0.x, borderLine.Endpoint1.x);
                 }
-                for (float x = left - 2.5f * incX; x <= right + 2.5f * incX; x += incX)
+                for (float x = left - 2.0f * incX; x <= right + 2.0f * incX; x += incX)
                 {
                     var leftsN = 0;
                     var rightsN = 0;

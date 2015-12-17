@@ -30,6 +30,9 @@ public class InspectorR : InspectorManager
     public int highlightTypeIndex = 0;
     private string[] pathToggleNames = new string[] { "None", "Count", "Sep", "%" };
     public Color voxelColor;
+    private float lastMaxSep = 0;
+    private float lastMinSep = 0;
+    private float lastVoxelVis = 0;
 
     public static bool ShowPathIntersects = false;
 
@@ -70,12 +73,16 @@ public class InspectorR : InspectorManager
 
     void WhenVoxelsAreUp()
     {
+        if (voxelVis != lastVoxelVis) InspectorT.slicerForm.panel1.Invalidate();
+        lastVoxelVis = voxelVis;
         voxelVis = GUILayout.HorizontalSlider(voxelVis, 0, 100, GUILayout.Width(220), GUILayout.Height(12));
         GUILayout.Label("Visibility: " + voxelVis.ToString("f2"), KeyStyle, GUILayout.Width(250));
         highlight = GUILayout.HorizontalSlider(highlight, 0, cSectionGCD.voxels.Count - 1, GUILayout.Width(220), GUILayout.Height(12));
         GUILayout.Label("Highlight: " + highlight.ToString("f0"), KeyStyle, GUILayout.Width(250));
         if (!cSectionGCD.voxels.ContainsKey(highlightVector)) return;
-        var v = cSectionGCD.voxels[highlightVector];
+        var sloxList = cSectionGCD.layers[cSectionGCD.layerHeights[InspectorT.slicerForm.LayerTrackbar.Value]].Sloxels;
+        var hSlox = sloxList[InspectorT.slicerForm.SloxelNumber.Value];
+        var v = hSlox.Voxel;
         var str = "Voxel " + highlight.ToString("f0") + "\r\n";
         str += "Position: " + v.Voxel.transform.position.ToString("f3") + "\r\n";
         str += "Temperature: " + "\r\n";
@@ -92,13 +99,17 @@ public class InspectorR : InspectorManager
         }
         IntScrollPosition = GUILayout.BeginScrollView(IntScrollPosition, GUILayout.Width(225), GUILayout.Height(180));
         {
-            var sloxVoxInfo = "Voxel #: " + v.Id.ToString() + "\r\n";
-            sloxVoxInfo = "Includes " + v.Sloxels.Count.ToString() + " Sloxels: \r\n";
+            var sloxVoxInfo = "<b>Voxel #: " + v.Id.ToString() + "\r\n";
+            sloxVoxInfo += "Includes " + v.Sloxels.Count.ToString() + " Sloxels: \r\n</b>\r\n";
             foreach (var slox in v.Sloxels)
             {
+                if (slox == hSlox)
+                    sloxVoxInfo += "<color=red>";
                 sloxVoxInfo += ("Layer: " + slox.Layer + ", " + "Sloxel #: " + slox.Id.ToString() + "\r\n");
+                if (slox == hSlox)
+                    sloxVoxInfo += "</color>";
             }
-            GUILayout.Label(sloxVoxInfo, "i2");
+            GUILayout.Label(sloxVoxInfo, "i");
             var intersects = "Intersected By " + v.IntersectedByLines.Count.ToString() + " lines.\r\n";
             GUILayout.Label(intersects, "i2");
             
@@ -146,6 +157,13 @@ public class InspectorR : InspectorManager
                 break;
             case 2:
                 highlightType = HighlighType.PathSeparation;
+
+                if (lastMaxSep != maxIntDist)
+                    InspectorT.slicerForm.panel1.Invalidate();
+                lastMaxSep = maxIntDist;
+                if (lastMinSep != minIntDist)
+                    InspectorT.slicerForm.panel1.Invalidate();
+                lastMinSep = minIntDist;
                 minIntDist = GUILayout.HorizontalSlider(minIntDist, 0, maxIntDist);
                 GUILayout.Label("Min #: " + minIntDist.ToString("f4"), KeyStyle, GUILayout.Width(220));
                 maxIntDist = GUILayout.HorizontalSlider(maxIntDist, 0, cSectionGCD.maxLineSepSloxels);

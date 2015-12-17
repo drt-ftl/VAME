@@ -360,7 +360,7 @@ namespace SlicerForm
         private System.Windows.Forms.Label labelSlox;
         private System.Windows.Forms.Label SloxelReadout;
         public System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.CheckBox ShowGCD;
+        public System.Windows.Forms.CheckBox ShowGCD;
         private System.Windows.Forms.CheckBox ShowSloxels;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.NumericUpDown SloxelUpDown;

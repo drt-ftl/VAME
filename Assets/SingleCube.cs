@@ -18,6 +18,7 @@ public class SingleCube : MonoBehaviour
     private Color blank;
     private int id;
     public static float scale = 0.9f;
+    public bool partOfHighlightedSet = false;
 
 
     void Start()
@@ -37,6 +38,8 @@ public class SingleCube : MonoBehaviour
         RaycastHit hit;
         if ((int)InspectorR.highlight == Id)
         {
+            var lines = cSectionGCD.layers[cSectionGCD.layerHeights[InspectorT.slicerForm.LayerTrackbar.Value]].gcdLines;
+            InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
             var color = Color.white;
             GetComponent<MeshRenderer>().material.color = color;
             GetComponent<MeshRenderer>().material.SetColor("_SpecColor", color);
@@ -47,6 +50,8 @@ public class SingleCube : MonoBehaviour
         }
         else if (Physics.Raycast(ray, out hit) && hit.transform == transform)
         {
+            var lines = cSectionGCD.layers[cSectionGCD.layerHeights[InspectorT.slicerForm.LayerTrackbar.Value]].gcdLines;
+            InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
             var color = Color.white;
             GetComponent<MeshRenderer>().material.color = color;
             GetComponent<MeshRenderer>().material.SetColor("_SpecColor", color);
@@ -94,6 +99,7 @@ public class SingleCube : MonoBehaviour
                         spec = color;
                         emiss = Color.magenta * Mathf.LinearToGammaSpace(0.2f);
                         halo = true;
+                        partOfHighlightedSet = true;
                     }
                     else
                     {
@@ -101,6 +107,7 @@ public class SingleCube : MonoBehaviour
                         spec = specColor;
                         emiss = emissColor;
                         color.a = InspectorR.voxelVis / 100;
+                        partOfHighlightedSet = false;
                     }
                     break;
                 case InspectorR.HighlighType.PathNumbers:
@@ -118,6 +125,7 @@ public class SingleCube : MonoBehaviour
                         spec = color;
                         emiss = Color.blue * Mathf.LinearToGammaSpace(0.2f);
                         halo = true;
+                        partOfHighlightedSet = true;
                     }
                     else
                     {
@@ -125,6 +133,7 @@ public class SingleCube : MonoBehaviour
                         spec = specColor;
                         emiss = emissColor;
                         color.a = InspectorR.voxelVis / 100;
+                        partOfHighlightedSet = false;
                     }
                     break;
                 case InspectorR.HighlighType.PathSeparation:
@@ -140,6 +149,7 @@ public class SingleCube : MonoBehaviour
                         spec = color;
                         emiss = Color.blue * Mathf.LinearToGammaSpace(0.2f);
                         halo = true;
+                        partOfHighlightedSet = true;
                     }
                     else
                     {
@@ -147,6 +157,7 @@ public class SingleCube : MonoBehaviour
                         spec = specColor;
                         emiss = emissColor;
                         color.a = InspectorR.voxelVis / 100;
+                        partOfHighlightedSet = false;
                     }
                     break;
                 default:
@@ -154,6 +165,7 @@ public class SingleCube : MonoBehaviour
                     spec = specColor;
                     emiss = emissColor;
                     color.a = InspectorR.voxelVis / 100;
+                    partOfHighlightedSet = false;
                     break;
             }
             if (color.a <= 0.1f && GetComponent<BoxCollider>().enabled)

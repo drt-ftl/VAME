@@ -115,36 +115,51 @@ namespace SlicerForm
                 }
                 if (ShowSloxels.Checked)
                 {
+                    var hSlox = sloxList[SloxelNumber.Value];
                     foreach (var sloxel in sloxList)
                     {
-                        var r = 255;
-                        var gr = 0;
-                        var b = 0;
-
-
-                        if ((sloxel.MinimumSeparation > InspectorR.minIntDist && sloxel.MinimumSeparation < InspectorR.maxIntDist)
-                            || (sloxel.MaximumSeparation > InspectorR.minIntDist && sloxel.MaximumSeparation < InspectorR.maxIntDist))
+                        if (sloxel == hSlox) continue;
+                        if (!sloxel.Voxel.singleCube.partOfHighlightedSet)
                         {
-                            r = 255;
-                            b = 255;
+                            var a = (int)(InspectorR.voxelVis * 2.55f);
+                            var r = 255;
+                            var gr = 0;
+                            var b = 0;
+                            var col = System.Drawing.Color.FromArgb(a, r, gr, b);
+                            p = new System.Drawing.Pen(col);
+                            var x = center.x + sloxel.Position.x * scale;
+                            var y = center.y - sloxel.Position.z * scale;
+                            g.DrawRectangle(p, x - dim, y - dim, dim * 2, dim * 2);
                         }
-                        var col = System.Drawing.Color.FromArgb(r, gr, b);
-                        p = new System.Drawing.Pen(col);
-                        var x = center.x + sloxel.Position.x * scale;
-                        var y = center.y - sloxel.Position.z * scale;
-                        g.DrawRectangle(p, x - dim, y - dim, dim * 2, dim * 2);
                     }
-                    var hSlox = sloxList[SloxelNumber.Value];
+                    foreach (var sloxel in sloxList)
+                    {
+                        if (sloxel == hSlox) continue;
+                        if (sloxel.Voxel.singleCube.partOfHighlightedSet)
+                        {
+
+                            var r = 120;
+                            var gr = 60;
+                            var b = 255;
+                            var col = System.Drawing.Color.FromArgb(r, gr, b);
+                            p = new System.Drawing.Pen(col);
+                            var x = center.x + sloxel.Position.x * scale;
+                            var y = center.y - sloxel.Position.z * scale;
+                            g.DrawRectangle(p, x - dim, y - dim, dim * 2, dim * 2);
+                        }
+                    }
                     p = new System.Drawing.Pen(System.Drawing.Color.Yellow);
                     SolidBrush sbH = new SolidBrush(System.Drawing.Color.Red);
                     var xH = center.x + hSlox.Position.x * scale;
                     var yH = center.y - hSlox.Position.z * scale;
                     g.DrawRectangle(p, xH - dim, yH - dim, dim * 2, dim * 2);
                     InspectorR.highlight = hSlox.Voxel.Id;
+                    var sloxelInVoxel = hSlox.Voxel.Sloxels.IndexOf(hSlox) + 1;
+                    var sloxCount = hSlox.Voxel.Sloxels.Count;
                     readout += "\r\n";
-                    readout += "Layer #: " + hSlox.Layer.ToString() + "\r\n";
-                    readout += "Sloxel #: " +  hSlox.Id.ToString() + "\r\n";
+                    readout += "Sloxel #: " +  sloxelInVoxel.ToString() + " / " + sloxCount.ToString() + "\r\n";
                     readout += "Voxel #: " + hSlox.Voxel.Id.ToString() + "\r\n";
+                    readout += "Layer #: " + hSlox.Layer.ToString() + ", #: " + hSlox.Id.ToString() + "\r\n";
                     if (hSlox.IntersectedByLines.Count == 1)
                         readout += "Intersected By 1 Line. \r\n";
                     else
@@ -193,6 +208,8 @@ namespace SlicerForm
         private void LayerTrackbar_Scroll(object sender, EventArgs e)
         {
             LayerUpDown.Value = LayerTrackbar.Value;
+            var lines = cSectionGCD.layers[cSectionGCD.layerHeights[LayerTrackbar.Value]].gcdLines;
+            InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
             panel1.Invalidate();
         }
 
@@ -215,6 +232,8 @@ namespace SlicerForm
         private void LayerUpDown_ValueChanged(object sender, EventArgs e)
         {
             LayerTrackbar.Value = (int)LayerUpDown.Value;
+            var lines = cSectionGCD.layers[cSectionGCD.layerHeights[LayerTrackbar.Value]].gcdLines;
+            InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
             panel1.Invalidate();
         }
 

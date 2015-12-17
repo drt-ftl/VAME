@@ -337,22 +337,35 @@ public class InspectorL : InspectorManager
                 gcdTimeSliderPrev = gcdTimeSlider;
 
                 var indexGCD = 0;
+                
                 foreach (var line in LoadFile.gcdLines)
                 {
-                    if ((int)gcdTimeSlider < indexGCD || (int)gcdTimeSliderMin > indexGCD)
+                    var color = new Color(gcdLineColor.r, gcdLineColor.g, gcdLineColor.b, gcdVisSlider);
+                    if ((int)gcdTimeSlider == indexGCD)
                     {
-                        line.LineColor = new Color(gcdLineColor.r, gcdLineColor.g, gcdLineColor.b, 0f);
-                    }
-                    else if ((int)gcdTimeSlider == indexGCD)
-                    {
-                        line.LineColor = Camera.main.GetComponent<LoadFile>().LineHighlight;
+                        color = Camera.main.GetComponent<LoadFile>().LineHighlight;
                         _p1 = line.p1;
                         _p2 = line.p2;
                     }
+                    else if (!cSectionGCD.ready)
+                    {
+                        if ((int)gcdTimeSlider < indexGCD || (int)gcdTimeSliderMin > indexGCD)
+                        {
+                            color.a = 0f;
+                        }
+                        else
+                            color.a = gcdVisSlider;
+                    }
                     else
                     {
-                        line.LineColor = gcdLineColor;
+                        if ((int)gcdTimeSlider < indexGCD || (int)gcdTimeSliderMin > indexGCD)
+                        {
+                            color.a = 0f;
+                        }
+                        else if (cSectionGCD.layers[cSectionGCD.layerHeights[InspectorT.slicerForm.LayerTrackbar.Value]].gcdLines.Contains(line) && InspectorT.slicerForm.ShowGCD.Checked)
+                            color.a = 1.0f;
                     }
+                    line.LineColor = color;
                     indexGCD++;
                 }
                 break;
