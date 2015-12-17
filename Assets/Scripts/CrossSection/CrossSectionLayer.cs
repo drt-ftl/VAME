@@ -10,11 +10,13 @@ public class CrossSectionLayer
         xLines = new List<csLine>();
         zLines = new List<csLine>();
         gcdLines = new List<LineSegment>();
+        SloxPositions = new List<Vector3>();
         Sloxels = new List<Sloxel>();
         Voxels = new List<VoxelClass>();
         Min = Vector3.one * 1000000;
         Max = Vector3.one * -1000000;
     }
+    public int Layer { get; set; }
     public List<csLine> border { get; set; }
     public List<csLine> xLines { get; set; }
     public List<csLine> zLines { get; set; }
@@ -23,5 +25,6 @@ public class CrossSectionLayer
     public Vector3 Min { get; set; }
     public float Height { get; set; }
     public List<Sloxel> Sloxels{ get; set; }
+    public List<Vector3> SloxPositions { get; set; }
     public List<VoxelClass> Voxels { get; set; }
 }

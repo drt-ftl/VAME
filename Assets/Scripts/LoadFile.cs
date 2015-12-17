@@ -273,7 +273,7 @@ public class LoadFile : MonoBehaviour
                             //else col.a = 1.0f;
                             break;
                         case cSectionGCD.CsMode.WallThickness:
-                            var minWT = InspectorT.slicerForm.LayerTrackbar.Value / 100f;
+                            var minWT = InspectorT.slicerForm.wtSlider.Value / 100f;
                             if (line.WallThickness < minWT)
                             {
                                 col.r = 1.0f - line.WallThickness / minWT;

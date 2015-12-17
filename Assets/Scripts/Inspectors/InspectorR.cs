@@ -92,6 +92,13 @@ public class InspectorR : InspectorManager
         }
         IntScrollPosition = GUILayout.BeginScrollView(IntScrollPosition, GUILayout.Width(225), GUILayout.Height(180));
         {
+            var sloxVoxInfo = "Voxel #: " + v.Id.ToString() + "\r\n";
+            sloxVoxInfo = "Includes " + v.Sloxels.Count.ToString() + " Sloxels: \r\n";
+            foreach (var slox in v.Sloxels)
+            {
+                sloxVoxInfo += ("Layer: " + slox.Layer + ", " + "Sloxel #: " + slox.Id.ToString() + "\r\n");
+            }
+            GUILayout.Label(sloxVoxInfo, "i2");
             var intersects = "Intersected By " + v.IntersectedByLines.Count.ToString() + " lines.\r\n";
             GUILayout.Label(intersects, "i2");
             
@@ -141,7 +148,7 @@ public class InspectorR : InspectorManager
                 highlightType = HighlighType.PathSeparation;
                 minIntDist = GUILayout.HorizontalSlider(minIntDist, 0, maxIntDist);
                 GUILayout.Label("Min #: " + minIntDist.ToString("f4"), KeyStyle, GUILayout.Width(220));
-                maxIntDist = GUILayout.HorizontalSlider(maxIntDist, 0, PathFitter.maxIntersectDistance);
+                maxIntDist = GUILayout.HorizontalSlider(maxIntDist, 0, cSectionGCD.maxLineSepSloxels);
                 GUILayout.Label("Max #: " + maxIntDist.ToString("f4"), KeyStyle, GUILayout.Width(220));
                 break;
             case 3:

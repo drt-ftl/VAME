@@ -117,6 +117,19 @@ namespace SlicerForm
                 {
                     foreach (var sloxel in sloxList)
                     {
+                        var r = 255;
+                        var gr = 0;
+                        var b = 0;
+
+
+                        if ((sloxel.MinimumSeparation > InspectorR.minIntDist && sloxel.MinimumSeparation < InspectorR.maxIntDist)
+                            || (sloxel.MaximumSeparation > InspectorR.minIntDist && sloxel.MaximumSeparation < InspectorR.maxIntDist))
+                        {
+                            r = 255;
+                            b = 255;
+                        }
+                        var col = System.Drawing.Color.FromArgb(r, gr, b);
+                        p = new System.Drawing.Pen(col);
                         var x = center.x + sloxel.Position.x * scale;
                         var y = center.y - sloxel.Position.z * scale;
                         g.DrawRectangle(p, x - dim, y - dim, dim * 2, dim * 2);
@@ -128,10 +141,14 @@ namespace SlicerForm
                     var yH = center.y - hSlox.Position.z * scale;
                     g.DrawRectangle(p, xH - dim, yH - dim, dim * 2, dim * 2);
                     InspectorR.highlight = hSlox.Voxel.Id;
+                    readout += "\r\n";
+                    readout += "Layer #: " + hSlox.Layer.ToString() + "\r\n";
+                    readout += "Sloxel #: " +  hSlox.Id.ToString() + "\r\n";
+                    readout += "Voxel #: " + hSlox.Voxel.Id.ToString() + "\r\n";
                     if (hSlox.IntersectedByLines.Count == 1)
                         readout += "Intersected By 1 Line. \r\n";
                     else
-                        readout = "Intersected By " + hSlox.IntersectedByLines.Count.ToString() + " Lines. \r\n";
+                        readout += "Intersected By " + hSlox.IntersectedByLines.Count.ToString() + " Lines. \r\n";
                     foreach (var IntLine in hSlox.IntersectedByLines)
                     {
                         readout += "\r\n";
@@ -144,16 +161,15 @@ namespace SlicerForm
                 {
                     foreach (var border in cSectionGCD.layers[cSectionGCD.layerHeights[LayerTrackbar.Value]].border)
                     {
-                        var minWT = InspectorT.slicerForm.LayerTrackbar.Value / 100f;
+                        wtLabel.Text = "Wall Thickness: " + (wtSlider.Value / 100f).ToString("f4");
+                        var minWT = wtSlider.Value / 100f;
                         var r = 0;
                         var gr = 0;
                         var b = 255;
-
-
                         if (border.WallThickness < minWT)
                         {
-                            r = (int)(255f * 1.0f - border.WallThickness / minWT);
-                            b = (int)(255f * border.WallThickness / minWT);
+                            r = (int)((1.0f - border.WallThickness / minWT) * 255f);
+                            b = (int)((border.WallThickness / minWT) * 255f);
                         }
                         var col = System.Drawing.Color.FromArgb(r, gr, b);
                         p = new System.Drawing.Pen(col);
@@ -230,6 +246,16 @@ namespace SlicerForm
                     panel1.Invalidate();
                 }
             }
+        }
+
+        private void ShowCsection_CheckedChanged(object sender, EventArgs e)
+        {
+            panel1.Invalidate();
+        }
+
+        private void wtSlider_Scroll(object sender, EventArgs e)
+        {
+            panel1.Invalidate();
         }
     }
 }

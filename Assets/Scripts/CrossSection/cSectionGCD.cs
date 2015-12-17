@@ -24,10 +24,10 @@ public class cSectionGCD
     static float voxelHeight = 0;
     static int voxelLayers = 0;
     public GameObject Voxel;
-    public float minLineSepSloxels = 1000000;
-    public float maxLineSepSloxels = -1;
-    public float minLineCountSloxels = 1000000;
-    public float maxLineCountSloxels = -1;
+    public static float minLineSepSloxels = 1000000;
+    public static float maxLineSepSloxels = -1;
+    public static float minLineCountSloxels = 1000000;
+    public static float maxLineCountSloxels = -1;
 
     public cSectionGCD()
     {
@@ -62,7 +62,9 @@ public class cSectionGCD
         {
             if (!layers.ContainsKey(l.p1.y))
             {
-                layers.Add(l.p1.y, new CrossSectionLayer(l.p1.y));
+                var newLayer = new CrossSectionLayer(l.p1.y);
+                newLayer.Layer = layers.Count;
+                layers.Add(l.p1.y, newLayer);
                 layerHeights.Add(l.p1.y);
                 if (l.p1.y < bottomLayerHeight)
                 {
@@ -389,15 +391,6 @@ public class cSectionGCD
     {
         foreach (var _v in voxels)
         {
-            var intersectsVoxel = new List<LineSegment>();
-            var minLineNumber = 10000000;
-            var maxLineNumber = 0;
-            foreach (var s in _v.Value.Sloxels)
-            {
-                foreach (var l in s.IntersectedByLines)
-                    intersectsVoxel.Add(l);
-            }
-            _v.Value.IntersectedByLines = intersectsVoxel;
             _v.Value.SetMaxAndMin();
         }
         foreach (var l in layers)
@@ -536,10 +529,14 @@ public class cSectionGCD
     }
 
     public void AddSloxel(Vector3 centroid, CrossSectionLayer layer)
-    {        
+    {
+        if (layer.SloxPositions.Contains(centroid)) return;
+        layer.SloxPositions.Add(centroid);
         var slox = new Sloxel();
+        slox.Layer = layer.Layer;
         slox.Position = centroid;
         slox.Dim = sloxelResolution.x;
+        slox.Id = layer.Sloxels.Count;
         layer.Sloxels.Add(slox);
         var inc = 1 / sloxelResolution.x;
         foreach (var voxelLayer in voxelHeights)
@@ -618,13 +615,13 @@ public class cSectionGCD
                     v.MinLine = slox.MinLineNumber;
                 if (slox.MaxLineNumber > v.MaxLine)
                     v.MaxLine = slox.MaxLineNumber;
-                v.Sloxels.Add(slox);
                 slox.Voxel = v;
                 if (!layer.Voxels.Contains(v))
                 {
                     layer.Voxels.Add(v);
                 }
                 slox.VoxelOrigin = voxPos;
+                v.Sloxels.Add(slox);
             }
         }
     }

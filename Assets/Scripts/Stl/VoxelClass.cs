@@ -14,17 +14,21 @@ public class VoxelClass
     public List<Sloxel> Sloxels { get; set; }
     public void SetMaxAndMin()
     {
-        //MaxLine = -1;
-        //MinLine = 1000000000;
         MaxDistance = 0;
         MinDistance = 1000000000;
+        IntersectedByLines.Clear();
+        foreach (var slox in Sloxels)
+        {
+            foreach (var line in slox.IntersectedByLines)
+            {
+                if (!IntersectedByLines.Contains(line))
+                {
+                    IntersectedByLines.Add(line);
+                }
+            }
+        }
         foreach (var inter in IntersectedByLines)
         {
-            //var index = LoadFile.gcdLines.IndexOf(inter);
-            //if (index > MaxLine)
-            //    MaxLine = index;
-            //if (index < MinLine)
-            //    MinLine = index;
             GetDistanceBetweenParallelLines();
         }
     }
@@ -75,6 +79,10 @@ public class VoxelClass
                             MinDistance = d;
                         if (d > MaxDistance)
                             MaxDistance = d;
+                        if (d > cSectionGCD.maxLineSepSloxels)
+                            cSectionGCD.maxLineSepSloxels = d;
+                        if (d < cSectionGCD.minLineSepSloxels)
+                            cSectionGCD.minLineSepSloxels = d;
                     }
                     MeanDistance += d;
                 }

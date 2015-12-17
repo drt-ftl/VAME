@@ -9,8 +9,10 @@ public class Sloxel
         IntersectedByLines = new List<LineSegment>();
         MaxLineNumber = -1;
         MinLineNumber = 100000000;
+        MaximumSeparation = 0;
+        MinimumSeparation = 100000000;
     }
-
+    public int Layer { get; set; }
     public List<LineSegment> IntersectedByLines { get; set; }
     public int Id { get; set; }
     public int MinLineNumber { get; set; }
@@ -21,4 +23,5 @@ public class Sloxel
     public float Dim { get; set; }  
     public Vector3 VoxelOrigin { get; set; } 
     public float MinimumSeparation { get; set; }
+    public float MaximumSeparation { get; set; }
 }
