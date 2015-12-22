@@ -11,7 +11,9 @@ public class csLine
         Normal = normal;
         CloseLines = new List<csLine>();
         WallThickness = 100000f;
+        PathNumberInLayer = 0;
     }
+    public int PathNumberInLayer { get; set; }
     public Vector3 Endpoint0 { get; set; }
     public Vector3 Endpoint1 { get; set; }
     public List<csLine> CloseLines { get; set; }

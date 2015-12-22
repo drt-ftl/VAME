@@ -7,7 +7,8 @@ public class LineSegment
 	private Vector3 _p1;
 	private Vector3 _p2;
     private Color color;
-
+    public float StartTime { get; set; }
+    public float EndTime { get; set; }
     public bool MovesInX
     {
         get

@@ -35,6 +35,7 @@ public class InspectorT : InspectorManager
     private static extern void SaveFileDialog();
     cSectionGCD csGCD;
     public static SlicerForm.SlicerForm slicerForm;
+    public CheckWalls wt;
 
 
 
@@ -375,9 +376,9 @@ public class InspectorT : InspectorManager
                 cSectionGCD.csMode = cSectionGCD.CsMode.ByGcdCode;
                 break;
             case "Radio_wt":
-                slicerForm.LayerTrackbar.Minimum = 1;
-                slicerForm.LayerTrackbar.Maximum = 100;
-                slicerForm.LayerTrackbar.Value = 25;
+                if (!CheckWalls.WallsChecked)
+                    wt = new CheckWalls(cSectionGCD.layers);
+                wt.SetSloxelWT();
                 cSectionGCD.csMode = cSectionGCD.CsMode.WallThickness;
                 break;
             case "Radio_none":

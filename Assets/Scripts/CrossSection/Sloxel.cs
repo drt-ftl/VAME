@@ -11,7 +11,9 @@ public class Sloxel
         MinLineNumber = 100000000;
         MaximumSeparation = 0;
         MinimumSeparation = 100000000;
+        WallThickness = 1000000;
     }
+    public float WallThickness { get; set; }
     public int Layer { get; set; }
     public List<LineSegment> IntersectedByLines { get; set; }
     public int Id { get; set; }

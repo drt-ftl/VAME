@@ -58,6 +58,12 @@ public class LoadFile : MonoBehaviour
 	public static float stlScale = 1f;
 	private float dmcScale = 25/2540000f;
 	private float jobScale = 1f;
+    public static float runTime = 0;
+    public static float playbackTime = 0;
+    public static float playbackStartTime;
+    public static float maxPlaybackTime = 0;
+    public float ips = 1;
+    public static bool playback = false;
 
 	private GUIStyle windowStyle = new GUIStyle ();
 	[DllImport("user32.dll")]
@@ -228,7 +234,12 @@ public class LoadFile : MonoBehaviour
         DrawCSX();
         DrawCSZ();
         if (gcdCodeLoaded)
-            DrawPaths(Type.GCD);
+        {
+            if (!playback)
+                DrawPaths(Type.GCD);
+            else
+                PlaybackGCD();
+        }
         if (jobCodeLoaded)
             DrawPaths(Type.JOB);
         if (dmcCodeLoaded)
@@ -345,6 +356,35 @@ public class LoadFile : MonoBehaviour
     {
     }
 
+    private void PlaybackGCD()
+    {
+        foreach (var line in gcdLines)
+        {
+            var col = line.LineColor;
+            var a = line.p1;
+            var b = line.p2;
+            playbackTime = UnityEngine.Time.realtimeSinceStartup - playbackStartTime;
+            if (line.StartTime > playbackTime)
+                continue;
+            else if (line.EndTime < playbackTime)
+            {
+                var dt = playbackTime - line.StartTime;
+                var d = dt / (line.EndTime - line.StartTime);
+                var m = b - a;
+                b = a + m * d;
+            }
+            if (UnityEngine.Time.realtimeSinceStartup - playbackStartTime >= maxPlaybackTime)
+            {
+                playbackStartTime = UnityEngine.Time.realtimeSinceStartup;
+            }
+            graphMaterial.SetPass(0);
+            GL.Begin(GL.LINES);
+            GL.Color(col);
+            GL.Vertex(a);
+            GL.Vertex(b);
+            GL.End();
+        }
+    }
     private void DrawPaths(Type _type)
     {
         var tmpList = new List<LineSegment>();
@@ -399,8 +439,15 @@ public class LoadFile : MonoBehaviour
                 newSegment.LineColor = new Color(0f, 0f, 1f, 1f);
                 newSegment.p1 = Vertex0 - gcdInterpreter.centroid;
                 newSegment.p2 = Vertex1 - gcdInterpreter.centroid;
+                var d = Vector3.Magnitude(Vertex1 - Vertex0);
+                var t = d / ips;
+                newSegment.StartTime = runTime;
+                runTime += t;
+                newSegment.EndTime = runTime;
                 newSegment.step = gcdLines.Count;
                 gcdLines.Add(newSegment);
+                if (runTime > maxPlaybackTime)
+                    maxPlaybackTime = runTime;
             }
             else if (_type == Type.DMC)
 			{

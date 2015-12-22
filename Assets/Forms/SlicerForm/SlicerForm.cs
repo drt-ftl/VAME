@@ -160,6 +160,7 @@ namespace SlicerForm
                     readout += "Sloxel #: " +  sloxelInVoxel.ToString() + " / " + sloxCount.ToString() + "\r\n";
                     readout += "Voxel #: " + hSlox.Voxel.Id.ToString() + "\r\n";
                     readout += "Layer #: " + hSlox.Layer.ToString() + ", #: " + hSlox.Id.ToString() + "\r\n";
+                    readout += "Wall Thickness : " + hSlox.WallThickness.ToString() + "\r\n";
                     if (hSlox.IntersectedByLines.Count == 1)
                         readout += "Intersected By 1 Line. \r\n";
                     else
@@ -275,6 +276,17 @@ namespace SlicerForm
         private void wtSlider_Scroll(object sender, EventArgs e)
         {
             panel1.Invalidate();
+        }
+
+        private void Play_Click(object sender, EventArgs e)
+        {
+            if (LoadFile.playback)
+                LoadFile.playback = false;
+            else
+            {
+                LoadFile.playbackStartTime = UnityEngine.Time.realtimeSinceStartup;
+                LoadFile.playback = true;
+            }
         }
     }
 }

@@ -10,15 +10,20 @@ public class VoxelClass
         Sloxels = new List<Sloxel>();
         MaxDistance = -1;
         MinDistance = 10000000;
+        WallThickness = 1000000;
     }
     public List<Sloxel> Sloxels { get; set; }
+    public float WallThickness { get; set; }
     public void SetMaxAndMin()
     {
         MaxDistance = 0;
         MinDistance = 1000000000;
         IntersectedByLines.Clear();
+        WallThickness = 1000000;
         foreach (var slox in Sloxels)
         {
+            if (slox.WallThickness < WallThickness)
+                WallThickness = slox.WallThickness;
             foreach (var line in slox.IntersectedByLines)
             {
                 if (!IntersectedByLines.Contains(line))

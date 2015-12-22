@@ -84,6 +84,7 @@ public class InspectorR : InspectorManager
         var hSlox = sloxList[InspectorT.slicerForm.SloxelNumber.Value];
         var v = hSlox.Voxel;
         var str = "Voxel " + highlight.ToString("f0") + "\r\n";
+        if (v.Voxel == null) return;
         str += "Position: " + v.Voxel.transform.position.ToString("f3") + "\r\n";
         str += "Temperature: " + "\r\n";
         str += "Position Error: " + "\r\n";
@@ -100,6 +101,7 @@ public class InspectorR : InspectorManager
         IntScrollPosition = GUILayout.BeginScrollView(IntScrollPosition, GUILayout.Width(225), GUILayout.Height(180));
         {
             var sloxVoxInfo = "<b>Voxel #: " + v.Id.ToString() + "\r\n";
+            sloxVoxInfo += "Wall Thickness: " + v.WallThickness.ToString() + "\r\n";
             sloxVoxInfo += "Includes " + v.Sloxels.Count.ToString() + " Sloxels: \r\n</b>\r\n";
             foreach (var slox in v.Sloxels)
             {

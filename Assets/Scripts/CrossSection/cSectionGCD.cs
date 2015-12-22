@@ -35,6 +35,7 @@ public class cSectionGCD
         ready = false;
         sloxelResolution = Vector3.one * (float)InspectorT.slicerForm.ResUpDown.Value;
         increment = 1.0f / sloxelResolution.x;
+        
         csPlaneEqn = new Vector4(0f, 1f, 0f, 0f);
         triangles.Clear();
         layers.Clear();
@@ -75,14 +76,14 @@ public class cSectionGCD
                 {
                     topLayerHeight = l.p1.y;
                     tlhGrid = Mathf.Ceil(topLayerHeight * sloxelResolution.x) * increment + increment / 2.0f;
-                }
+                }  
             }
             layers[l.p1.y].gcdLines.Add(l);
         }
         var modelHeight = topLayerHeight - bottomLayerHeight;
-        var remainder = (int)(layers.Count % sloxelResolution.x);
-        var sloxelsPerVoxel = (int)(layers.Count - remainder);
-        voxelHeight = increment;// layers.Count / sloxelsPerVoxel;// (topLayerHeight - bottomLayerHeight + increment) / sloxelsPerVoxel;
+        var sloxelHeight = (modelHeight / layers.Count);
+        var sloxelsPerVoxel = Mathf.RoundToInt(increment / sloxelHeight);
+        voxelHeight = sloxelHeight * sloxelsPerVoxel;// layers.Count / sloxelsPerVoxel;// (topLayerHeight - bottomLayerHeight + increment) / sloxelsPerVoxel;
         for (float i = bottomLayerHeight - voxelHeight; i <= topLayerHeight + voxelHeight; i += voxelHeight)
         {
             if (!voxelHeights.Contains(i))
@@ -113,7 +114,7 @@ public class cSectionGCD
             csPlaneEqn.w = layer.Key;
             CrossSection();
         }
-        var wt = new CheckWalls();
+        //var wt = new CheckWalls();
         foreach (var layer in layers)
         {
             var min = layer.Value.Min;
@@ -417,8 +418,11 @@ public class cSectionGCD
             for (float z = near - incZ; z <= far + incZ; z += incZ)
             {
                 var crosses = new List<Vector3>();
+                var crosses_Lines = new List<csLine>();
                 var crossesNear = new List<Vector3>();
+                var crosses_LinesNear = new List<csLine>();
                 var crossesFar = new List<Vector3>();
+                var crosses_LinesFar = new List<csLine>();
                 foreach (var borderLine in layer.Value.border)
                 {
                     var minZ = Mathf.Min(borderLine.Endpoint0.z, borderLine.Endpoint1.z) - 2 * incX;
@@ -429,18 +433,27 @@ public class cSectionGCD
                     var x = borderLine.Endpoint0.x + t * slope.x;
                     var newCross = new Vector3(x, y, z);
                     if (t >= 0 && t <= 1 && !crosses.Contains(newCross))
+                    {
                         crosses.Add(newCross);
+                        crosses_Lines.Add(borderLine);
+                    }
 
                     t = (z - borderLine.Endpoint0.z - incZ / 2) / slope.z;
                     newCross.x = borderLine.Endpoint0.x + t * slope.x;
                     if (t >= 0 && t <= 1 && !crossesNear.Contains(newCross))
+                    { 
                         crossesNear.Add(newCross);
+                        crosses_LinesNear.Add(borderLine);
+                    }
 
                     t = (z - borderLine.Endpoint0.z + incZ / 2) / slope.z;
                     newCross.x = borderLine.Endpoint0.x + t * slope.x;
                     
                     if (t >= 0 && t <= 1 && !crossesFar.Contains(newCross))
+                    { 
                         crossesFar.Add(newCross);
+                        crosses_LinesFar.Add(borderLine);
+                    }
                     var minX = Mathf.Min(borderLine.Endpoint0.x, borderLine.Endpoint1.x);
                     var maxX = Mathf.Max(borderLine.Endpoint0.x, borderLine.Endpoint1.x);
                 }

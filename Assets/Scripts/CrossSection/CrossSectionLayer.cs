@@ -17,6 +17,7 @@ public class CrossSectionLayer
         Max = Vector3.one * -1000000;
     }
     public int Layer { get; set; }
+    public List<List<int>> BorderPaths = new List<List<int>>();
     public List<csLine> border { get; set; }
     public List<csLine> xLines { get; set; }
     public List<csLine> zLines { get; set; }

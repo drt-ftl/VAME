@@ -4,15 +4,30 @@ using System.Collections.Generic;
 
 public class CheckWalls
 {
-    Dictionary<float, CrossSectionLayer> CSs = new Dictionary<float, CrossSectionLayer>();
-    public CheckWalls()
+    public static bool WallsChecked = false;
+    private Dictionary<float, CrossSectionLayer> CSs;
+    public CheckWalls(Dictionary<float, CrossSectionLayer> css)
     {
-        CSs = cSectionGCD.layers;
+        CSs = css;
+        WallsChecked = true;
         foreach (var cs in CSs) // Each Slice
         {
+            var pathNumber = 0;
             var doneList = new List<csLine>();
             foreach (var line in cs.Value.border) // Each Line In Slice
             {
+                if (cs.Value.BorderPaths.Count == 0)
+                {
+                    cs.Value.BorderPaths.Add(new List<int>());
+                }
+                cs.Value.BorderPaths[pathNumber].Add(cs.Value.border.IndexOf(line));
+                line.PathNumberInLayer = pathNumber;
+                if (line.Endpoint1 == cs.Value.border[cs.Value.BorderPaths[pathNumber][0]].Endpoint0)
+                {
+                    cs.Value.BorderPaths.Add(new List<int>());
+                    pathNumber++;
+                }
+
                 if (doneList.Contains(line)) continue;
                 doneList.Add(line);
                 foreach (var other in cs.Value.border) // Check Against All On Slice
@@ -20,8 +35,78 @@ public class CheckWalls
                     CheckForSkewLines(line, other);
                 }
             }
+            //foreach (var sloxel in cs.Value.Sloxels)
+            //{
+            //    var sPos = new Vector2(sloxel.Position.x, sloxel.Position.z);
+            //    float shortestDistance = 10000000;
+            //    foreach (var bLine in cs.Value.border)
+            //    {
+            //        var p1 = new Vector2(bLine.Endpoint0.x, bLine.Endpoint0.z);
+            //        var p2 = new Vector2(bLine.Endpoint1.x, bLine.Endpoint1.z);
+            //        var n = new Vector2(bLine.Normal.x, bLine.Normal.z);
+            //        var closestPoint = GetClosestPointOnLineSegment(p1, p2, sPos);
+            //        var d = (sPos - closestPoint).magnitude;
+            //        if (d < shortestDistance)
+            //        {
+            //            shortestDistance = d;
+            //            sloxel.WallThickness = bLine.WallThickness;
+            //            if (sloxel.WallThickness < sloxel.Voxel.WallThickness)
+            //                sloxel.Voxel.WallThickness = sloxel.WallThickness;
+            //        }
+            //    }
+            //}
         }
     }
+    public void SetSloxelWT()
+    {
+        foreach (var cs in CSs) // Each Slice
+        {
+            foreach (var sloxel in cs.Value.Sloxels)
+            {
+                var sPos = new Vector2(sloxel.Position.x, sloxel.Position.z);
+                float shortestDistance = 10000000;
+                foreach (var bLine in cs.Value.border)
+                {
+                    var p1 = new Vector2(bLine.Endpoint0.x, bLine.Endpoint0.z);
+                    var p2 = new Vector2(bLine.Endpoint1.x, bLine.Endpoint1.z);
+                    var closestPoint = GetClosestPointOnLineSegment(p1, p2, sPos);
+                    var d = (sPos - closestPoint).magnitude;
+                    if (d < shortestDistance)
+                    {
+                        shortestDistance = d;
+                        sloxel.WallThickness = bLine.WallThickness;
+                        //if (sloxel.WallThickness < sloxel.Voxel.WallThickness)
+                        //    sloxel.Voxel.WallThickness = sloxel.WallThickness;
+                    }
+                }
+            }
+        }
+    }
+
+    public static Vector2 GetClosestPointOnLineSegment(Vector2 A, Vector2 B, Vector2 P)
+    {
+        Vector2 AP = P - A;       //Vector from A to P   
+        Vector2 AB = B - A;       //Vector from A to B  
+
+        float magnitudeAB = AB.magnitude;     //Magnitude of AB vector (it's length squared)     
+        float ABAPproduct = Vector2.Dot(AP, AB);    //The DOT product of a_to_p and a_to_b     
+        float distance = ABAPproduct / magnitudeAB; //The normalized "distance" from a to your closest point  
+
+        if (distance < 0)     //Check if P projection is over vectorAB     
+        {
+            return A;
+
+        }
+        else if (distance > 1)
+        {
+            return B;
+        }
+        else
+        {
+            return A + AB * distance;
+        }
+    }
+
     void CheckForSkewLines(csLine line, csLine other)
     {
         if (line.Endpoint0 == other.Endpoint0
