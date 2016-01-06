@@ -88,6 +88,25 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\CCAT_E.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CCAT_E.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\CCAT_E.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\Program.cs" />
+    <Compile Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\Properties\AssemblyInfo.cs" />
+    <Compile Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\Properties\Settings.Designer.cs" />
+    <Compile Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Assets\Forms\SlicerForm\Backup\ColorSlider.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -216,6 +235,7 @@
     <Compile Include="Assets\vTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\obj\Debug\CCAT_Explorer.csproj.FileListAbsolute.txt" />
     <None Include="Assets\Forms\SlicerForm\Backup1\ColorSwatches.xml" />
     <None Include="Assets\Forms\SlicerForm\bin\Debug\CustomSwatches.xml" />
     <None Include="Assets\Forms\SlicerForm\obj\Debug\SlicerForm.csproj.FileListAbsolute.txt" />
@@ -300,6 +320,14 @@
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\CCAT_E.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CCAT_E.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Assets\Forms\SlicerForm\Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

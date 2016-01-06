@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class cctPointScript : MonoBehaviour
 {
     private Color thisColor;
@@ -8,6 +9,7 @@ public class cctPointScript : MonoBehaviour
     private Color emissColor;
     private Color blank;
     private bool go = false;
+    
     void Start()
     {
         thisColor = GetComponent<MeshRenderer>().material.color;
@@ -21,6 +23,13 @@ public class cctPointScript : MonoBehaviour
         go = true;
     }
     public int Id { get; set; }
+    public void SetColor (Color col)
+    {
+        thisColor = col;
+        emissColor = col * 0.5f;
+        GetComponent<MeshRenderer>().material.color = thisColor;
+        GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", emissColor);
+    }
     void Update()
     {
         if (!go) return;
@@ -35,6 +44,16 @@ public class cctPointScript : MonoBehaviour
             GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", finalColor);
             if (!(GetComponent("Halo") as Behaviour).enabled)
                 (GetComponent("Halo") as Behaviour).enabled = true;
+            var predicted = LoadFile.gcdPointVerts[Id].Position;
+            var actual = transform.position;
+            var txt = "";
+            txt += "Point: " + Id.ToString() + "\r\n";
+            txt += "Predicted: " + predicted.ToString("f3") + "\r\n";
+            txt += "Actual: " + actual.ToString("f3") + "\r\n";
+            txt += "Delta: " + (predicted - actual).ToString("f3") + "\r\n";
+            txt += "Distance: " + Vector3.Distance(predicted, actual).ToString("f3") + "\r\n";
+
+            LoadFile.ccatExplorer.label1.Text = txt;
         }
         else if (Physics.Raycast(ray, out hit) && hit.transform == transform)
         {

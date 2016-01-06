@@ -11,11 +11,11 @@ public class MakeMesh : MonoBehaviour
     private List<Color> colors = new List<Color>();
     private List<Vector2> uvs = new List<Vector2>();
 
-    private Mesh mesh_b;
-    private List<int> tris_b = new List<int>();
-    private List<Vector3> verts_b = new List<Vector3>();
-    private List<Vector3> normals_b = new List<Vector3>();
-    private GameObject back;
+    //private Mesh mesh_b;
+    //private List<int> tris_b = new List<int>();
+    //private List<Vector3> verts_b = new List<Vector3>();
+    //private List<Vector3> normals_b = new List<Vector3>();
+    //private GameObject back;
     int d = 0;
 
     public Vector3 Min   { get; set; }
@@ -26,7 +26,7 @@ public class MakeMesh : MonoBehaviour
     public void ClearAll()
     {
         mesh.Clear();
-        mesh_b.Clear();
+        //mesh_b.Clear();
 
         tris.Clear();
         verts.Clear();
@@ -34,9 +34,9 @@ public class MakeMesh : MonoBehaviour
         colors.Clear();
         uvs.Clear();
 
-        tris_b.Clear();
-        verts_b.Clear();
-        normals_b.Clear();
+        //tris_b.Clear();
+        //verts_b.Clear();
+        //normals_b.Clear();
         Min = new Vector3(1000, 1000, 1000);
         Max = new Vector3(-1000, -1000, -1000);
     }
@@ -58,19 +58,19 @@ public class MakeMesh : MonoBehaviour
         rnd.receiveShadows = true;
         rnd.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
 
-        back = GameObject.Find("BACK");
-        if (back.GetComponent<MeshFilter>() == null)
-            back.AddComponent<MeshFilter>();
-        if (back.GetComponent<MeshRenderer>() == null)
-            back.AddComponent<MeshRenderer>();
+        //back = GameObject.Find("BACK");
+        //if (back.GetComponent<MeshFilter>() == null)
+        //    back.AddComponent<MeshFilter>();
+        //if (back.GetComponent<MeshRenderer>() == null)
+        //    back.AddComponent<MeshRenderer>();
 
-        mesh_b = back.GetComponent<MeshFilter>().mesh;
-        mesh_b.Clear();
+        //mesh_b = back.GetComponent<MeshFilter>().mesh;
+        //mesh_b.Clear();
 
-        var rnd_b = back.GetComponent<MeshRenderer>();
-        rnd_b.material = material;
-        rnd_b.receiveShadows = true;
-        rnd_b.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+        //var rnd_b = back.GetComponent<MeshRenderer>();
+        //rnd_b.material = material;
+        //rnd_b.receiveShadows = true;
+        //rnd_b.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
     }
 
     public Material material { get; set;}
@@ -83,12 +83,12 @@ public class MakeMesh : MonoBehaviour
         return norm;
     }
 
-    public Vector3 NormalBack (Vector3 p1, Vector3 p2, Vector3 p3)
-    {
-        var dir = Vector3.Cross(p3 - p1, p3 - p2);
-        var norm = Vector3.Normalize(dir);
-        return norm;
-    }
+    //public Vector3 NormalBack (Vector3 p1, Vector3 p2, Vector3 p3)
+    //{
+    //    var dir = Vector3.Cross(p3 - p1, p3 - p2);
+    //    var norm = Vector3.Normalize(dir);
+    //    return norm;
+    //}
 
     public void AddTriangle (Vector3 p1, Vector3 p2, Vector3 p3, Vector3 norm)
     {
@@ -108,14 +108,14 @@ public class MakeMesh : MonoBehaviour
         for (int i = 0; i < 3; i++)
             colors.Add(InspectorL.stlColor);
 
-        tris_b.Add(count);
-        tris_b.Add(count + 1);
-        tris_b.Add(count + 2);
-        verts_b.Add(p1);
-        verts_b.Add(p2);
-        verts_b.Add(p3);
-        for (int i = 0; i < 3; i++)
-            normals_b.Add(-norm);
+        //tris_b.Add(count);
+        //tris_b.Add(count + 1);
+        //tris_b.Add(count + 2);
+        //verts_b.Add(p1);
+        //verts_b.Add(p2);
+        //verts_b.Add(p3);
+        //for (int i = 0; i < 3; i++)
+        //    normals_b.Add(-norm);
     }
 
     public Vector3 centroid
@@ -146,7 +146,7 @@ public class MakeMesh : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             verts[i] -= centroid;
-            verts_b[i] -= centroid;
+            //verts_b[i] -= centroid;
         }
         mesh.vertices = verts.ToArray();
         mesh.triangles = tris.ToArray();
@@ -158,14 +158,14 @@ public class MakeMesh : MonoBehaviour
         mesh.Optimize();
 
 
-        mesh_b.vertices = verts_b.ToArray();
-        mesh_b.triangles = tris_b.ToArray();
-        mesh_b.normals = normals_b.ToArray();
-        mesh_b.uv = uvs.ToArray();
-        mesh_b.colors = colors.ToArray();
+        //mesh_b.vertices = verts_b.ToArray();
+        //mesh_b.triangles = tris_b.ToArray();
+        //mesh_b.normals = normals_b.ToArray();
+        //mesh_b.uv = uvs.ToArray();
+        //mesh_b.colors = colors.ToArray();
 
-        mesh_b.RecalculateNormals();
-        mesh_b.Optimize();
+        //mesh_b.RecalculateNormals();
+        //mesh_b.Optimize();
     }
 
     public Vector3[] GetTriangleVertices(int id)
@@ -188,6 +188,18 @@ public class MakeMesh : MonoBehaviour
         int low = (int)InspectorL.stlTimeSliderMin;
         int high = (int)InspectorL.stlTimeSlider;
         var count = colors.Count;
+        if (InspectorL.stlVisSlider > 0.95f)
+        {
+            Camera.main.GetComponent<LoadFile>().stlMat.SetFloat("_Mode", 0);
+            GetComponent<MeshRenderer>().material.SetFloat("_Mode", 0);
+            material.SetFloat("_Mode", 0);
+        }
+        else
+        {
+            Camera.main.GetComponent<LoadFile>().stlMat.SetFloat("_Mode", 3);
+            GetComponent<MeshRenderer>().material.SetFloat("_Mode", 3);
+            material.SetFloat("_Mode", 3);
+        }
         for (int i = 0; i < count - 1; i++)
         {
             if ((i / 3) >= low && (i / 3) < high)
@@ -198,7 +210,8 @@ public class MakeMesh : MonoBehaviour
             else colors[i] = Hidden;
             Camera.main.GetComponent<LoadFile>().stlMat.SetColor("_SpecColor", Hidden);
         }
-        mesh.colors = mesh_b.colors = colors.ToArray();
+        //mesh.colors = mesh_b.colors = colors.ToArray();
+        mesh.colors = colors.ToArray();
     }
 
 }

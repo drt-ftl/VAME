@@ -54,6 +54,9 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Advertisements">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>Library\UnityAssemblies\UnityEditor.Advertisements.dll</HintPath>
     </Reference>
@@ -68,6 +71,9 @@
     </Reference>
     <Reference Include="UnityEditor.Networking">
       <HintPath>Library\UnityAssemblies\UnityEditor.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Graphs">
       <HintPath>Library\UnityAssemblies\UnityEditor.Graphs.dll</HintPath>
@@ -139,6 +145,7 @@
     <Compile Include="Assets\Shaders\UnityVC\Editor\StandardShaderVCGUI.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Forms\CCAT_Explorer\CCAT_Explorer\CCAT_Explorer\obj\Debug\CCAT_Explorer.csproj.FileListAbsolute.txt" />
     <None Include="Assets\Forms\SlicerForm\Backup1\ColorSwatches.xml" />
     <None Include="Assets\Forms\SlicerForm\bin\Debug\CustomSwatches.xml" />
     <None Include="Assets\Forms\SlicerForm\obj\Debug\SlicerForm.csproj.FileListAbsolute.txt" />

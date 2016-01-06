@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CCAT_Explorer;
 
 
 public class LoadFile : MonoBehaviour 
@@ -72,6 +73,12 @@ public class LoadFile : MonoBehaviour
     Vector3 cctMax = new Vector3(-1000, -1000, -1000);
     Vector3 cctCentroid = Vector3.zero;
     public static int cctHighlight = -1;
+    public static List<CCATpoint> gcdPointVerts = new List<CCATpoint>();
+    public static List<Vector3> gcdVerts = new List<Vector3>();
+    private float gcdPathDistance = 0;
+    private float cctRes = 1.0f;
+    private int cctPointCount = 0;
+    private float totalCctPathDistance = 0f;
 
     private GUIStyle windowStyle = new GUIStyle ();
 	[DllImport("user32.dll")]
@@ -86,6 +93,7 @@ public class LoadFile : MonoBehaviour
     MakeMesh MM;
     public GUISkin restoreSkin;
     public Color LineHighlight;
+    public static CCAT_E ccatExplorer;
     #endregion
 
     public void Start()
@@ -108,7 +116,9 @@ public class LoadFile : MonoBehaviour
     void OnApplicationQuit()
     {
         if (InspectorT.slicerForm != null)
-        InspectorT.slicerForm.Close();
+            InspectorT.slicerForm.Close();
+        if (LoadFile.ccatExplorer != null)
+            LoadFile.ccatExplorer.Close();
     }
 	public void loadFile()
 	{
@@ -448,16 +458,38 @@ public class LoadFile : MonoBehaviour
 
     private void GenerateCctObjects()
     {
+        ConvertGcdDataToPoints();
+           
         cctCentroid = (cctMax - cctMin) / 2f;
+        foreach (var gcdV in gcdPointVerts)
+        {
+            gcdV.Position -= gcdInterpreter.centroid;
+        }
         foreach (var v in cctVerts)
         {
+            v.Position -= cctCentroid;
             var index = cctVerts.IndexOf(v);
             var Vertex1 = v.Position;
-            var newObj = Instantiate(cctPoint, v.Position - cctCentroid, Quaternion.identity) as GameObject;
+            var newObj = Instantiate(cctPoint, v.Position, Quaternion.identity) as GameObject;
+            if (gcdPointVerts.Count > index - 1)
+            {
+                var delta = (gcdPointVerts[index].Position - v.Position);
+                delta *= 1000f;
+                var c = 0.75f * (delta + Vector3.one * 0.25f);
+                
+                var newCol = new Color(c.x, c.y, c.z, 1.0f);
+                newObj.GetComponent<cctPointScript>().SetColor(newCol);
+            }
             newObj.GetComponent<cctPointScript>().Id = index;
             newObj.GetComponent<cctPointScript>().Go();
             newObj.transform.SetParent(GameObject.Find("POINTS").transform);
         }
+        if (ccatExplorer == null)
+        {
+            ccatExplorer = new CCAT_E();
+            //SlicerForm.SlicerForm.buttonPressed += ButtonPressed;
+        }
+        ccatExplorer.Show();
     }
 
     private void DrawCCT()
@@ -761,6 +793,30 @@ public class LoadFile : MonoBehaviour
     void scanCCT(string _line)
     {
         if (_line == "\r\n" || _line.Contains('X')) return;
+        if (_line.StartsWith("STEPSIZE:"))
+        {
+            var ssText = _line.Split(':');
+            float res;
+            if (float.TryParse(ssText[1], out res))
+                cctRes = res;
+            return;
+        }
+        else if (_line.StartsWith("DISTANCE:"))
+        {
+            var ssText = _line.Split(':');
+            float dist;
+            if (float.TryParse(ssText[1], out dist))
+                totalCctPathDistance = dist;
+            return;
+        }
+        else if (_line.StartsWith("POINTS:"))
+        {
+            var ssText = _line.Split(':');
+            int count;
+            if (Int32.TryParse(ssText[1], out count))
+                cctPointCount = count;
+            return;
+        }
         _line = _line.Trim();
         var chunks = _line.Split(',');
         var initial = 999999999f;
@@ -804,6 +860,49 @@ public class LoadFile : MonoBehaviour
                 newPoint.Id = cctVerts.Count;
                 cctVerts.Add(newPoint);
             }
+        }
+    }
+
+    void ConvertGcdDataToPoints()
+    {
+        var partialDistance = 0f;
+        foreach (var v1 in gcdVerts)
+        {
+            var index = gcdVerts.IndexOf(v1);
+            if (index == 0) continue;
+            var v0 = gcdVerts[index - 1];
+            var d = Vector3.Distance(v0, v1);
+            var rem = cctRes - partialDistance;
+            if (d < rem)
+            {
+                gcdPathDistance += d;
+                partialDistance += d;
+                continue;
+            }
+            var t = (rem / d);
+            var m = v1 - v0;
+            var p = new Vector3();
+            p.x = v0.x + m.x * t;
+            p.y = v0.y + m.y * t;
+            p.z = v0.z + m.z * t;
+            var newPoint = new CCATpoint();
+            newPoint.Id = gcdPointVerts.Count;
+            newPoint.Position = p;
+            gcdPointVerts.Add(newPoint);
+            while ((t + cctRes / d) < 1)
+            {
+                t += (cctRes / d);
+                p.x = v0.x + m.x * t;
+                p.y = v0.y + m.y * t;
+                p.z = v0.z + m.z * t;
+                var _newPoint = new CCATpoint();
+                _newPoint.Id = gcdPointVerts.Count;
+                _newPoint.Position = p;
+                gcdPointVerts.Add(_newPoint);
+                gcdPathDistance += cctRes;
+            }
+            partialDistance = (1 - t) * d;
+            gcdPathDistance += partialDistance;
         }
     }
 }

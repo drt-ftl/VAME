@@ -102,7 +102,7 @@ public class GcdInterpreter
         Min = min;
         if (min.z <= LoadFile.Min.z)
             LoadFile.Min.z = min.z;
-
+        LoadFile.gcdVerts.Add(newVertex);
         Camera.main.GetComponent<LoadFile>().vertices.Add(newVertex);
         if (LoadFile.model_code_xrefGCD.Count == 0)
             LoadFile.firstGcdLineInCode = LoadFile.gcdCode.Count - 1;

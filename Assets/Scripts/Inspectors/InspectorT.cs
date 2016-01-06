@@ -203,7 +203,10 @@ public class InspectorT : InspectorManager
 
             if (GUILayout.Button("Quit", "dd"))
             {
-                InspectorT.slicerForm.Close();
+                if (InspectorT.slicerForm != null)
+                    InspectorT.slicerForm.Close();
+                if (LoadFile.ccatExplorer != null)
+                    LoadFile.ccatExplorer.Close();
                 UnityEngine.Application.Quit();
             }
         }

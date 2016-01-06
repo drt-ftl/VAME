@@ -143,7 +143,10 @@ public class InspectorL : InspectorManager
             // Quit
             if (GUILayout.Button("Quit"))
             {
-                InspectorT.slicerForm.Close();
+                if (InspectorT.slicerForm != null)
+                    InspectorT.slicerForm.Close();
+                if (LoadFile.ccatExplorer != null)
+                    LoadFile.ccatExplorer.Close();
                 Application.Quit();
             }
         }
