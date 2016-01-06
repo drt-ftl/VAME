@@ -13,6 +13,7 @@ public class LoadFile : MonoBehaviour
     #region declarations
     public Material graphMaterial;
     public Color gridColor;
+    public GameObject cctPoint;
     public static Vector3 Min = new Vector3(1000,1000,1000);
     public static Vector3 Max = new Vector3(-1000, -1000, -1000);
     JobInterpreter jobInterpreter = new JobInterpreter();
@@ -32,6 +33,7 @@ public class LoadFile : MonoBehaviour
 	public static List <LineSegment> dmcLines = new List<LineSegment>();
 	public static List <LineSegment> jobLines = new List<LineSegment>();
     public static List<LineSegment> gcdLines = new List<LineSegment>();
+    public static List<LineSegment> cctLines = new List<LineSegment>();
     public static Dictionary <int, int> model_code_xrefDMC = new Dictionary<int, int>();
     public static Dictionary<int, int> model_code_xrefJOB = new Dictionary<int, int>();
     public static Dictionary<int, int> model_code_xrefGCD = new Dictionary<int, int>();
@@ -49,11 +51,12 @@ public class LoadFile : MonoBehaviour
     public static bool jobCodeLoaded = false;
 	public static bool dmcCodeLoaded = false;
 	public static bool stlCodeLoaded = false;
-	public static Transform stlHolder;
+    public static bool cCatCodeLoaded = false;
+    public static Transform stlHolder;
 	private Transform dmcHolder;
 	private Transform jobHolder;
     private Transform gcdHolder;
-    private enum Type {STL,DMC,JOB,GCD,AMF,CS}
+    private enum Type {STL,DMC,JOB,GCD,AMF,CS,CCT}
 	private Type type;
 	public static float stlScale = 1f;
 	private float dmcScale = 25/2540000f;
@@ -64,8 +67,13 @@ public class LoadFile : MonoBehaviour
     public static float maxPlaybackTime = 0;
     public float ips = 1;
     public static bool playback = false;
+    public static List<CCATpoint> cctVerts = new List<CCATpoint>();
+    Vector3 cctMin = new Vector3(1000, 1000, 1000);
+    Vector3 cctMax = new Vector3(-1000, -1000, -1000);
+    Vector3 cctCentroid = Vector3.zero;
+    public static int cctHighlight = -1;
 
-	private GUIStyle windowStyle = new GUIStyle ();
+    private GUIStyle windowStyle = new GUIStyle ();
 	[DllImport("user32.dll")]
 	private static extern void OpenFileDialog();
 	[DllImport("user32.dll")]
@@ -118,6 +126,8 @@ public class LoadFile : MonoBehaviour
             sel += "DMC Files (*.DMC)|*.DMC|";
         if (!jobCodeLoaded)
             sel += "JOB Files (*.JOB)|*.JOB|";
+        if (!cCatCodeLoaded)
+            sel += "CCAT Files (*.cct)|*.cct|";
         sel = sel.TrimEnd('|');
         openFileDialog.Filter = sel;
         openFileDialog.FilterIndex = 1;
@@ -138,6 +148,8 @@ public class LoadFile : MonoBehaviour
 					type = Type.DMC;
                 else if (fileName.EndsWith("gcd"))
                     type = Type.GCD;
+                if (fileName.EndsWith("cct"))
+                    type = Type.CCT;
                 if (fileName != null)
 				{
 					var reader = new StreamReader(fileName);
@@ -159,7 +171,10 @@ public class LoadFile : MonoBehaviour
 						case Type.STL:
 							scanSTL(line);
 							break;
-						default:
+                        case Type.CCT:
+                            scanCCT(line);
+                            break;
+                            default:
 							break;
 						}
 					}
@@ -199,11 +214,21 @@ public class LoadFile : MonoBehaviour
                             stlCodeLoaded = true;
                             InspectorManager.VoxelManager = true;
                             break;
-					    default:
+                        case Type.CCT:
+                            //DrawCCT();
+                            GenerateCctObjects();
+                            //InspectorL.dmcTimeSlider = dmcLines.Count - 1;
+                            //InspectorL.dmcTimeSliderMin = 0;
+                            //InspectorL.dmcVisSlider = 1;
+                            //InspectorL.lastLoaded = InspectorL.LastLoaded.DMC;
+                            Min.z = cctMin.z;
+                            cCatCodeLoaded = true;
+                            break;
+                        default:
 						    break;
 					}
                     var camPos = Camera.main.transform.position;
-                    camPos.z = Min.z * 3.0f;
+                    camPos.z = Min.z * 8.0f;
                     Camera.main.transform.position = camPos;
 					Camera.main.GetComponent<CameraControl>().target.position = Vector3.zero;
 					transform.LookAt(Camera.main.GetComponent<CameraControl>().target);
@@ -244,6 +269,8 @@ public class LoadFile : MonoBehaviour
             DrawPaths(Type.JOB);
         if (dmcCodeLoaded)
             DrawPaths(Type.DMC);
+        //if (cCatCodeLoaded)
+        //    DrawPaths(Type.CCT);
     }
 
     private void DrawCS()
@@ -399,6 +426,9 @@ public class LoadFile : MonoBehaviour
             case Type.DMC:
                 tmpList = dmcLines;
                 break;
+            case Type.CCT:
+                tmpList = cctLines;
+                break;
             default:
                 break;
         }
@@ -416,6 +446,37 @@ public class LoadFile : MonoBehaviour
         }
     }
 
+    private void GenerateCctObjects()
+    {
+        cctCentroid = (cctMax - cctMin) / 2f;
+        foreach (var v in cctVerts)
+        {
+            var index = cctVerts.IndexOf(v);
+            var Vertex1 = v.Position;
+            var newObj = Instantiate(cctPoint, v.Position - cctCentroid, Quaternion.identity) as GameObject;
+            newObj.GetComponent<cctPointScript>().Id = index;
+            newObj.GetComponent<cctPointScript>().Go();
+            newObj.transform.SetParent(GameObject.Find("POINTS").transform);
+        }
+    }
+
+    private void DrawCCT()
+    {
+        cctCentroid = (cctMax - cctMin) / 2f;
+        foreach (var v in cctVerts)
+        {
+            var index = cctVerts.IndexOf(v);
+            if (index == 0) continue;
+            var Vertex1 = v.Position;
+            var Vertex0 = cctVerts[index - 1].Position;
+            var newSegment = new LineSegment();
+            newSegment.LineColor = new Color(0f, 0f, 1f, 1f);
+            newSegment.p1 = Vertex0 - cctCentroid;
+            newSegment.p2 = Vertex1 - cctCentroid;
+            newSegment.step = v.Id - 1;
+            cctLines.Add(newSegment);
+        }
+    }
 	private void Draw(Type _type)
 	{
 		foreach (var Vertex1 in vertices)
@@ -693,6 +754,55 @@ public class LoadFile : MonoBehaviour
                     }
                 }
                 #endregion
+            }
+        }
+    }
+
+    void scanCCT(string _line)
+    {
+        if (_line == "\r\n" || _line.Contains('X')) return;
+        _line = _line.Trim();
+        var chunks = _line.Split(',');
+        var initial = 999999999f;
+        var vertex = Vector3.one * initial;
+        float x;
+        float y;
+        float z;
+        float temperature;
+        if (float.TryParse(chunks[0], out x))
+        {
+            vertex.x = x;
+        }
+        if (float.TryParse(chunks[2], out y))
+        {
+            vertex.y = y;
+        }
+        if (float.TryParse(chunks[1], out z))
+        {
+            vertex.z = z;
+        }
+        if (float.TryParse(chunks[3], out temperature))
+        {
+            if (vertex.x != initial && vertex.y != initial && vertex.z != initial)
+            {
+                var newPoint = new CCATpoint();
+                newPoint.Position = vertex;
+                if (vertex.x < cctMin.x)
+                    cctMin.x = vertex.x;
+                if (vertex.x > cctMax.x)
+                    cctMax.x = vertex.x;
+                if (vertex.y < cctMin.y)
+                    cctMin.y = vertex.y;
+                if (vertex.y > cctMax.y)
+                    cctMax.y = vertex.y;
+                if (vertex.z < cctMin.z)
+                    cctMin.z = vertex.z;
+                if (vertex.z > cctMax.z)
+                    cctMax.z = vertex.z;
+
+                newPoint.Temp = temperature;
+                newPoint.Id = cctVerts.Count;
+                cctVerts.Add(newPoint);
             }
         }
     }
