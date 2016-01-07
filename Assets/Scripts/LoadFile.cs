@@ -69,8 +69,8 @@ public class LoadFile : MonoBehaviour
     public float ips = 1;
     public static bool playback = false;
     public static List<CCATpoint> cctVerts = new List<CCATpoint>();
-    Vector3 cctMin = new Vector3(1000, 1000, 1000);
-    Vector3 cctMax = new Vector3(-1000, -1000, -1000);
+    Vector3 cctMin = Vector3.one * 10000;
+    Vector3 cctMax = Vector3.one * -10000;
     Vector3 cctCentroid = Vector3.zero;
     public static int cctHighlight = -1;
     public static List<CCATpoint> gcdPointVerts = new List<CCATpoint>();
@@ -94,6 +94,8 @@ public class LoadFile : MonoBehaviour
     public GUISkin restoreSkin;
     public Color LineHighlight;
     public static CCAT_E ccatExplorer;
+    public static float cctVis = 100;
+    public static float cctErrorThreshold = 0.01f;
     #endregion
 
     public void Start()
@@ -436,9 +438,6 @@ public class LoadFile : MonoBehaviour
             case Type.DMC:
                 tmpList = dmcLines;
                 break;
-            case Type.CCT:
-                tmpList = cctLines;
-                break;
             default:
                 break;
         }
@@ -467,7 +466,7 @@ public class LoadFile : MonoBehaviour
         }
         foreach (var v in cctVerts)
         {
-            v.Position -= cctCentroid;
+            v.Position -= gcdInterpreter.centroid;
             var index = cctVerts.IndexOf(v);
             var Vertex1 = v.Position;
             var newObj = Instantiate(cctPoint, v.Position, Quaternion.identity) as GameObject;
@@ -481,12 +480,15 @@ public class LoadFile : MonoBehaviour
                 newObj.GetComponent<cctPointScript>().SetColor(newCol);
             }
             newObj.GetComponent<cctPointScript>().Id = index;
+            newObj.GetComponent<cctPointScript>().Temperature = v.Temp;
             newObj.GetComponent<cctPointScript>().Go();
             newObj.transform.SetParent(GameObject.Find("POINTS").transform);
         }
         if (ccatExplorer == null)
         {
             ccatExplorer = new CCAT_E();
+            CCAT_E.visChanged += cctVisChanged;
+            CCAT_E.thresholdChanged += cctThresholdChanged;
             //SlicerForm.SlicerForm.buttonPressed += ButtonPressed;
         }
         ccatExplorer.Show();
@@ -855,7 +857,7 @@ public class LoadFile : MonoBehaviour
                     cctMin.z = vertex.z;
                 if (vertex.z > cctMax.z)
                     cctMax.z = vertex.z;
-
+                
                 newPoint.Temp = temperature;
                 newPoint.Id = cctVerts.Count;
                 cctVerts.Add(newPoint);
@@ -904,5 +906,15 @@ public class LoadFile : MonoBehaviour
             partialDistance = (1 - t) * d;
             gcdPathDistance += partialDistance;
         }
+    }
+
+    private void cctVisChanged (float _vis)
+    {
+        cctVis = _vis;
+    }
+
+    private void cctThresholdChanged(float _t)
+    {
+        cctErrorThreshold = _t;
     }
 }

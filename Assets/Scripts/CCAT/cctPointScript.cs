@@ -9,7 +9,10 @@ public class cctPointScript : MonoBehaviour
     private Color emissColor;
     private Color blank;
     private bool go = false;
-    
+    private enum CctMode { Color,Hide, None}
+    private CctMode cctMode;
+    public bool partOfHighlightedSet = false;
+
     void Start()
     {
         thisColor = GetComponent<MeshRenderer>().material.color;
@@ -21,8 +24,27 @@ public class cctPointScript : MonoBehaviour
     public void Go()
     {
         go = true;
+        cctMode = CctMode.Color;
     }
     public int Id { get; set; }
+
+    public float Temperature { get; set; }
+    public Vector3 ErrorDisplacement
+    {
+        get
+        {
+            var predicted = LoadFile.gcdPointVerts[Id].Position;
+            var actual = transform.position;
+            return (predicted - actual);
+        }
+    }
+    public float ErrorDistance
+    {
+        get
+        {
+            return (Vector3.Magnitude(ErrorDisplacement));
+        }
+    }
     public void SetColor (Color col)
     {
         thisColor = col;
@@ -30,6 +52,13 @@ public class cctPointScript : MonoBehaviour
         GetComponent<MeshRenderer>().material.color = thisColor;
         GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", emissColor);
     }
+    public Color GetColor()
+    {
+        return thisColor;
+    }
+
+    public bool LaserOn { get; set; }
+
     void Update()
     {
         if (!go) return;
@@ -52,7 +81,7 @@ public class cctPointScript : MonoBehaviour
             txt += "Actual: " + actual.ToString("f3") + "\r\n";
             txt += "Delta: " + (predicted - actual).ToString("f3") + "\r\n";
             txt += "Distance: " + Vector3.Distance(predicted, actual).ToString("f3") + "\r\n";
-
+            txt += "Temperature: " + Temperature.ToString ("f2");
             LoadFile.ccatExplorer.label1.Text = txt;
         }
         else if (Physics.Raycast(ray, out hit) && hit.transform == transform)
@@ -74,7 +103,73 @@ public class cctPointScript : MonoBehaviour
             var color = thisColor;
             var spec = specColor;
             var emiss = emissColor;
-            //color.a = InspectorR.voxelVis / 100;
+            var halo = false;
+            switch (cctMode)
+            {
+                case CctMode.Color:
+                    if (Temperature < 200 && !LoadFile.ccatExplorer.showWhenLaserOff.Checked)
+                    {
+                        color = new Color(0, 0, 0, 0);
+                        spec = color;
+                        emiss = color;
+                        halo = false;
+                    }
+                    else if (ErrorDistance < LoadFile.cctErrorThreshold)
+                    {
+                        color = Color.gray;
+                        spec = color;
+                        emiss = Color.gray * Mathf.LinearToGammaSpace(0.2f);
+                        color.a = LoadFile.cctVis;
+                        spec.a = LoadFile.cctVis;
+                        emiss.a = LoadFile.cctVis;
+                        halo = false;
+                        partOfHighlightedSet = false;
+                    }
+                    else
+                    {
+                        color = thisColor;
+                        spec = specColor;
+                        emiss = emissColor;
+                        halo = true;
+                        partOfHighlightedSet = true;
+                    }
+                    break;
+                case CctMode.Hide:
+                    if (Temperature < 200 && !LoadFile.ccatExplorer.showWhenLaserOff.Checked)
+                    {
+                        color = new Color(0, 0, 0, 0);
+                        spec = color;
+                        emiss = color;
+                        halo = false;
+                    }
+                    else if (ErrorDistance < LoadFile.cctErrorThreshold)
+                    {
+                        color = blank;
+                        spec = color;
+                        emiss = blank;
+                        halo = false;
+                        partOfHighlightedSet = false;
+                    }
+                    else
+                    {
+                        color = thisColor;
+                        spec = specColor;
+                        emiss = emissColor;
+                        color.a = LoadFile.cctVis;
+                        spec.a = LoadFile.cctVis;
+                        emiss.a = LoadFile.cctVis;
+                        halo = true;
+                        partOfHighlightedSet = true;
+                    }
+                    break;
+                default:
+                    color = thisColor;
+                    spec = specColor;
+                    emiss = emissColor;
+                    color.a = (float)LoadFile.ccatExplorer.Visibility.Value / 100f;
+                    partOfHighlightedSet = false;
+                    break;
+            }
             if (color.a <= 0.1f && GetComponent<SphereCollider>().enabled)
                 GetComponent<SphereCollider>().enabled = false;
             else if (color.a > 0.1f && !GetComponent<SphereCollider>().enabled)
@@ -83,6 +178,7 @@ public class cctPointScript : MonoBehaviour
             spec.a = color.a;
             GetComponent<MeshRenderer>().material.SetColor("_SpecColor", spec);
             GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", emiss);
+            if (!halo) return;
             if ((GetComponent("Halo") as Behaviour).enabled)
                 (GetComponent("Halo") as Behaviour).enabled = false;
         }

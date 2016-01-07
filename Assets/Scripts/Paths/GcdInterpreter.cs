@@ -81,12 +81,10 @@ public class GcdInterpreter
         float z;
         if (float.TryParse(X, out x))
         {
-            x -= 0.1f;
             newVertex.x = x;
         }
         if (float.TryParse(Z, out z))
         {
-            z -= 0.1f;
             newVertex.z = z;
         }
         newVertex.y = y;
