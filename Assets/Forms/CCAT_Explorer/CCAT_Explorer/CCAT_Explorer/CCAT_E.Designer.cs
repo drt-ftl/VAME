@@ -66,7 +66,7 @@
             this.ErrorThreshold.Name = "ErrorThreshold";
             this.ErrorThreshold.Size = new System.Drawing.Size(192, 25);
             this.ErrorThreshold.TabIndex = 2;
-            this.ErrorThreshold.Value = 100;
+            this.ErrorThreshold.Value = 0;
             this.ErrorThreshold.Scroll += new System.EventHandler(this.ErrorThreshold_Scroll);
             // 
             // ErrorThresholdLabel

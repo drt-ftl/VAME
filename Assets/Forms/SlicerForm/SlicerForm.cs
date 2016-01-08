@@ -45,6 +45,8 @@ namespace SlicerForm
         private void radioButtonByGCD_CheckedChanged(object sender, EventArgs e)
         {
             ButtonPressed("Radio_gcd", true);
+            var lines = cSectionGCD.layers[cSectionGCD.layerHeights[LayerTrackbar.Value]].gcdLines;
+            InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
         }
 
         private void None_CheckedChanged(object sender, EventArgs e)
@@ -121,7 +123,7 @@ namespace SlicerForm
                         if (sloxel == hSlox) continue;
                         if (!sloxel.Voxel.singleCube.partOfHighlightedSet)
                         {
-                            var a = (int)(InspectorR.voxelVis * 2.55f);
+                            var a = 255;
                             var r = 255;
                             var gr = 0;
                             var b = 0;
@@ -210,7 +212,8 @@ namespace SlicerForm
         {
             LayerUpDown.Value = LayerTrackbar.Value;
             var lines = cSectionGCD.layers[cSectionGCD.layerHeights[LayerTrackbar.Value]].gcdLines;
-            InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
+            if (cSectionGCD.csMode == cSectionGCD.CsMode.ByGcdCode)
+                InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
             panel1.Invalidate();
         }
 
@@ -234,7 +237,8 @@ namespace SlicerForm
         {
             LayerTrackbar.Value = (int)LayerUpDown.Value;
             var lines = cSectionGCD.layers[cSectionGCD.layerHeights[LayerTrackbar.Value]].gcdLines;
-            InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
+            if (cSectionGCD.csMode == cSectionGCD.CsMode.ByGcdCode)
+                InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
             panel1.Invalidate();
         }
 

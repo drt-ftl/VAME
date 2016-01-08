@@ -45,6 +45,9 @@ public class cctPointScript : MonoBehaviour
             return (Vector3.Magnitude(ErrorDisplacement));
         }
     }
+
+    public LineSegment Line { get; set; }
+    
     public void SetColor (Color col)
     {
         thisColor = col;
@@ -116,9 +119,9 @@ public class cctPointScript : MonoBehaviour
                     }
                     else if (ErrorDistance < LoadFile.cctErrorThreshold)
                     {
-                        color = Color.gray;
-                        spec = color;
-                        emiss = Color.gray * Mathf.LinearToGammaSpace(0.2f);
+                        color = thisColor;
+                        spec = specColor;
+                        emiss = emissColor;
                         color.a = LoadFile.cctVis;
                         spec.a = LoadFile.cctVis;
                         emiss.a = LoadFile.cctVis;
@@ -178,7 +181,7 @@ public class cctPointScript : MonoBehaviour
             spec.a = color.a;
             GetComponent<MeshRenderer>().material.SetColor("_SpecColor", spec);
             GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", emiss);
-            if (!halo) return;
+            if (halo) return;
             if ((GetComponent("Halo") as Behaviour).enabled)
                 (GetComponent("Halo") as Behaviour).enabled = false;
         }

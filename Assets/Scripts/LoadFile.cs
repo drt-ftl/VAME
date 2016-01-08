@@ -79,6 +79,7 @@ public class LoadFile : MonoBehaviour
     private float cctRes = 1.0f;
     private int cctPointCount = 0;
     private float totalCctPathDistance = 0f;
+    public static List<cctPointScript> crazyBalls = new List<cctPointScript>();
 
     private GUIStyle windowStyle = new GUIStyle ();
 	[DllImport("user32.dll")]
@@ -304,6 +305,8 @@ public class LoadFile : MonoBehaviour
                     break;
                 case cSectionGCD.CsMode.WallThickness:
                     break;
+                case cSectionGCD.CsMode.None:
+                    break;
                 default:
                     break;
             }
@@ -464,25 +467,33 @@ public class LoadFile : MonoBehaviour
         {
             gcdV.Position -= gcdInterpreter.centroid;
         }
+        var maxError = 0f;
         foreach (var v in cctVerts)
         {
             v.Position -= gcdInterpreter.centroid;
             var index = cctVerts.IndexOf(v);
             var Vertex1 = v.Position;
             var newObj = Instantiate(cctPoint, v.Position, Quaternion.identity) as GameObject;
-            if (gcdPointVerts.Count > index - 1)
-            {
-                var delta = (gcdPointVerts[index].Position - v.Position);
-                delta *= 1000f;
-                var c = 0.75f * (delta + Vector3.one * 0.25f);
-                
-                var newCol = new Color(c.x, c.y, c.z, 1.0f);
-                newObj.GetComponent<cctPointScript>().SetColor(newCol);
-            }
-            newObj.GetComponent<cctPointScript>().Id = index;
-            newObj.GetComponent<cctPointScript>().Temperature = v.Temp;
-            newObj.GetComponent<cctPointScript>().Go();
+            var cctPS = newObj.GetComponent<cctPointScript>();
+            cctPS.Id = index;
+            cctPS.Temperature = v.Temp;            
             newObj.transform.SetParent(GameObject.Find("POINTS").transform);
+            crazyBalls.Add(newObj.GetComponent<cctPointScript>());
+            if (cctPS.ErrorDistance > maxError)
+            {
+                maxError = cctPS.ErrorDistance;
+            }
+        }
+        foreach (var cb in crazyBalls)
+        {
+            var delta = cb.ErrorDistance;
+            var err = delta / maxError;
+            var r = err * 2 - 0.25f;
+            var g = 1.0f - (err);
+            var b = 0f;// 0.3f - (0.3f * err);
+            var newCol = new Color(r, g, b, 1.0f);
+            cb.SetColor(newCol);
+            cb.Go();
         }
         if (ccatExplorer == null)
         {

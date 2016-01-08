@@ -39,7 +39,7 @@ public class SingleCube : MonoBehaviour
         if ((int)InspectorR.highlight == Id)
         {
             var lines = cSectionGCD.layers[cSectionGCD.layerHeights[InspectorT.slicerForm.LayerTrackbar.Value]].gcdLines;
-            InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
+            //InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
             var color = Color.white;
             GetComponent<MeshRenderer>().material.color = color;
             GetComponent<MeshRenderer>().material.SetColor("_SpecColor", color);
@@ -51,7 +51,8 @@ public class SingleCube : MonoBehaviour
         else if (Physics.Raycast(ray, out hit) && hit.transform == transform)
         {
             var lines = cSectionGCD.layers[cSectionGCD.layerHeights[InspectorT.slicerForm.LayerTrackbar.Value]].gcdLines;
-            InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
+           
+            //InspectorL.gcdTimeSlider = lines[lines.Count - 1].step;
             var color = Color.white;
             GetComponent<MeshRenderer>().material.color = color;
             GetComponent<MeshRenderer>().material.SetColor("_SpecColor", color);
@@ -75,7 +76,7 @@ public class SingleCube : MonoBehaviour
                         {
                             InspectorT.slicerForm.SloxelNumber.Maximum = cSectionGCD.layers[sloxel.Position.y].Sloxels.Count;
                             InspectorT.slicerForm.SloxelNumber.Value = cSectionGCD.layers[sloxel.Position.y].Sloxels.IndexOf(voxelClass.Sloxels[0]);
-                            if (InspectorR.highlightType != InspectorR.HighlighType.PathNumbers)
+                            if (InspectorR.highlightType != InspectorR.HighlighType.PathNumbers && cSectionGCD.csMode == cSectionGCD.CsMode.ByGcdCode)
                                 InspectorL.gcdTimeSlider = InspectorT.slicerForm.LayerTrackbar.Value;
                         }
                         InspectorT.slicerForm.panel1.Invalidate();

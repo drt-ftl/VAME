@@ -17,6 +17,7 @@ namespace CCAT_Explorer
             InitializeComponent();
             et = (float)ErrorThreshold.Value;
             et /= 10000f;
+            ThresholdChanged(et);
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -52,13 +53,13 @@ namespace CCAT_Explorer
                 visChanged(_vis);
         }
 
-        public delegate void ThresholdChangedHandler(float _vis);
+        public delegate void ThresholdChangedHandler(float _th);
         public static event ThresholdChangedHandler thresholdChanged;
 
-        public static void ThresholdChanged(float _vis)
+        public static void ThresholdChanged(float _th)
         {
             if (thresholdChanged != null)
-                thresholdChanged(_vis);
+                thresholdChanged(_th);
         }
     }
 }
