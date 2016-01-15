@@ -598,7 +598,16 @@ public class cSectionGCD
                                 if (line.step > slox.MaxLineNumber)
                                     slox.MaxLineNumber = line.step;
                                 if (!slox.IntersectedByLines.Contains(line))
+                                {
+                                    foreach (var cb in line.CrazyBalls)
+                                    {
+                                        if (cb.t >= factorMinX && cb.t < factorMaxX)
+                                        {
+                                            slox.CrazyBalls.Add(cb);
+                                        }
+                                    }
                                     slox.IntersectedByLines.Add(line);
+                                }
                             }
                         }
                     }
@@ -619,7 +628,16 @@ public class cSectionGCD
                                 if (line.step > slox.MaxLineNumber)
                                     slox.MaxLineNumber = line.step;
                                 if (!slox.IntersectedByLines.Contains(line))
+                                {
+                                    foreach (var cb in line.CrazyBalls)
+                                    {
+                                        if (cb.t >= factorMinZ && cb.t < factorMaxZ)
+                                        {
+                                            slox.CrazyBalls.Add(cb);
+                                        }
+                                    }
                                     slox.IntersectedByLines.Add(line);
+                                }
                             }
                         }
                     }
@@ -635,6 +653,10 @@ public class cSectionGCD
                     layer.Voxels.Add(v);
                 }
                 slox.VoxelOrigin = voxPos;
+                foreach (var cb in slox.CrazyBalls)
+                {
+                    v.CrazyBalls.Add(cb);
+                }
                 v.Sloxels.Add(slox);
             }
         }

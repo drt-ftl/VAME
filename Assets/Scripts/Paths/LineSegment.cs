@@ -7,6 +7,11 @@ public class LineSegment
 	private Vector3 _p1;
 	private Vector3 _p2;
     private Color color;
+
+    public LineSegment()
+    {
+        CrazyBalls = new List<cctPointScript>();
+    }
     public float StartTime { get; set; }
     public float EndTime { get; set; }
     public bool MovesInX
@@ -59,6 +64,5 @@ public class LineSegment
 	}
 
 	public int step {get; set; }
-
-
+    public List<cctPointScript> CrazyBalls { get; set; }
 }

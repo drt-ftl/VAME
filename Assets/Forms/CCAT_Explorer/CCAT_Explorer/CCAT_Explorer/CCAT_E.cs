@@ -16,9 +16,13 @@ namespace CCAT_Explorer
         {
             InitializeComponent();
             et = (float)ErrorThreshold.Value;
-            et /= 10000f;
+            et /= 100f;
             ThresholdChanged(et);
+            ccatExplorerMode = CcatExplorerMode.Error;
         }
+
+        public enum CcatExplorerMode { Temperature, Error, None }
+        public static CcatExplorerMode ccatExplorerMode;
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
@@ -33,7 +37,7 @@ namespace CCAT_Explorer
         private void ErrorThreshold_Scroll(object sender, EventArgs e)
         {
             et = (float)ErrorThreshold.Value;
-            et /= 10000f;
+            et /= 100f;
             ErrorThresholdLabel.Text = "Error Threshold: " + et.ToString("f3") + "in";
             ThresholdChanged(et);
         }
@@ -60,6 +64,27 @@ namespace CCAT_Explorer
         {
             if (thresholdChanged != null)
                 thresholdChanged(_th);
+        }
+
+        private void radioButton_temp_CheckedChanged(object sender, EventArgs e)
+        {
+            ccatExplorerMode = CcatExplorerMode.Temperature;
+            if (InspectorT.slicerForm != null)
+                InspectorT.slicerForm.panel1.Invalidate();
+        }
+
+        private void radioButton_Error_CheckedChanged(object sender, EventArgs e)
+        {
+            ccatExplorerMode = CcatExplorerMode.Error;
+            if (InspectorT.slicerForm != null)
+                InspectorT.slicerForm.panel1.Invalidate();
+        }
+
+        private void radioButton_none_CheckedChanged(object sender, EventArgs e)
+        {
+            ccatExplorerMode = CcatExplorerMode.None;
+            if (InspectorT.slicerForm != null)
+                InspectorT.slicerForm.panel1.Invalidate();
         }
     }
 }

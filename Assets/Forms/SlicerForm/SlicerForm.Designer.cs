@@ -44,6 +44,7 @@ namespace SlicerForm
             this.ByGcdLayers = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Play = new System.Windows.Forms.Button();
             this.wtLabel = new System.Windows.Forms.Label();
             this.wtSlider = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
@@ -51,7 +52,7 @@ namespace SlicerForm
             this.ShowCsection = new System.Windows.Forms.CheckBox();
             this.SloxelUpDown = new System.Windows.Forms.NumericUpDown();
             this.LayerUpDown = new System.Windows.Forms.NumericUpDown();
-            this.Play = new System.Windows.Forms.Button();
+            this.ShowBalls = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.SloxelNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LayerTrackbar)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -66,12 +67,13 @@ namespace SlicerForm
             this.ShowGCD.AutoSize = true;
             this.ShowGCD.Checked = true;
             this.ShowGCD.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ShowGCD.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShowGCD.Location = new System.Drawing.Point(286, 355);
+            this.ShowGCD.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowGCD.Location = new System.Drawing.Point(220, 355);
             this.ShowGCD.Name = "ShowGCD";
-            this.ShowGCD.Size = new System.Drawing.Size(45, 16);
+            this.ShowGCD.Size = new System.Drawing.Size(42, 14);
             this.ShowGCD.TabIndex = 12;
             this.ShowGCD.Text = "GCD";
+            this.ShowGCD.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.ShowGCD.UseVisualStyleBackColor = true;
             this.ShowGCD.CheckedChanged += new System.EventHandler(this.ShowGCD_CheckedChanged);
             // 
@@ -80,12 +82,13 @@ namespace SlicerForm
             this.ShowSloxels.AutoSize = true;
             this.ShowSloxels.Checked = true;
             this.ShowSloxels.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ShowSloxels.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShowSloxels.Location = new System.Drawing.Point(121, 355);
+            this.ShowSloxels.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowSloxels.Location = new System.Drawing.Point(120, 355);
             this.ShowSloxels.Name = "ShowSloxels";
-            this.ShowSloxels.Size = new System.Drawing.Size(54, 16);
+            this.ShowSloxels.Size = new System.Drawing.Size(49, 14);
             this.ShowSloxels.TabIndex = 11;
             this.ShowSloxels.Text = "Sloxels";
+            this.ShowSloxels.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.ShowSloxels.UseVisualStyleBackColor = true;
             this.ShowSloxels.CheckedChanged += new System.EventHandler(this.ShowSloxels_CheckedChanged);
             // 
@@ -216,6 +219,7 @@ namespace SlicerForm
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ShowBalls);
             this.groupBox1.Controls.Add(this.Play);
             this.groupBox1.Controls.Add(this.wtLabel);
             this.groupBox1.Controls.Add(this.wtSlider);
@@ -242,6 +246,17 @@ namespace SlicerForm
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Slice Parameters";
+            // 
+            // Play
+            // 
+            this.Play.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Play.Location = new System.Drawing.Point(14, 348);
+            this.Play.Name = "Play";
+            this.Play.Size = new System.Drawing.Size(75, 23);
+            this.Play.TabIndex = 20;
+            this.Play.Text = "Play";
+            this.Play.UseVisualStyleBackColor = true;
+            this.Play.Click += new System.EventHandler(this.Play_Click);
             // 
             // wtLabel
             // 
@@ -300,12 +315,13 @@ namespace SlicerForm
             // ShowCsection
             // 
             this.ShowCsection.AutoSize = true;
-            this.ShowCsection.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShowCsection.Location = new System.Drawing.Point(187, 355);
+            this.ShowCsection.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowCsection.Location = new System.Drawing.Point(170, 355);
             this.ShowCsection.Name = "ShowCsection";
-            this.ShowCsection.Size = new System.Drawing.Size(82, 16);
+            this.ShowCsection.Size = new System.Drawing.Size(35, 14);
             this.ShowCsection.TabIndex = 15;
-            this.ShowCsection.Text = "Cross Section";
+            this.ShowCsection.Text = "CS";
+            this.ShowCsection.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.ShowCsection.UseVisualStyleBackColor = true;
             this.ShowCsection.CheckedChanged += new System.EventHandler(this.ShowCsection_CheckedChanged);
             // 
@@ -329,16 +345,20 @@ namespace SlicerForm
             this.LayerUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.LayerUpDown.ValueChanged += new System.EventHandler(this.LayerUpDown_ValueChanged);
             // 
-            // Play
+            // ShowBalls
             // 
-            this.Play.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Play.Location = new System.Drawing.Point(14, 348);
-            this.Play.Name = "Play";
-            this.Play.Size = new System.Drawing.Size(75, 23);
-            this.Play.TabIndex = 20;
-            this.Play.Text = "Play";
-            this.Play.UseVisualStyleBackColor = true;
-            this.Play.Click += new System.EventHandler(this.Play_Click);
+            this.ShowBalls.AutoSize = true;
+            this.ShowBalls.Checked = true;
+            this.ShowBalls.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ShowBalls.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowBalls.Location = new System.Drawing.Point(270, 355);
+            this.ShowBalls.Name = "ShowBalls";
+            this.ShowBalls.Size = new System.Drawing.Size(46, 14);
+            this.ShowBalls.TabIndex = 21;
+            this.ShowBalls.Text = "CCAT";
+            this.ShowBalls.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.ShowBalls.UseVisualStyleBackColor = true;
+            this.ShowBalls.CheckedChanged += new System.EventHandler(this.ShowBalls_CheckedChanged);
             // 
             // SlicerForm
             // 
@@ -384,6 +404,7 @@ namespace SlicerForm
         private System.Windows.Forms.Label wtLabel;
         public System.Windows.Forms.TrackBar wtSlider;
         public System.Windows.Forms.Button Play;
+        public System.Windows.Forms.CheckBox ShowBalls;
     }
 }
 

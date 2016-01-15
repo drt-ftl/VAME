@@ -7,6 +7,7 @@ public class VoxelClass
     public VoxelClass()
     {
         IntersectedByLines = new List<LineSegment>();
+        CrazyBalls = new List<cctPointScript>();
         Sloxels = new List<Sloxel>();
         MaxDistance = -1;
         MinDistance = 10000000;
@@ -14,6 +15,7 @@ public class VoxelClass
     }
     public List<Sloxel> Sloxels { get; set; }
     public float WallThickness { get; set; }
+    public List<cctPointScript> CrazyBalls { get; set; }
     public void SetMaxAndMin()
     {
         MaxDistance = 0;

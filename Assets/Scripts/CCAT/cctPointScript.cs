@@ -47,7 +47,8 @@ public class cctPointScript : MonoBehaviour
     }
 
     public LineSegment Line { get; set; }
-    
+    public float t { get; set; }
+
     public void SetColor (Color col)
     {
         thisColor = col;

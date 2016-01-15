@@ -74,8 +74,9 @@ public class LoadFile : MonoBehaviour
     Vector3 cctCentroid = Vector3.zero;
     public static int cctHighlight = -1;
     public static List<CCATpoint> gcdPointVerts = new List<CCATpoint>();
-    public static List<Vector3> gcdVerts = new List<Vector3>();
+    public static List<Vector3> gcdLineEndpoints = new List<Vector3>();
     private float gcdPathDistance = 0;
+    private float fullGcdPathDistance = 0;
     private float cctRes = 1.0f;
     private int cctPointCount = 0;
     private float totalCctPathDistance = 0f;
@@ -128,7 +129,7 @@ public class LoadFile : MonoBehaviour
 		loading = true;
         vertices.Clear();
 		System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog ();
-		openFileDialog.InitialDirectory = Application.dataPath + "/Samples";
+		openFileDialog.InitialDirectory = Application.dataPath + "/Samples/CCAT Tests";
         var sel = "";
         sel += "VAME Files (*.vme)|*.vme|";
         if (!stlCodeLoaded)
@@ -470,14 +471,18 @@ public class LoadFile : MonoBehaviour
         var maxError = 0f;
         foreach (var v in cctVerts)
         {
-            v.Position -= gcdInterpreter.centroid;
+            //v.Position -= gcdInterpreter.centroid;
             var index = cctVerts.IndexOf(v);
+            var idealBall = gcdPointVerts[index];
             var Vertex1 = v.Position;
             var newObj = Instantiate(cctPoint, v.Position, Quaternion.identity) as GameObject;
             var cctPS = newObj.GetComponent<cctPointScript>();
             cctPS.Id = index;
-            cctPS.Temperature = v.Temp;            
+            cctPS.Temperature = v.Temp;
+            cctPS.Line = idealBall.Line;
+            cctPS.t = idealBall.t;            
             newObj.transform.SetParent(GameObject.Find("POINTS").transform);
+            gcdPointVerts[index].Line.CrazyBalls.Add(cctPS);
             crazyBalls.Add(newObj.GetComponent<cctPointScript>());
             if (cctPS.ErrorDistance > maxError)
             {
@@ -523,8 +528,33 @@ public class LoadFile : MonoBehaviour
         }
     }
 	private void Draw(Type _type)
-	{
-		foreach (var Vertex1 in vertices)
+    {
+        if (_type == Type.GCD)
+        {
+            foreach (var v1 in gcdLineEndpoints)
+            {
+                var newSegment = new LineSegment();
+                var index = gcdLineEndpoints.IndexOf(v1);
+                if (index <= 0)
+                    continue;
+                //if (!LaserOnModelRef[index]) continue;
+                var Vertex0 = vertices[index - 1];
+                newSegment.LineColor = new Color(0f, 0f, 1f, 1f);
+                newSegment.p1 = Vertex0 - gcdInterpreter.centroid;
+                newSegment.p2 = v1 - gcdInterpreter.centroid;
+                var d = Vector3.Magnitude(v1 - Vertex0);
+                var t = d / ips;
+                newSegment.StartTime = runTime;
+                runTime += t;
+                newSegment.EndTime = runTime;
+                newSegment.step = gcdLines.Count;
+                gcdLines.Add(newSegment);
+                if (runTime > maxPlaybackTime)
+                    maxPlaybackTime = runTime;
+                fullGcdPathDistance += d;
+            }
+        }
+        else foreach (var Vertex1 in vertices)
 		{
 			var newSegment = new LineSegment();
 			var index = vertices.IndexOf(Vertex1);
@@ -540,21 +570,6 @@ public class LoadFile : MonoBehaviour
                 newSegment.step = jobLines.Count;
                 jobLines.Add (newSegment);
 			}
-            else if (_type == Type.GCD)
-            {
-                newSegment.LineColor = new Color(0f, 0f, 1f, 1f);
-                newSegment.p1 = Vertex0 - gcdInterpreter.centroid;
-                newSegment.p2 = Vertex1 - gcdInterpreter.centroid;
-                var d = Vector3.Magnitude(Vertex1 - Vertex0);
-                var t = d / ips;
-                newSegment.StartTime = runTime;
-                runTime += t;
-                newSegment.EndTime = runTime;
-                newSegment.step = gcdLines.Count;
-                gcdLines.Add(newSegment);
-                if (runTime > maxPlaybackTime)
-                    maxPlaybackTime = runTime;
-            }
             else if (_type == Type.DMC)
 			{
                 newSegment.LineColor = new Color(0f, 0f, 1f, 1f);
@@ -878,12 +893,13 @@ public class LoadFile : MonoBehaviour
 
     void ConvertGcdDataToPoints()
     {
+        cctRes = fullGcdPathDistance / (cctPointCount + 1);
         var partialDistance = 0f;
-        foreach (var v1 in gcdVerts)
+        foreach (var v1 in gcdLineEndpoints)
         {
-            var index = gcdVerts.IndexOf(v1);
+            var index = gcdLineEndpoints.IndexOf(v1);
             if (index == 0) continue;
-            var v0 = gcdVerts[index - 1];
+            var v0 = gcdLineEndpoints[index - 1];
             var d = Vector3.Distance(v0, v1);
             var rem = cctRes - partialDistance;
             if (d < rem)
@@ -901,6 +917,9 @@ public class LoadFile : MonoBehaviour
             var newPoint = new CCATpoint();
             newPoint.Id = gcdPointVerts.Count;
             newPoint.Position = p;
+            var line = gcdLines[index - 1];
+            newPoint.Line = line;
+            newPoint.t = t;
             gcdPointVerts.Add(newPoint);
             while ((t + cctRes / d) < 1)
             {
@@ -911,6 +930,9 @@ public class LoadFile : MonoBehaviour
                 var _newPoint = new CCATpoint();
                 _newPoint.Id = gcdPointVerts.Count;
                 _newPoint.Position = p;
+                line = gcdLines[index - 1];
+                _newPoint.Line = line;
+                _newPoint.t = t;
                 gcdPointVerts.Add(_newPoint);
                 gcdPathDistance += cctRes;
             }

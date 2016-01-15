@@ -98,6 +98,7 @@ namespace SlicerForm
                 System.Drawing.Graphics g = panel1.CreateGraphics();
                 System.Drawing.Pen p = new System.Drawing.Pen(System.Drawing.Color.Red);
                 System.Drawing.Pen pen2 = new System.Drawing.Pen(System.Drawing.Color.Aquamarine);
+                System.Drawing.Pen pen3 = new System.Drawing.Pen(System.Drawing.Color.Bisque);
                 var center = new Vector2(panel1.Size.Width / 2, panel1.Size.Height / 2);
                 var dim = (0.5f / cSectionGCD.sloxelResolution.x) * scale;
                 var readout = "";
@@ -112,6 +113,47 @@ namespace SlicerForm
                             var p1 = new Point((int)_p1.x + (int)center.x, -(int)_p1.z + (int)center.y);
                             var p2 = new Point((int)_p2.x + (int)center.x, -(int)_p2.z + (int)center.y);
                             g.DrawLine(pen2, p1, p2);
+                        }
+                    }
+                }
+                if (ShowBalls.Checked)
+                {
+                    foreach (var gcdLine in cSectionGCD.layers[cSectionGCD.layerHeights[LayerTrackbar.Value]].gcdLines)
+                    {
+                        foreach (var cb in gcdLine.CrazyBalls)
+                        {
+                            switch (CCAT_Explorer.CCAT_E.ccatExplorerMode)
+                            {
+                                case CCAT_Explorer.CCAT_E.CcatExplorerMode.Error:
+                                    var color = cb.GetColor();
+                                    if (color.r < 0) color.r = 0;
+                                    if (color.r > 1) color.r = 1;
+                                    if (color.g < 0) color.g = 0;
+                                    if (color.g > 1) color.g = 1;
+                                    if (color.b < 0) color.b = 0;
+                                    if (color.b > 1) color.b = 1;
+                                    if (color.a < 0) color.a = 0;
+                                    if (color.a > 1) color.a = 1;
+                                    pen3.Color = System.Drawing.Color.FromArgb((int)(color.a * 255), (int)(color.r * 255), (int)(color.g * 255), (int)(color.b * 255));
+                                    break;
+                                case CCAT_Explorer.CCAT_E.CcatExplorerMode.Temperature:
+                                    var temp = cb.Temperature;
+                                    var _r = (temp - 2000) / 1000f;
+                                    var r = (int)(_r * 255);
+                                    if (r < 0) r = 0;
+                                    if (r > 255) r = 255;
+                                    var _b = (2750 - temp) / 2000f;
+                                    var b = (int)(_r * 255);
+                                    if (b < 0) b = 0;
+                                    if (b > 255) b = 255;
+                                    pen3.Color = System.Drawing.Color.FromArgb(255, r, 0, b);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            var _pos = new Vector2(cb.transform.position.x, cb.transform.position.z) * scale;
+                            var pos = new Point((int)_pos.x + (int)center.x, -(int)_pos.y + (int)center.y);
+                            g.DrawEllipse(pen3, pos.X - 3, pos.Y - 3, 6, 6);
                         }
                     }
                 }
@@ -291,6 +333,11 @@ namespace SlicerForm
                 LoadFile.playbackStartTime = UnityEngine.Time.realtimeSinceStartup;
                 LoadFile.playback = true;
             }
+        }
+
+        private void ShowBalls_CheckedChanged(object sender, EventArgs e)
+        {
+            panel1.Invalidate();
         }
     }
 }

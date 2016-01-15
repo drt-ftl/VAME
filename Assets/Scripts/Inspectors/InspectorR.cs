@@ -112,6 +112,25 @@ public class InspectorR : InspectorManager
                     sloxVoxInfo += "</color>";
             }
             GUILayout.Label(sloxVoxInfo, "i");
+            var balls = "Contains " + v.CrazyBalls.Count.ToString() + " Data Points \r\n";
+            if (v.CrazyBalls.Count >= 1)
+            {
+                var minError = 1000f;
+                var maxError = 0f;
+                var totalError = 0f;
+                foreach (var ball in v.CrazyBalls)
+                {
+                    if (ball.ErrorDistance > minError)
+                        minError = ball.ErrorDistance;
+                    if (ball.ErrorDistance > maxError)
+                        maxError = ball.ErrorDistance;
+                    totalError += ball.ErrorDistance;
+                    balls += "Point[" + ball.Id.ToString() + "] - Error: " + ball.ErrorDistance.ToString("f4") + "\r\n";
+                }
+                var averageError = totalError / v.CrazyBalls.Count;
+                balls += "Average Error: " + averageError.ToString("f4");
+            }
+            GUILayout.Label(balls, "i2");
             var intersects = "Intersected By " + v.IntersectedByLines.Count.ToString() + " lines.\r\n";
             GUILayout.Label(intersects, "i2");
             
